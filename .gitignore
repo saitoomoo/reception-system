@@ -1,0 +1,167 @@
+# ============================================
+# 環境変数(機密情報)
+# ============================================
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.production.local
+.env.test.local
+
+# 本番用環境変数のサンプルだけは残す
+!.env.example
+
+# ============================================
+# Node.js / Next.js (frontend)
+# ============================================
+node_modules/
+.next/
+out/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# ログ
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# パッケージマネージャ
+.pnpm-store/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+
+# ============================================
+# Go (backend)
+# ============================================
+# ビルド成果物
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+backend/server
+backend/main
+bin/
+
+# テスト・カバレッジ
+*.test
+*.out
+coverage.out
+coverage.html
+
+# Go modules vendor (vendor を使わない場合)
+vendor/
+
+# ============================================
+# Protocol Buffers / 生成物
+# ============================================
+# proto から生成したコード(規約上「手動編集禁止」だが、CI で再生成する運用なら commit する選択肢もある)
+# このプロジェクトでは規約に従い、再生成可能なため除外
+# ↓ コメントアウト解除するかは方針次第
+# gen/
+
+# ============================================
+# データベース・マイグレーション関連
+# ============================================
+# ローカルの DB ダンプ
+*.sql.dump
+*.dump
+*.bak
+
+# SQLite ローカル(使わないなら不要)
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# IDE / エディタ
+# ============================================
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+
+# JetBrains (IntelliJ, GoLand 等)
+.idea/
+*.iml
+*.iws
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+.\#*
+\#*\#
+
+# ============================================
+# OS 固有
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+Desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ============================================
+# Docker
+# ============================================
+# ローカル DB のデータ
+postgres-data/
+docker-volumes/
+
+# ============================================
+# テスト・CI
+# ============================================
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ============================================
+# Claude Code 関連
+# ============================================
+# Claude Code の作業履歴(プロジェクト固有の設定は除く)
+.claude/cache/
+.claude/sessions/
+
+# ============================================
+# Figma Make 関連
+# ============================================
+# Figma Make の中間ファイル(あれば)
+.figma-make/
+
+# ============================================
+# その他
+# ============================================
+# ログ
+*.log
+logs/
+
+# 一時ファイル
+tmp/
+temp/
+.cache/
+
+# アップロードされたメディア(R2 を使うのでローカルに置かない)
+uploads/
+
+# 個人メモ(リポジトリに含めたくない)
+NOTES.md
+TODO.local.md
