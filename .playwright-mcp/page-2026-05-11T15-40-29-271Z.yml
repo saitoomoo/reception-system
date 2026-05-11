@@ -1,0 +1,13 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [active] [ref=e5]:
+      - img [ref=e6]
+    - heading "年齢入力" [level=1] [ref=e50]
+  - main [ref=e9]:
+    - generic [ref=e51]:
+      - paragraph [ref=e53]: 7歳未満の方はご参加いただけません。7〜9歳の方はスタッフにご相談ください。
+      - generic [ref=e54]:
+        - generic [ref=e55]: 参加者1
+        - spinbutton [ref=e56]: "8"
+      - button "次へ" [ref=e57]
+  - contentinfo [ref=e26]: お困りの際は受付スタッフまでお声がけください

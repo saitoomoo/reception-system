@@ -1,0 +1,15 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "スタッフへご相談ください" [level=1] [ref=e40]
+  - main [ref=e9]:
+    - generic [ref=e41]:
+      - img [ref=e44]
+      - heading "受付スタッフへ お声がけください" [level=2] [ref=e46]:
+        - text: 受付スタッフへ
+        - text: お声がけください
+      - generic [ref=e47]:
+        - paragraph [ref=e48]: 7〜9歳の参加者がいる場合は、オンラインでの整理券取得ができません。受付スタッフのいる場所に直接お越しください。
+        - paragraph [ref=e49]: 保護者の方の同意書（用紙）をご記入いただき、スタッフが整理券を発行いたします。
+  - contentinfo [ref=e26]: お困りの際は受付スタッフまでお声がけください

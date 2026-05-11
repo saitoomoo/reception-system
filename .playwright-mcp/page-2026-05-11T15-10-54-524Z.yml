@@ -1,0 +1,6 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "ブースを選択してください" [level=1] [ref=e5]
+  - main [ref=e6]:
+    - paragraph [ref=e8]: 読み込み中...
+  - contentinfo [ref=e9]: お困りの際は受付スタッフまでお声がけください

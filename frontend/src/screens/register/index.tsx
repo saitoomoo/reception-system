@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { generatePinHash } from '@/lib/pin-hash';
-import { visitorClient } from '@/lib/connect/client';
+import { visitorClient, ticketClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
 import InputStep from './_components/input-step';
 import AgeInputStep from './_components/age-input-step';
@@ -18,6 +18,21 @@ const STEP_TITLES: Record<Step, string> = {
   'consent': '保護者同意書',
   'staff-redirect': 'スタッフへご相談ください',
 };
+
+// Hardcoded consent text snapshot (R-005-2); matches the text shown in ConsentStep.
+const CONSENT_TEXT_SNAPSHOT = `私は、下記の未成年者の保護者として、本体験プログラムへの参加に同意いたします。
+
+【同意事項】
+1. 体験中の安全管理について、施設の指示に従うことを承諾します。
+2. 体験中に発生した事故・怪我について、施設の過失によらない場合は自己責任とすることを理解します。
+3. VR機器（HMD）の使用に際し、目の疲労・VR酔い・転倒等のリスクがあることを理解します。
+4. 緊急時の連絡先を正確に記入し、必要に応じて対応することを承諾します。
+5. 体験の様子を撮影した写真・動画が、施設の広報活動に使用される可能性があることを承諾します。
+
+【注意事項】
+• 体験は7歳以上を対象としています。
+• 心臓疾患、高血圧、てんかん等の疾患をお持ちの方はご利用をお控えください。
+• 体験中に気分が悪くなった場合は、すぐにスタッフにお知らせください。`;
 
 export default function RegisterScreen() {
   const navigate = useNavigate();
@@ -95,10 +110,37 @@ export default function RegisterScreen() {
   const completeRegistration = async () => {
     setRegisterError(null);
     try {
+      // Step 1: Register the visitor
       const resp = await createVisitor.mutateAsync({ nickname, pin });
       const hash = await generatePinHash(pin, resp.receptionNumber);
-      login(resp.receptionNumber, hash);
-      navigate(`/booths/${boothId}/reserve/new/complete`, { state: { receptionNumber: resp.receptionNumber } });
+      login(resp.receptionNumber, hash, resp.visitorId);
+
+      // Step 2: Issue a ticket for the selected booth
+      const parsedAges = ages.map(a => parseInt(a));
+      const participants = parsedAges.map(age => ({ age, name: '' }));
+
+      const needsConsent = parsedAges.some(a => a < 13);
+      const parentalConsent = needsConsent
+        ? {
+            guardianName,
+            consentTextSnapshot: CONSENT_TEXT_SNAPSHOT,
+            userAgent: navigator.userAgent,
+            ipAddress: '0.0.0.0',
+          }
+        : undefined;
+
+      const ticketResp = await ticketClient.createTicket({
+        visitorId: resp.visitorId,
+        boothId: boothId!,
+        pin,
+        participants,
+        matchMode: '',
+        parentalConsent,
+      });
+
+      navigate(`/booths/${boothId}/reserve/new/complete`, {
+        state: { receptionNumber: resp.receptionNumber, ticketId: ticketResp.ticketId },
+      });
     } catch {
       setRegisterError('登録に失敗しました。もう一度お試しください。');
     }

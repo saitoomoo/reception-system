@@ -8,8 +8,9 @@ export default function RegisterCompleteScreen() {
   const location = useLocation();
   const { receptionNumber } = useAuth();
 
-  // navigate state から受け取るか、useAuth から取得
-  const displayNumber = (location.state as { receptionNumber?: string } | null)?.receptionNumber ?? receptionNumber;
+  const state = location.state as { receptionNumber?: string; ticketId?: string } | null;
+  const displayNumber = state?.receptionNumber ?? receptionNumber;
+  const ticketId = state?.ticketId;
 
   return (
     <div className="size-full flex flex-col bg-[#D4B946]">
@@ -54,6 +55,15 @@ export default function RegisterCompleteScreen() {
             受付番号とQRコードをスクショで保存しておくと安心です
           </p>
         </div>
+
+        {ticketId && (
+          <button
+            onClick={() => navigate(`/mypage/waiting?ticketId=${ticketId}`)}
+            className="w-full bg-[#5A4A20] py-6 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:scale-[0.98] transition-all duration-150"
+          >
+            <span className="text-[24px] font-bold text-[#D4B946]">待ち状況を確認する</span>
+          </button>
+        )}
 
         <button
           onClick={() => navigate('/mypage')}

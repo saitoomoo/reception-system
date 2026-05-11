@@ -10,9 +10,11 @@ import LoginScreen from '@/screens/login';
 import MypageScreen from '@/screens/mypage';
 import WaitingStatusScreen from '@/screens/waiting-status';
 import AdminScreen from '@/screens/admin';
+import BoothStatusScreen from '@/screens/booth-status';
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isLoading } = useAuth();
+  if (isLoading) return null;
   if (!isAuthenticated) return <Navigate to="/" replace />;
   return <>{children}</>;
 }
@@ -20,6 +22,7 @@ function AuthGuard({ children }: { children: React.ReactNode }) {
 const router = createBrowserRouter([
   { path: '/', element: <BoothSelectScreen /> },
   { path: '/booths/:boothId', element: <BoothDetailScreen /> },
+  { path: '/booths/:boothId/status', element: <BoothStatusScreen /> },
   { path: '/booths/:boothId/cheer', element: <CheerScreen /> },
   { path: '/booths/:boothId/reserve', element: <ReserveSelectScreen /> },
   { path: '/booths/:boothId/reserve/new', element: <RegisterScreen /> },

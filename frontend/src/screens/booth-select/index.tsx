@@ -1,50 +1,29 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
+import { boothClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
-
-type BoothId = 'horse-race' | 'parkour' | 'chanbara';
-
-const booths: { id: BoothId; label: string; icon: React.ReactNode }[] = [
-  {
-    id: 'horse-race',
-    label: '馬レース',
-    icon: (
-      <svg className="w-20 h-20 text-[#D4B946]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'parkour',
-    label: 'パルクール',
-    icon: (
-      <svg className="w-20 h-20 text-[#D4B946]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
-      </svg>
-    ),
-  },
-  {
-    id: 'chanbara',
-    label: 'チャンバラ',
-    icon: (
-      <svg className="w-20 h-20 text-[#D4B946]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-      </svg>
-    ),
-  },
-];
+import type { BoothSummary } from '@/gen/ts/booth/v1/booth_pb';
 
 export default function BoothSelectScreen() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
-  const [activeId, setActiveId] = useState<BoothId | null>(null);
+  const { isAuthenticated, isLoading } = useAuth();
+  const [activeId, setActiveId] = useState<string | null>(null);
+
+  const { data, isLoading: boothsLoading } = useQuery({
+    queryKey: ['booths'],
+    queryFn: () => boothClient.listBooths({}),
+    refetchInterval: 30_000,
+  });
 
   useEffect(() => {
-    if (isAuthenticated) navigate('/mypage', { replace: true });
-  }, [isAuthenticated, navigate]);
+    if (!isLoading && isAuthenticated) navigate('/mypage', { replace: true });
+  }, [isLoading, isAuthenticated, navigate]);
 
-  const handleSelect = (id: BoothId) => {
+  const booths: BoothSummary[] = data?.booths ?? [];
+
+  const handleSelect = (id: string) => {
     setActiveId(id);
     setTimeout(() => {
       setActiveId(null);
@@ -59,20 +38,40 @@ export default function BoothSelectScreen() {
       </header>
 
       <main className="flex-1 flex flex-col gap-6 px-8 pb-12">
-        {booths.map(({ id, label, icon }) => (
-          <button
-            key={id}
-            onClick={() => handleSelect(id)}
-            className={`flex-1 min-h-[160px] bg-white rounded-3xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:scale-[0.97] transition-all duration-150 ${
-              activeId === id ? 'scale-[0.97]' : ''
-            }`}
-          >
-            <div className="flex flex-col items-center justify-center gap-3">
-              {icon}
-              <span className="text-[32px] font-bold text-[#5A4A20]">{label}</span>
-            </div>
-          </button>
-        ))}
+        {boothsLoading ? (
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-[18px] text-[#5A4A20] opacity-70">読み込み中...</p>
+          </div>
+        ) : booths.length === 0 ? (
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-[18px] text-[#5A4A20] opacity-70">ブース情報がありません</p>
+          </div>
+        ) : (
+          booths.map((booth) => (
+            <button
+              key={booth.id}
+              onClick={() => handleSelect(booth.id)}
+              disabled={!booth.isAccepting}
+              className={`flex-1 min-h-[160px] bg-white rounded-3xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all duration-150 ${
+                booth.isAccepting
+                  ? `active:scale-[0.97] ${activeId === booth.id ? 'scale-[0.97]' : ''}`
+                  : 'opacity-60'
+              }`}
+            >
+              <div className="flex flex-col items-center justify-center gap-2 p-6">
+                <span className="text-[32px] font-bold text-[#5A4A20]">{booth.name}</span>
+                <span className="text-[15px] text-[#5A4A20] opacity-70">{booth.location}</span>
+                {booth.isAccepting ? (
+                  <span className="text-[16px] text-[#5A4A20] opacity-80">
+                    待ち {booth.waitingCount}人 / 約{booth.estimatedWaitMinutes}分
+                  </span>
+                ) : (
+                  <span className="text-[16px] text-red-500 font-bold">受付停止中</span>
+                )}
+              </div>
+            </button>
+          ))
+        )}
       </main>
 
       <ScreenFooter />

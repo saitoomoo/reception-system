@@ -1,0 +1,35 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "保護者同意書" [level=1] [ref=e58]
+  - main [ref=e9]:
+    - generic [ref=e59]:
+      - generic [ref=e60]:
+        - generic [ref=e61]:
+          - img [ref=e62]
+          - paragraph [ref=e64]: 13歳未満の参加者がいます
+        - paragraph [ref=e65]: 13歳未満のお子様が参加される場合、保護者の方の同意が必要です。下記の同意書をご確認いただき、必要事項をご記入ください。
+      - generic [ref=e66]:
+        - heading "保護者同意書" [level=2] [ref=e67]
+        - paragraph [ref=e69]:
+          - generic [ref=e70]: 私は、下記の未成年者の保護者として、本体験プログラムへの参加に同意いたします。
+          - generic [ref=e71]: 【同意事項】
+          - generic [ref=e72]: 1. 体験中の安全管理について、施設の指示に従うことを承諾します。
+          - generic [ref=e73]: 2. 体験中に発生した事故・怪我について、施設の過失によらない場合は自己責任とすることを理解します。
+          - generic [ref=e74]: 3. VR機器（HMD）の使用に際し、目の疲労・VR酔い・転倒等のリスクがあることを理解します。
+          - generic [ref=e75]: 4. 緊急時の連絡先を正確に記入し、必要に応じて対応することを承諾します。
+          - generic [ref=e76]: 5. 体験の様子を撮影した写真・動画が、施設の広報活動に使用される可能性があることを承諾します。
+          - generic [ref=e77]: 【注意事項】
+          - generic [ref=e78]: • 体験は7歳以上を対象としています。
+          - generic [ref=e79]: • 心臓疾患、高血圧、てんかん等の疾患をお持ちの方はご利用をお控えください。
+          - generic [ref=e80]: • 体験中に気分が悪くなった場合は、すぐにスタッフにお知らせください。
+        - paragraph [ref=e81]: 同意書を最後までスクロールすると同意できます
+        - generic [ref=e82]:
+          - generic [ref=e83]: 保護者氏名
+          - textbox "例：山田太郎" [ref=e84]
+        - generic [ref=e86]:
+          - checkbox "上記の内容に同意し、保護者として署名します" [disabled] [ref=e87]
+          - generic [ref=e88]: 上記の内容に同意し、保護者として署名します
+      - button "次へ" [disabled] [ref=e89]
+  - contentinfo [ref=e26]: お困りの際は受付スタッフまでお声がけください

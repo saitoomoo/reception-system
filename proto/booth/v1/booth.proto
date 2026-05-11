@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package booth.v1;
+
+option go_package = "reception-system/gen/go/booth/v1;boothv1";
+
+// BoothService provides booth listing and detail for visitors.
+service BoothService {
+  // ListBooths returns all booths with current waiting counts.
+  rpc ListBooths(ListBoothsRequest) returns (ListBoothsResponse);
+
+  // GetBooth returns full detail for a single booth.
+  rpc GetBooth(GetBoothRequest) returns (GetBoothResponse);
+
+  // GetBoothStatus returns the real-time queue status for a single booth.
+  // Intended for the public booth status page (no authentication required).
+  rpc GetBoothStatus(GetBoothStatusRequest) returns (GetBoothStatusResponse);
+}
+
+// -----------------------------------------------------------------------------
+// Shared types
+// -----------------------------------------------------------------------------
+
+message BoothSummary {
+  string id              = 1;
+  string name            = 2;
+  string location        = 3;
+  string experience_type = 4;
+  bool   is_accepting    = 5;
+  int32  waiting_count   = 6;
+  // Estimated minutes until this visitor would be called, based on booth settings.
+  int32  estimated_wait_minutes = 7;
+  string cover_image_url        = 8;
+  string open_at                = 9;
+  string close_at               = 10;
+}
+
+message BoothDetail {
+  string id              = 1;
+  string name            = 2;
+  string description     = 3;
+  string location        = 4;
+  string experience_type = 5;
+  bool   is_accepting    = 6;
+  int32  waiting_count   = 7;
+  int32  estimated_wait_minutes          = 8;
+  string cover_image_url                 = 9;
+  string intro_video_url                 = 10;
+  string survey_url                      = 11;
+  string open_at                         = 12;
+  string close_at                        = 13;
+  int32  max_participants_per_ticket     = 14;
+  int32  target_party_size               = 15;
+  bool   allow_private_match             = 16;
+  int32  estimated_minutes_per_person    = 17;
+  int32  estimated_minutes_per_session   = 18;
+  int32  cooldown_minutes                = 19;
+}
+
+// -----------------------------------------------------------------------------
+// ListBooths
+// -----------------------------------------------------------------------------
+
+message ListBoothsRequest {}
+
+message ListBoothsResponse {
+  repeated BoothSummary booths = 1;
+}
+
+// -----------------------------------------------------------------------------
+// GetBooth
+// -----------------------------------------------------------------------------
+
+message GetBoothRequest {
+  string booth_id = 1;
+}
+
+message GetBoothResponse {
+  BoothDetail booth = 1;
+}
+
+// -----------------------------------------------------------------------------
+// GetBoothStatus
+// -----------------------------------------------------------------------------
+
+message GetBoothStatusRequest {
+  string booth_id = 1;
+}
+
+message GetBoothStatusResponse {
+  string booth_id               = 1;
+  string booth_name             = 2;
+  string booth_location         = 3;
+  bool   is_accepting           = 4;
+  // True when current time is within the booth's open_at–close_at window.
+  bool   is_open                = 5;
+  // Count of tickets in waiting or called state (pending excluded per R-012).
+  int32  waiting_count          = 6;
+  // Count of tickets in pending state.
+  int32  pending_count          = 7;
+  // sequence_in_booth of the earliest currently-called ticket; 0 if none.
+  int32  called_sequence        = 8;
+  int32  estimated_wait_minutes = 9;
+}
