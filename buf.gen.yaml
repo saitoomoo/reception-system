@@ -1,0 +1,21 @@
+version: v2
+plugins:
+  # Go: protoc-gen-go (struct 生成)
+  - remote: buf.build/protocolbuffers/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # Go: protoc-gen-connect-go (Connect ハンドラ生成)
+  - remote: buf.build/connectrpc/go
+    out: gen/go
+    opt:
+      - paths=source_relative
+
+  # TypeScript: protoc-gen-es (型生成)
+  - remote: buf.build/bufbuild/es
+    out: gen/ts
+
+  # TypeScript: protoc-gen-connect-es (Connect クライアント生成)
+  - remote: buf.build/connectrpc/es
+    out: gen/ts

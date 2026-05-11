@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+package visitor.v1;
+
+option go_package = "reception-system/gen/go/visitor/v1;visitorv1";
+
+// VisitorService handles visitor registration, authentication, and profile management.
+service VisitorService {
+  // CreateVisitor registers a new visitor and issues a reception number.
+  // The server generates a reception number in A-001 format (R-001).
+  // PIN is sent as plain text over HTTPS; the server hashes it immediately (auth.md §6).
+  rpc CreateVisitor(CreateVisitorRequest) returns (CreateVisitorResponse);
+
+  // AuthenticateVisitor re-authenticates a visitor using their reception number and PIN.
+  // Used when localStorage is lost or the visitor switches devices (R-004).
+  rpc AuthenticateVisitor(AuthenticateVisitorRequest) returns (AuthenticateVisitorResponse);
+
+  // RegisterPushSubscription saves the visitor's Web Push subscription.
+  // Called after the visitor grants notification permission (auth.md §4-4, R-020).
+  rpc RegisterPushSubscription(RegisterPushSubscriptionRequest) returns (RegisterPushSubscriptionResponse);
+
+  // GetMyProfile returns the visitor's basic profile for the my-page screen (auth.md §4-5).
+  // Not listed in api-draft.md §1 but required for the my-page visitor info display.
+  rpc GetMyProfile(GetMyProfileRequest) returns (GetMyProfileResponse);
+}
+
+// -----------------------------------------------------------------------------
+// CreateVisitor
+// -----------------------------------------------------------------------------
+
+message CreateVisitorRequest {
+  // Visitor's display name. 1–20 characters, no newlines (auth.md §4-2).
+  string nickname = 1;
+
+  // 4-digit PIN as plain text (^[0-9]{4}$). Hashed server-side immediately (auth.md §6).
+  // Never stored or logged on the client after this call.
+  string pin = 2;
+}
+
+message CreateVisitorResponse {
+  // Unique visitor identifier assigned by the server.
+  // Represented as string to avoid JSON integer precision issues (DB type: bigint).
+  string visitor_id = 1;
+
+  // Assigned reception number in A-001 format (R-001).
+  // Increments A-001 → A-999 → B-001 → … up to Z-999.
+  string reception_number = 2;
+}
+
+// -----------------------------------------------------------------------------
+// AuthenticateVisitor
+// -----------------------------------------------------------------------------
+
+message AuthenticateVisitorRequest {
+  // Reception number in A-001 format (^[A-Z]-\d{3}$).
+  string reception_number = 1;
+
+  // 4-digit PIN as plain text. Validated against the stored hash server-side.
+  string pin = 2;
+}
+
+message AuthenticateVisitorResponse {
+  // Visitor identifier to be stored in localStorage after successful re-login.
+  string visitor_id = 1;
+
+  // Reception number confirmed by the server. Clients should re-save this to localStorage.
+  string reception_number = 2;
+}
+
+// -----------------------------------------------------------------------------
+// RegisterPushSubscription
+// -----------------------------------------------------------------------------
+
+message RegisterPushSubscriptionRequest {
+  // Visitor identifier obtained from CreateVisitor or AuthenticateVisitor.
+  string visitor_id = 1;
+
+  // Push service endpoint URL provided by PushManager.subscribe().
+  string endpoint = 2;
+
+  // ECDH public key (p256dh) from PushSubscription.getKey('p256dh'), base64url-encoded.
+  string p256dh_key = 3;
+
+  // Authentication secret from PushSubscription.getKey('auth'), base64url-encoded.
+  string auth_key = 4;
+}
+
+// Empty response — the client only needs to know the call succeeded.
+// Defined as a named message (not google.protobuf.Empty) to allow future extension.
+message RegisterPushSubscriptionResponse {}
+
+// -----------------------------------------------------------------------------
+// GetMyProfile
+// -----------------------------------------------------------------------------
+
+message GetMyProfileRequest {
+  // Visitor identifier stored in localStorage.
+  string visitor_id = 1;
+}
+
+message GetMyProfileResponse {
+  // Unique visitor identifier.
+  string visitor_id = 1;
+
+  // Reception number in A-001 format. Displayed on the my-page QR screen.
+  string reception_number = 2;
+
+  // Visitor's display name registered at sign-up.
+  string nickname = 3;
+
+  // Registration timestamp in ISO 8601 format (e.g. "2025-11-01T10:00:00Z").
+  string created_at = 4;
+}
