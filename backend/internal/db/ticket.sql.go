@@ -11,6 +11,149 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const admitTicketByStaff = `-- name: AdmitTicketByStaff :one
+UPDATE tickets
+SET status      = 'admitted',
+    admitted_at = now()
+WHERE id       = $1
+  AND booth_id = $2
+  AND status IN ('called', 'pending')
+RETURNING id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at
+`
+
+type AdmitTicketByStaffParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Transitions a called or pending ticket to admitted.
+// Returns the full row so the caller can insert into admissions in the same tx.
+func (q *Queries) AdmitTicketByStaff(ctx context.Context, arg AdmitTicketByStaffParams) (Ticket, error) {
+	row := q.db.QueryRow(ctx, admitTicketByStaff, arg.ID, arg.BoothID)
+	var i Ticket
+	err := row.Scan(
+		&i.ID,
+		&i.VisitorID,
+		&i.BoothID,
+		&i.TicketGroupID,
+		&i.MatchSessionID,
+		&i.SequenceInBooth,
+		&i.Status,
+		&i.MatchMode,
+		&i.IsPriorityCall,
+		&i.CreatedAt,
+		&i.CalledAt,
+		&i.PendingAt,
+		&i.ReturnedAt,
+		&i.AdmittedAt,
+		&i.CancelledAt,
+	)
+	return i, err
+}
+
+const callNextTickets = `-- name: CallNextTickets :many
+UPDATE tickets
+SET status    = 'called',
+    called_at = now()
+WHERE id IN (
+    SELECT id FROM tickets AS src
+    WHERE src.booth_id = $1
+      AND src.status   = 'waiting'
+    ORDER BY src.sequence_in_booth
+    LIMIT $2
+)
+RETURNING id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at
+`
+
+type CallNextTicketsParams struct {
+	BoothID int64
+	Limit   int32
+}
+
+// Transitions the first $2 waiting tickets (by sequence) for a booth to called.
+// Returns the updated rows so the caller can send push notifications.
+// Alias the subquery source as "src" to avoid the ambiguous booth_id reference
+// that arises when sqlc resolves both the outer UPDATE target and the inner
+// SELECT against the same "tickets" table.
+func (q *Queries) CallNextTickets(ctx context.Context, arg CallNextTicketsParams) ([]Ticket, error) {
+	rows, err := q.db.Query(ctx, callNextTickets, arg.BoothID, arg.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Ticket{}
+	for rows.Next() {
+		var i Ticket
+		if err := rows.Scan(
+			&i.ID,
+			&i.VisitorID,
+			&i.BoothID,
+			&i.TicketGroupID,
+			&i.MatchSessionID,
+			&i.SequenceInBooth,
+			&i.Status,
+			&i.MatchMode,
+			&i.IsPriorityCall,
+			&i.CreatedAt,
+			&i.CalledAt,
+			&i.PendingAt,
+			&i.ReturnedAt,
+			&i.AdmittedAt,
+			&i.CancelledAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const callTicket = `-- name: CallTicket :exec
+UPDATE tickets
+SET status    = 'called',
+    called_at = now()
+WHERE id       = $1
+  AND booth_id = $2
+  AND status   = 'waiting'
+`
+
+type CallTicketParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Transitions a single waiting ticket to called. The booth_id guard prevents
+// staff from accidentally calling a ticket that belongs to another booth.
+func (q *Queries) CallTicket(ctx context.Context, arg CallTicketParams) error {
+	_, err := q.db.Exec(ctx, callTicket, arg.ID, arg.BoothID)
+	return err
+}
+
+const cancelTicketByStaff = `-- name: CancelTicketByStaff :exec
+UPDATE tickets
+SET status       = 'cancelled',
+    cancelled_at = now()
+WHERE id       = $1
+  AND booth_id = $2
+  AND status  != 'admitted'
+`
+
+type CancelTicketByStaffParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Staff can cancel a ticket in any non-admitted state.
+// The booth_id guard is intentional: omitting it would let staff cancel tickets
+// belonging to other booths.
+func (q *Queries) CancelTicketByStaff(ctx context.Context, arg CancelTicketByStaffParams) error {
+	_, err := q.db.Exec(ctx, cancelTicketByStaff, arg.ID, arg.BoothID)
+	return err
+}
+
 const createTicket = `-- name: CreateTicket :one
 INSERT INTO tickets (
     visitor_id,
@@ -41,6 +184,46 @@ func (q *Queries) CreateTicket(ctx context.Context, arg CreateTicketParams) (Tic
 		arg.Status,
 		arg.MatchMode,
 	)
+	var i Ticket
+	err := row.Scan(
+		&i.ID,
+		&i.VisitorID,
+		&i.BoothID,
+		&i.TicketGroupID,
+		&i.MatchSessionID,
+		&i.SequenceInBooth,
+		&i.Status,
+		&i.MatchMode,
+		&i.IsPriorityCall,
+		&i.CreatedAt,
+		&i.CalledAt,
+		&i.PendingAt,
+		&i.ReturnedAt,
+		&i.AdmittedAt,
+		&i.CancelledAt,
+	)
+	return i, err
+}
+
+const forceAdmitTicket = `-- name: ForceAdmitTicket :one
+UPDATE tickets
+SET status      = 'admitted',
+    admitted_at = now()
+WHERE id       = $1
+  AND booth_id = $2
+  AND status IN ('waiting', 'called', 'pending')
+RETURNING id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at
+`
+
+type ForceAdmitTicketParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Force-admits a ticket from any active status (waiting/called/pending) to admitted.
+// Used by AdmitManually with force=true when staff skips the confirmation step.
+func (q *Queries) ForceAdmitTicket(ctx context.Context, arg ForceAdmitTicketParams) (Ticket, error) {
+	row := q.db.QueryRow(ctx, forceAdmitTicket, arg.ID, arg.BoothID)
 	var i Ticket
 	err := row.Scan(
 		&i.ID,
@@ -167,6 +350,47 @@ func (q *Queries) GetTicketByID(ctx context.Context, id int64) (Ticket, error) {
 	return i, err
 }
 
+const getTicketByReceptionNumberAndBooth = `-- name: GetTicketByReceptionNumberAndBooth :one
+SELECT t.id, t.visitor_id, t.booth_id, t.ticket_group_id, t.match_session_id, t.sequence_in_booth, t.status, t.match_mode, t.is_priority_call, t.created_at, t.called_at, t.pending_at, t.returned_at, t.admitted_at, t.cancelled_at
+FROM tickets t
+JOIN visitors v ON v.id = t.visitor_id
+WHERE t.booth_id         = $1
+  AND v.reception_number = $2
+ORDER BY t.created_at DESC
+LIMIT 1
+`
+
+type GetTicketByReceptionNumberAndBoothParams struct {
+	BoothID         int64
+	ReceptionNumber string
+}
+
+// Returns the most recent ticket (any status) for the given visitor and booth.
+// Used by the QR scanner to determine the current state before deciding the
+// admission outcome (admitted / restored_to_priority_call / waiting_confirmation_needed / …).
+func (q *Queries) GetTicketByReceptionNumberAndBooth(ctx context.Context, arg GetTicketByReceptionNumberAndBoothParams) (Ticket, error) {
+	row := q.db.QueryRow(ctx, getTicketByReceptionNumberAndBooth, arg.BoothID, arg.ReceptionNumber)
+	var i Ticket
+	err := row.Scan(
+		&i.ID,
+		&i.VisitorID,
+		&i.BoothID,
+		&i.TicketGroupID,
+		&i.MatchSessionID,
+		&i.SequenceInBooth,
+		&i.Status,
+		&i.MatchMode,
+		&i.IsPriorityCall,
+		&i.CreatedAt,
+		&i.CalledAt,
+		&i.PendingAt,
+		&i.ReturnedAt,
+		&i.AdmittedAt,
+		&i.CancelledAt,
+	)
+	return i, err
+}
+
 const getTicketPosition = `-- name: GetTicketPosition :one
 SELECT COUNT(*)::int AS position
 FROM tickets t
@@ -181,6 +405,67 @@ func (q *Queries) GetTicketPosition(ctx context.Context, id int64) (int32, error
 	var position int32
 	err := row.Scan(&position)
 	return position, err
+}
+
+const listTicketsByBoothForStaff = `-- name: ListTicketsByBoothForStaff :many
+SELECT
+    t.id,
+    t.sequence_in_booth,
+    t.status,
+    t.is_priority_call,
+    t.created_at,
+    v.reception_number,
+    v.nickname,
+    tg.participant_count
+FROM tickets t
+JOIN visitors v ON v.id = t.visitor_id
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+WHERE t.booth_id = $1
+  AND t.status != 'cancelled'
+ORDER BY
+    t.is_priority_call DESC,
+    t.sequence_in_booth
+`
+
+type ListTicketsByBoothForStaffRow struct {
+	ID               int64
+	SequenceInBooth  int32
+	Status           string
+	IsPriorityCall   bool
+	CreatedAt        pgtype.Timestamptz
+	ReceptionNumber  string
+	Nickname         string
+	ParticipantCount int32
+}
+
+// Returns all non-cancelled tickets for a booth with visitor and group info for staff view.
+func (q *Queries) ListTicketsByBoothForStaff(ctx context.Context, boothID int64) ([]ListTicketsByBoothForStaffRow, error) {
+	rows, err := q.db.Query(ctx, listTicketsByBoothForStaff, boothID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListTicketsByBoothForStaffRow{}
+	for rows.Next() {
+		var i ListTicketsByBoothForStaffRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.SequenceInBooth,
+			&i.Status,
+			&i.IsPriorityCall,
+			&i.CreatedAt,
+			&i.ReceptionNumber,
+			&i.Nickname,
+			&i.ParticipantCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const listTicketsByBoothID = `-- name: ListTicketsByBoothID :many
@@ -271,6 +556,68 @@ func (q *Queries) ListTicketsByVisitorID(ctx context.Context, visitorID int64) (
 		return nil, err
 	}
 	return items, nil
+}
+
+const returnFromPending = `-- name: ReturnFromPending :one
+UPDATE tickets
+SET status           = 'called',
+    called_at        = now(),
+    returned_at      = now(),
+    is_priority_call = TRUE
+WHERE id       = $1
+  AND booth_id = $2
+  AND status   = 'pending'
+RETURNING id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at
+`
+
+type ReturnFromPendingParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Transitions a pending ticket back to called and marks it as a priority call.
+// Returns the updated row so the caller knows the visitor returned.
+func (q *Queries) ReturnFromPending(ctx context.Context, arg ReturnFromPendingParams) (Ticket, error) {
+	row := q.db.QueryRow(ctx, returnFromPending, arg.ID, arg.BoothID)
+	var i Ticket
+	err := row.Scan(
+		&i.ID,
+		&i.VisitorID,
+		&i.BoothID,
+		&i.TicketGroupID,
+		&i.MatchSessionID,
+		&i.SequenceInBooth,
+		&i.Status,
+		&i.MatchMode,
+		&i.IsPriorityCall,
+		&i.CreatedAt,
+		&i.CalledAt,
+		&i.PendingAt,
+		&i.ReturnedAt,
+		&i.AdmittedAt,
+		&i.CancelledAt,
+	)
+	return i, err
+}
+
+const setTicketPending = `-- name: SetTicketPending :exec
+UPDATE tickets
+SET status     = 'pending',
+    pending_at = now()
+WHERE id       = $1
+  AND booth_id = $2
+  AND status   = 'called'
+`
+
+type SetTicketPendingParams struct {
+	ID      int64
+	BoothID int64
+}
+
+// Transitions a called ticket to pending (No-Show after call_resend_minutes).
+func (q *Queries) SetTicketPending(ctx context.Context, arg SetTicketPendingParams) error {
+	_, err := q.db.Exec(ctx, setTicketPending, arg.ID, arg.BoothID)
+	return err
 }
 
 const updateTicketGroupID = `-- name: UpdateTicketGroupID :exec

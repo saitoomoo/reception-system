@@ -1,57 +1,16 @@
 export type ReceptionStatus = 'waiting' | 'called' | 'admitted' | 'cancelled' | 'pending';
-export type BoothType = 'horse-race' | 'parkour' | 'chanbara';
-export type PageType =
-  | 'reservations-all'
-  | 'reservations-horse'
-  | 'reservations-parkour'
-  | 'reservations-chanbara'
-  | 'booth-settings';
+export type PageType = 'reservations' | 'qr-scanner' | 'manual-admit';
 
-export interface Reception {
-  id: number;
+export interface StaffTicketItem {
+  ticketId: string;
+  sequenceInBooth: number;
   receptionNumber: string;
-  booth: BoothType;
   nickname: string;
-  partySize: number;
-  ages: number[];
-  guardianName?: string;
+  participantCount: number;
   status: ReceptionStatus;
-  is_priority_call?: boolean;
-  timestamp: Date;
-  calledAt?: Date;
-  admittedAt?: Date;
+  isPriorityCall: boolean;
+  createdAt: string;
 }
-
-export interface BoothSettings {
-  name: string;
-  overview: string;
-  notes: string[];
-  videoUrl: string;
-  duration: number;
-  capacity: number;
-  minAge: number;
-  minHeight: number;
-  isActive: boolean;
-  internalNotes: string;
-}
-
-export const BOOTH_PASSWORDS: Record<BoothType, string> = {
-  'horse-race': '1234',
-  parkour: '1234',
-  chanbara: '1234',
-};
-
-export const BOOTH_NAMES: Record<BoothType, string> = {
-  'horse-race': '馬レース',
-  parkour: 'パルクール',
-  chanbara: 'チャンバラ',
-};
-
-export const BOOTH_ICONS: Record<BoothType, string> = {
-  'horse-race': '🏇',
-  parkour: '🤸',
-  chanbara: '⚔️',
-};
 
 export const STATUS_NAMES: Record<ReceptionStatus, string> = {
   waiting: '待機中',
@@ -70,9 +29,7 @@ export const STATUS_COLORS: Record<ReceptionStatus, string> = {
 };
 
 export const MENU_ITEMS: { id: PageType; label: string; icon: string }[] = [
-  { id: 'reservations-all', label: '予約状況（全体）', icon: '📋' },
-  { id: 'reservations-horse', label: '馬レース', icon: '🏇' },
-  { id: 'reservations-parkour', label: 'パルクール', icon: '🤸' },
-  { id: 'reservations-chanbara', label: 'チャンバラ', icon: '⚔️' },
-  { id: 'booth-settings', label: 'ブース情報設定', icon: '⚙️' },
+  { id: 'reservations', label: '予約一覧', icon: '📋' },
+  { id: 'qr-scanner', label: 'QRスキャン', icon: '📷' },
+  { id: 'manual-admit', label: '手動入場', icon: '✏️' },
 ];

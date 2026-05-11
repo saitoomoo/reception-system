@@ -1,0 +1,231 @@
+syntax = "proto3";
+
+package admin.v1;
+
+option go_package = "reception-system/gen/go/admin/v1;adminv1";
+
+// AdminService is for global admins only.
+service AdminService {
+  // LoginAsGlobalAdmin authenticates with name + password and sets a session cookie.
+  rpc LoginAsGlobalAdmin(LoginAsGlobalAdminRequest) returns (LoginAsGlobalAdminResponse);
+
+  // GetDashboard returns per-booth waiting/admitted counts for the admin overview.
+  rpc GetDashboard(GetDashboardRequest) returns (GetDashboardResponse);
+
+  // UpdateBooth updates mutable booth settings.
+  rpc UpdateBooth(UpdateBoothRequest) returns (UpdateBoothResponse);
+}
+
+// StaffService is for booth staff authenticated with a booth-specific shared password.
+service StaffService {
+  // LoginAsStaff authenticates with booth_id + password and sets a session cookie.
+  rpc LoginAsStaff(LoginAsStaffRequest) returns (LoginAsStaffResponse);
+
+  // CallTicket transitions a single waiting ticket to called.
+  rpc CallTicket(CallTicketRequest) returns (CallTicketResponse);
+
+  // CallNextTickets transitions the first N waiting tickets for the staff's booth to called.
+  rpc CallNextTickets(CallNextTicketsRequest) returns (CallNextTicketsResponse);
+
+  // AdmitByQR looks up a visitor by reception_number and admits them (or restores from pending).
+  rpc AdmitByQR(AdmitByQRRequest) returns (AdmitByQRResponse);
+
+  // AdmitManually performs the same logic as AdmitByQR but can force-admit a waiting ticket.
+  rpc AdmitManually(AdmitManuallyRequest) returns (AdmitManuallyResponse);
+
+  // CancelTicketByStaff cancels a ticket within the staff's booth.
+  rpc CancelTicketByStaff(CancelTicketByStaffRequest) returns (CancelTicketByStaffResponse);
+
+  // GetStaffSession returns the booth_id and booth_name stored in the staff session cookie.
+  rpc GetStaffSession(GetStaffSessionRequest) returns (GetStaffSessionResponse);
+
+  // ListTicketsByBooth returns all tickets for the authenticated staff's booth.
+  rpc ListTicketsByBooth(ListTicketsByBoothRequest) returns (ListTicketsByBoothResponse);
+}
+
+// -----------------------------------------------------------------------------
+// Shared types
+// -----------------------------------------------------------------------------
+
+// AdmitOutcome describes the result of a QR scan or manual admission attempt.
+enum AdmitOutcome {
+  ADMIT_OUTCOME_UNSPECIFIED           = 0;
+  // Ticket moved to admitted; admission record created.
+  ADMIT_OUTCOME_ADMITTED              = 1;
+  // Ticket was pending; moved back to called with is_priority_call=true.
+  ADMIT_OUTCOME_RESTORED_TO_PRIORITY_CALL = 2;
+  // Ticket is still in waiting state; operator must confirm before admitting.
+  ADMIT_OUTCOME_WAITING_CONFIRMATION_NEEDED = 3;
+  // Ticket was already in admitted state.
+  ADMIT_OUTCOME_ALREADY_ADMITTED      = 4;
+  // No active ticket found for this visitor at this booth.
+  ADMIT_OUTCOME_NOT_FOUND             = 5;
+}
+
+message BoothStats {
+  string booth_id      = 1;
+  string booth_name    = 2;
+  int32  waiting_count = 3;
+  int32  pending_count = 4;
+  int32  admitted_today = 5;
+}
+
+// -----------------------------------------------------------------------------
+// LoginAsGlobalAdmin
+// -----------------------------------------------------------------------------
+
+message LoginAsGlobalAdminRequest {
+  string name     = 1;
+  string password = 2;
+}
+
+message LoginAsGlobalAdminResponse {}
+
+// -----------------------------------------------------------------------------
+// GetDashboard
+// -----------------------------------------------------------------------------
+
+message GetDashboardRequest {}
+
+message GetDashboardResponse {
+  repeated BoothStats booths = 1;
+}
+
+// -----------------------------------------------------------------------------
+// UpdateBooth
+// -----------------------------------------------------------------------------
+
+message UpdateBoothRequest {
+  string booth_id                       = 1;
+  string name                           = 2;
+  string description                    = 3;
+  string location                       = 4;
+  string open_at                        = 5;
+  string close_at                       = 6;
+  string experience_type                = 7;
+  int32  max_participants_per_ticket    = 8;
+  int32  concurrent_capacity            = 9;
+  int32  target_party_size              = 10;
+  int32  min_party_size                 = 11;
+  bool   allow_private_match            = 12;
+  int32  estimated_minutes_per_person   = 13;
+  int32  estimated_minutes_per_session  = 14;
+  int32  call_threshold                 = 15;
+  int32  call_resend_minutes            = 16;
+  int32  cooldown_minutes               = 17;
+  bool   is_accepting                   = 18;
+  string cover_image_url                = 19;
+  string intro_video_url                = 20;
+  string survey_url                     = 21;
+}
+
+message UpdateBoothResponse {}
+
+// -----------------------------------------------------------------------------
+// LoginAsStaff
+// -----------------------------------------------------------------------------
+
+message LoginAsStaffRequest {
+  string booth_id  = 1;
+  string password  = 2;
+}
+
+message LoginAsStaffResponse {
+  string booth_id   = 1;
+  string booth_name = 2;
+}
+
+// -----------------------------------------------------------------------------
+// CallTicket
+// -----------------------------------------------------------------------------
+
+message CallTicketRequest {
+  string ticket_id = 1;
+}
+
+message CallTicketResponse {}
+
+// -----------------------------------------------------------------------------
+// CallNextTickets
+// -----------------------------------------------------------------------------
+
+message CallNextTicketsRequest {
+  // Number of waiting tickets to call; must be >= 1.
+  int32 count = 1;
+}
+
+message CallNextTicketsResponse {
+  // IDs of tickets that were transitioned to called.
+  repeated string ticket_ids = 1;
+}
+
+// -----------------------------------------------------------------------------
+// AdmitByQR
+// -----------------------------------------------------------------------------
+
+message AdmitByQRRequest {
+  // Reception number decoded from the visitor's QR code.
+  string reception_number = 1;
+}
+
+message AdmitByQRResponse {
+  AdmitOutcome outcome  = 1;
+  string       ticket_id = 2;
+}
+
+// -----------------------------------------------------------------------------
+// AdmitManually
+// -----------------------------------------------------------------------------
+
+message AdmitManuallyRequest {
+  string reception_number = 1;
+  // If true, force-admit even if the ticket is still in waiting state.
+  bool   force            = 2;
+}
+
+message AdmitManuallyResponse {
+  AdmitOutcome outcome   = 1;
+  string       ticket_id = 2;
+}
+
+// -----------------------------------------------------------------------------
+// CancelTicketByStaff
+// -----------------------------------------------------------------------------
+
+message CancelTicketByStaffRequest {
+  string ticket_id = 1;
+}
+
+message CancelTicketByStaffResponse {}
+
+// -----------------------------------------------------------------------------
+// GetStaffSession
+// -----------------------------------------------------------------------------
+
+message GetStaffSessionRequest {}
+
+message GetStaffSessionResponse {
+  string booth_id   = 1;
+  string booth_name = 2;
+}
+
+// -----------------------------------------------------------------------------
+// ListTicketsByBooth
+// -----------------------------------------------------------------------------
+
+message StaffTicket {
+  string ticket_id         = 1;
+  int32  sequence_in_booth = 2;
+  string reception_number  = 3;
+  string nickname          = 4;
+  int32  participant_count = 5;
+  string status            = 6;
+  bool   is_priority_call  = 7;
+  string created_at        = 8;
+}
+
+message ListTicketsByBoothRequest {}
+
+message ListTicketsByBoothResponse {
+  repeated StaffTicket tickets = 1;
+}

@@ -10,6 +10,8 @@ import LoginScreen from '@/screens/login';
 import MypageScreen from '@/screens/mypage';
 import WaitingStatusScreen from '@/screens/waiting-status';
 import AdminScreen from '@/screens/admin';
+import GlobalLoginScreen from '@/screens/admin/global-login';
+import GlobalDashboardScreen from '@/screens/admin/global-dashboard';
 import BoothStatusScreen from '@/screens/booth-status';
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -37,7 +39,8 @@ const router = createBrowserRouter([
     element: <AuthGuard><WaitingStatusScreen /></AuthGuard>,
   },
   { path: '/admin', element: <AdminScreen /> },
-  { path: '/admin/*', element: <AdminScreen /> },
+  { path: '/admin/global/login', element: <GlobalLoginScreen /> },
+  { path: '/admin/global/dashboard', element: <GlobalDashboardScreen /> },
 ]);
 
 export default function Router() {

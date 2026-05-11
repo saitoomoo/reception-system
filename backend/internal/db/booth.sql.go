@@ -7,7 +7,46 @@ package db
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const authenticateStaff = `-- name: AuthenticateStaff :one
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at FROM booths WHERE id = $1
+`
+
+// Returns the full booth row so the caller can compare staff_password_hash
+// with bcrypt.CompareHashAndPassword on the Go side.
+func (q *Queries) AuthenticateStaff(ctx context.Context, id int64) (Booth, error) {
+	row := q.db.QueryRow(ctx, authenticateStaff, id)
+	var i Booth
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Location,
+		&i.OpenAt,
+		&i.CloseAt,
+		&i.ExperienceType,
+		&i.MaxParticipantsPerTicket,
+		&i.ConcurrentCapacity,
+		&i.TargetPartySize,
+		&i.MinPartySize,
+		&i.AllowPrivateMatch,
+		&i.EstimatedMinutesPerPerson,
+		&i.EstimatedMinutesPerSession,
+		&i.CallThreshold,
+		&i.CallResendMinutes,
+		&i.CooldownMinutes,
+		&i.IsAccepting,
+		&i.CoverImageUrl,
+		&i.IntroVideoUrl,
+		&i.SurveyUrl,
+		&i.StaffPasswordHash,
+		&i.StaffPasswordUpdatedAt,
+	)
+	return i, err
+}
 
 const getBoothByID = `-- name: GetBoothByID :one
 SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at FROM booths
@@ -133,4 +172,111 @@ func (q *Queries) ListBooths(ctx context.Context) ([]Booth, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const updateBooth = `-- name: UpdateBooth :exec
+UPDATE booths SET
+    name                          = $2,
+    description                   = $3,
+    location                      = $4,
+    open_at                       = $5,
+    close_at                      = $6,
+    experience_type               = $7,
+    max_participants_per_ticket   = $8,
+    concurrent_capacity           = $9,
+    target_party_size             = $10,
+    min_party_size                = $11,
+    allow_private_match           = $12,
+    estimated_minutes_per_person  = $13,
+    estimated_minutes_per_session = $14,
+    call_threshold                = $15,
+    call_resend_minutes           = $16,
+    cooldown_minutes              = $17,
+    is_accepting                  = $18,
+    cover_image_url               = $19,
+    intro_video_url               = $20,
+    survey_url                    = $21
+WHERE id = $1
+`
+
+type UpdateBoothParams struct {
+	ID                         int64
+	Name                       string
+	Description                string
+	Location                   string
+	OpenAt                     pgtype.Timestamptz
+	CloseAt                    pgtype.Timestamptz
+	ExperienceType             string
+	MaxParticipantsPerTicket   int32
+	ConcurrentCapacity         int32
+	TargetPartySize            *int32
+	MinPartySize               *int32
+	AllowPrivateMatch          bool
+	EstimatedMinutesPerPerson  *int32
+	EstimatedMinutesPerSession *int32
+	CallThreshold              int32
+	CallResendMinutes          int32
+	CooldownMinutes            int32
+	IsAccepting                bool
+	CoverImageUrl              *string
+	IntroVideoUrl              *string
+	SurveyUrl                  *string
+}
+
+func (q *Queries) UpdateBooth(ctx context.Context, arg UpdateBoothParams) error {
+	_, err := q.db.Exec(ctx, updateBooth,
+		arg.ID,
+		arg.Name,
+		arg.Description,
+		arg.Location,
+		arg.OpenAt,
+		arg.CloseAt,
+		arg.ExperienceType,
+		arg.MaxParticipantsPerTicket,
+		arg.ConcurrentCapacity,
+		arg.TargetPartySize,
+		arg.MinPartySize,
+		arg.AllowPrivateMatch,
+		arg.EstimatedMinutesPerPerson,
+		arg.EstimatedMinutesPerSession,
+		arg.CallThreshold,
+		arg.CallResendMinutes,
+		arg.CooldownMinutes,
+		arg.IsAccepting,
+		arg.CoverImageUrl,
+		arg.IntroVideoUrl,
+		arg.SurveyUrl,
+	)
+	return err
+}
+
+const updateBoothAccepting = `-- name: UpdateBoothAccepting :exec
+UPDATE booths SET is_accepting = $2 WHERE id = $1
+`
+
+type UpdateBoothAcceptingParams struct {
+	ID          int64
+	IsAccepting bool
+}
+
+func (q *Queries) UpdateBoothAccepting(ctx context.Context, arg UpdateBoothAcceptingParams) error {
+	_, err := q.db.Exec(ctx, updateBoothAccepting, arg.ID, arg.IsAccepting)
+	return err
+}
+
+const updateBoothPassword = `-- name: UpdateBoothPassword :exec
+UPDATE booths
+SET staff_password_hash       = $2,
+    staff_password_updated_at = now()
+WHERE id = $1
+`
+
+type UpdateBoothPasswordParams struct {
+	ID                int64
+	StaffPasswordHash string
+}
+
+func (q *Queries) UpdateBoothPassword(ctx context.Context, arg UpdateBoothPasswordParams) error {
+	_, err := q.db.Exec(ctx, updateBoothPassword, arg.ID, arg.StaffPasswordHash)
+	return err
 }

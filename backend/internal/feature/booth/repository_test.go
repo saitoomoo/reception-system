@@ -16,6 +16,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"golang.org/x/crypto/bcrypt"
 	"reception-system/internal/pkg/connecterr"
 )
 
@@ -220,5 +221,208 @@ func TestGetBoothByID_NotFound(t *testing.T) {
 	_, err := repo.GetBoothByID(context.Background(), 99999)
 	if !errors.Is(err, connecterr.ErrNotFound) {
 		t.Errorf("expected ErrNotFound, got %v", err)
+	}
+}
+
+// -------------------------------- AuthenticateStaff tests --------------------------------
+
+func seedBoothWithPassword(t *testing.T, pool *pgxpool.Pool, name, password string) int64 {
+	t.Helper()
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.MinCost)
+	if err != nil {
+		t.Fatalf("bcrypt: %v", err)
+	}
+	var id int64
+	err = pool.QueryRow(context.Background(),
+		`INSERT INTO booths (
+			name, description, location, open_at, close_at,
+			experience_type, staff_password_hash
+		) VALUES (
+			$1, '説明', '会場A',
+			now() - interval '1 hour', now() + interval '8 hours',
+			'sequential', $2
+		) RETURNING id`,
+		name, string(hash),
+	).Scan(&id)
+	if err != nil {
+		t.Fatalf("seed booth with password: %v", err)
+	}
+	return id
+}
+
+func TestAuthenticateStaff_HappyPath(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+
+	boothID := seedBoothWithPassword(t, pool, "認証ブース", "password123")
+
+	b, err := repo.AuthenticateStaff(context.Background(), boothID, "password123")
+	if err != nil {
+		t.Fatalf("AuthenticateStaff() error = %v", err)
+	}
+	if b.ID != boothID {
+		t.Errorf("returned booth ID = %d, want %d", b.ID, boothID)
+	}
+}
+
+func TestAuthenticateStaff_WrongPassword(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+
+	boothID := seedBoothWithPassword(t, pool, "認証ブース2", "correct")
+
+	_, err := repo.AuthenticateStaff(context.Background(), boothID, "wrong")
+	if !errors.Is(err, connecterr.ErrUnauthorized) {
+		t.Errorf("AuthenticateStaff() error = %v, want ErrUnauthorized", err)
+	}
+}
+
+func TestAuthenticateStaff_BoothNotFound(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+
+	_, err := repo.AuthenticateStaff(context.Background(), 99999, "any")
+	if !errors.Is(err, connecterr.ErrNotFound) {
+		t.Errorf("AuthenticateStaff() error = %v, want ErrNotFound", err)
+	}
+}
+
+// -------------------------------- CallNextTickets tests --------------------------------
+
+func seedNWaitingTickets(t *testing.T, pool *pgxpool.Pool, boothID int64, n int) []int64 {
+	t.Helper()
+	ctx := context.Background()
+	ids := make([]int64, n)
+	for i := 0; i < n; i++ {
+		tx, err := pool.Begin(ctx)
+		if err != nil {
+			t.Fatalf("begin: %v", err)
+		}
+
+		recNum := "W-" + string(rune('0'+i))
+		var visitorID int64
+		_ = tx.QueryRow(ctx,
+			`INSERT INTO visitors (reception_number, nickname, pin_hash) VALUES ($1, $1, 'hash') RETURNING id`,
+			recNum,
+		).Scan(&visitorID)
+
+		var ticketID int64
+		_ = tx.QueryRow(ctx,
+			`INSERT INTO tickets (visitor_id, booth_id, ticket_group_id, sequence_in_booth, status)
+			 VALUES ($1, $2, 0, $3, 'waiting') RETURNING id`,
+			visitorID, boothID, i+1,
+		).Scan(&ticketID)
+
+		var groupID int64
+		_ = tx.QueryRow(ctx,
+			`INSERT INTO ticket_groups (ticket_id, participant_count) VALUES ($1, 1) RETURNING id`, ticketID,
+		).Scan(&groupID)
+		_, _ = tx.Exec(ctx, `UPDATE tickets SET ticket_group_id=$2 WHERE id=$1`, ticketID, groupID)
+
+		if err := tx.Commit(ctx); err != nil {
+			t.Fatalf("commit: %v", err)
+		}
+		ids[i] = ticketID
+	}
+	return ids
+}
+
+func TestCallNextTickets_Zero(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+	ctx := context.Background()
+
+	boothID := seedBooth(t, pool, "呼出ブース0")
+	called, err := repo.CallNextTickets(ctx, boothID, 0)
+	if err != nil {
+		t.Fatalf("CallNextTickets(0) error = %v", err)
+	}
+	if len(called) != 0 {
+		t.Errorf("len(called) = %d, want 0", len(called))
+	}
+}
+
+func TestCallNextTickets_One(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+	ctx := context.Background()
+
+	boothID := seedBooth(t, pool, "呼出ブース1")
+	ids := seedNWaitingTickets(t, pool, boothID, 3)
+
+	called, err := repo.CallNextTickets(ctx, boothID, 1)
+	if err != nil {
+		t.Fatalf("CallNextTickets(1) error = %v", err)
+	}
+	if len(called) != 1 {
+		t.Fatalf("len(called) = %d, want 1", len(called))
+	}
+	if called[0] != ids[0] {
+		t.Errorf("called[0] = %d, want %d (should be first in sequence)", called[0], ids[0])
+	}
+
+	// Verify the ticket is now in called state.
+	var status string
+	_ = pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, ids[0]).Scan(&status)
+	if status != "called" {
+		t.Errorf("ticket status = %q, want %q", status, "called")
+	}
+}
+
+func TestCallNextTickets_N(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+	ctx := context.Background()
+
+	boothID := seedBooth(t, pool, "呼出ブースN")
+	ids := seedNWaitingTickets(t, pool, boothID, 5)
+
+	called, err := repo.CallNextTickets(ctx, boothID, 3)
+	if err != nil {
+		t.Fatalf("CallNextTickets(3) error = %v", err)
+	}
+	if len(called) != 3 {
+		t.Fatalf("len(called) = %d, want 3", len(called))
+	}
+
+	// First 3 tickets should be called, last 2 still waiting.
+	for i, id := range ids[:3] {
+		var status string
+		_ = pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, id).Scan(&status)
+		if status != "called" {
+			t.Errorf("ids[%d] status = %q, want called", i, status)
+		}
+	}
+	for i, id := range ids[3:] {
+		var status string
+		_ = pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, id).Scan(&status)
+		if status != "waiting" {
+			t.Errorf("ids[%d+3] status = %q, want waiting", i, status)
+		}
+	}
+}
+
+func TestCallNextTickets_LessAvailableThanRequested(t *testing.T) {
+	pool := setupPostgres(t)
+	repo := NewRepository(pool)
+	ctx := context.Background()
+
+	boothID := seedBooth(t, pool, "呼出ブース少")
+	ids := seedNWaitingTickets(t, pool, boothID, 2)
+
+	// Request 5, only 2 are waiting.
+	called, err := repo.CallNextTickets(ctx, boothID, 5)
+	if err != nil {
+		t.Fatalf("CallNextTickets(5) with 2 available error = %v", err)
+	}
+	if len(called) != 2 {
+		t.Fatalf("len(called) = %d, want 2 (all available)", len(called))
+	}
+	for i, id := range ids {
+		var status string
+		_ = pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, id).Scan(&status)
+		if status != "called" {
+			t.Errorf("ids[%d] status = %q, want called", i, status)
+		}
 	}
 }

@@ -1,117 +1,95 @@
-import { useState, useEffect } from 'react';
-import { BoothType, PageType, Reception, ReceptionStatus, BOOTH_PASSWORDS } from './types';
+import { useState, useEffect, useCallback } from 'react';
+import { staffClient } from '@/lib/connect/client';
+import { PageType, StaffTicketItem } from './types';
 import AdminLogin from './_components/admin-login';
 import AdminSidebar from './_components/admin-sidebar';
 import AdminHeader from './_components/admin-header';
 import ReservationsPage from './_components/reservations-page';
-import BoothSettingsPage from './_components/booth-settings-page';
+import QrScanner from './_components/qr-scanner';
+import ManualAdmit from './_components/manual-admit';
+
+interface Session {
+  boothId: string;
+  boothName: string;
+}
 
 export default function AdminScreen() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loginBooth, setLoginBooth] = useState<BoothType>('horse-race');
-  const [loginPassword, setLoginPassword] = useState('');
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [loggedInBooth, setLoggedInBooth] = useState<BoothType | null>(null);
-  const [currentPage, setCurrentPage] = useState<PageType>('reservations-all');
+  const [session, setSession] = useState<Session | null>(null);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  const [tickets, setTickets] = useState<StaffTicketItem[]>([]);
+  const [currentPage, setCurrentPage] = useState<PageType>('reservations');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [receptions, setReceptions] = useState<Reception[]>([]);
 
+  // Try to restore session from cookie on mount
   useEffect(() => {
-    setReceptions([
-      {
-        id: 1,
-        receptionNumber: 'A-015',
-        booth: 'horse-race',
-        nickname: '山田',
-        partySize: 2,
-        ages: [25, 28],
-        status: 'called',
-        is_priority_call: false,
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-        calledAt: new Date(),
-      },
-      {
-        id: 2,
-        receptionNumber: 'A-016',
-        booth: 'parkour',
-        nickname: '佐藤',
-        partySize: 1,
-        ages: [22],
-        status: 'waiting',
-        timestamp: new Date(Date.now() - 1000 * 60 * 3),
-      },
-      {
-        id: 3,
-        receptionNumber: 'A-017',
-        booth: 'horse-race',
-        nickname: '鈴木',
-        partySize: 3,
-        ages: [35, 12, 8],
-        guardianName: '鈴木太郎',
-        status: 'pending',
-        is_priority_call: true,
-        timestamp: new Date(Date.now() - 1000 * 60 * 2),
-      },
-      {
-        id: 4,
-        receptionNumber: 'A-018',
-        booth: 'chanbara',
-        nickname: '田中',
-        partySize: 2,
-        ages: [19, 20],
-        status: 'waiting',
-        timestamp: new Date(Date.now() - 1000 * 60 * 1),
-      },
-    ]);
+    staffClient.getStaffSession({})
+      .then((res) => {
+        if (res.boothId) {
+          setSession({ boothId: res.boothId, boothName: res.boothName });
+        }
+      })
+      .catch(() => undefined)
+      .finally(() => setSessionLoading(false));
   }, []);
 
-  const handleLogin = (e: React.SyntheticEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoginError(null);
-    // TODO: LoginAsStaff RPC を呼ぶ
-    if (loginPassword === BOOTH_PASSWORDS[loginBooth]) {
-      setIsLoggedIn(true);
-      setLoggedInBooth(loginBooth);
-    } else {
-      setLoginError('パスワードが違います');
+  const fetchTickets = useCallback(async () => {
+    if (!session) return;
+    try {
+      const res = await staffClient.listTicketsByBooth({});
+      setTickets(
+        res.tickets.map((t) => ({
+          ticketId: t.ticketId,
+          sequenceInBooth: t.sequenceInBooth,
+          receptionNumber: t.receptionNumber,
+          nickname: t.nickname,
+          participantCount: t.participantCount,
+          status: t.status as StaffTicketItem['status'],
+          isPriorityCall: t.isPriorityCall,
+          createdAt: t.createdAt,
+        }))
+      );
+    } catch {
+      // Silently ignore polling errors; UI stays stale until next tick
     }
+  }, [session]);
+
+  // Poll every 5 seconds when logged in
+  useEffect(() => {
+    if (!session) return;
+    fetchTickets();
+    const id = setInterval(fetchTickets, 5000);
+    return () => clearInterval(id);
+  }, [session, fetchTickets]);
+
+  const handleLogin = (boothId: string, boothName: string) => {
+    setSession({ boothId, boothName });
   };
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setLoggedInBooth(null);
-    setLoginPassword('');
-    setLoginError(null);
+  const handleLogout = async () => {
+    setSession(null);
+    setTickets([]);
   };
 
-  const handleStatusChange = (id: number, newStatus: ReceptionStatus) => {
-    setReceptions((prev) =>
-      prev.map((r) => {
-        if (r.id !== id) return r;
-        const updated = { ...r, status: newStatus };
-        if (newStatus === 'called') updated.calledAt = new Date();
-        else if (newStatus === 'admitted') updated.admittedAt = new Date();
-        return updated;
-      })
-    );
+  const handleCallNext = async (count: number) => {
+    await staffClient.callNextTickets({ count });
+    await fetchTickets();
   };
 
-  const handleCancel = (id: number) => {
-    // TODO: CancelTicketByStaff RPC を呼ぶ
-    handleStatusChange(id, 'cancelled');
+  const handleCancelTicket = async (ticketId: string) => {
+    await staffClient.cancelTicketByStaff({ ticketId });
+    await fetchTickets();
   };
 
-  if (!isLoggedIn) {
+  if (sessionLoading) {
     return (
-      <AdminLogin
-        loginBooth={loginBooth}
-        loginPassword={loginPassword}
-        loginError={loginError}
-        onBoothChange={setLoginBooth}
-        onPasswordChange={setLoginPassword}
-        onSubmit={handleLogin}
-      />
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-gray-500">読み込み中...</div>
+      </div>
     );
+  }
+
+  if (!session) {
+    return <AdminLogin onLogin={handleLogin} />;
   }
 
   return (
@@ -128,20 +106,23 @@ export default function AdminScreen() {
       />
       <AdminHeader
         currentPage={currentPage}
-        loggedInBooth={loggedInBooth}
+        boothName={session.boothName}
         onMenuToggle={() => setIsMenuOpen((prev) => !prev)}
         onLogout={handleLogout}
       />
       <div className="max-w-7xl mx-auto px-4 py-6">
-        {currentPage === 'booth-settings' ? (
-          <BoothSettingsPage />
-        ) : (
+        {currentPage === 'reservations' && (
           <ReservationsPage
-            currentPage={currentPage}
-            receptions={receptions}
-            onStatusChange={handleStatusChange}
-            onCancel={handleCancel}
+            tickets={tickets}
+            onCallNext={handleCallNext}
+            onCancelTicket={handleCancelTicket}
           />
+        )}
+        {currentPage === 'qr-scanner' && (
+          <QrScanner boothId={session.boothId} />
+        )}
+        {currentPage === 'manual-admit' && (
+          <ManualAdmit />
         )}
       </div>
     </div>

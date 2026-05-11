@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
-import { BoothType, PageType, BOOTH_NAMES, MENU_ITEMS } from '../types';
+import { PageType, MENU_ITEMS } from '../types';
 
 interface Props {
   currentPage: PageType;
-  loggedInBooth: BoothType | null;
+  boothName: string;
   onMenuToggle: () => void;
   onLogout: () => void;
 }
 
-export default function AdminHeader({ currentPage, loggedInBooth, onMenuToggle, onLogout }: Props) {
+export default function AdminHeader({ currentPage, boothName, onMenuToggle, onLogout }: Props) {
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export default function AdminHeader({ currentPage, loggedInBooth, onMenuToggle, 
             </button>
             <div>
               <h1 className="text-[24px] font-bold text-white">{currentPageTitle}</h1>
-              {loggedInBooth && (
-                <div className="text-xs text-yellow-100">{BOOTH_NAMES[loggedInBooth]} 担当</div>
+              {boothName && (
+                <div className="text-xs text-yellow-100">{boothName} 担当</div>
               )}
             </div>
           </div>

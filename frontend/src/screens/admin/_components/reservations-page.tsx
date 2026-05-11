@@ -1,87 +1,48 @@
 import { useState } from 'react';
-import { PageType, Reception, ReceptionStatus, BoothType, BOOTH_NAMES, STATUS_NAMES, STATUS_COLORS } from '../types';
+import { StaffTicketItem, STATUS_NAMES, STATUS_COLORS } from '../types';
 import StatsCards from './stats-cards';
 
 interface Props {
-  currentPage: PageType;
-  receptions: Reception[];
-  onStatusChange: (id: number, status: ReceptionStatus) => void;
-  onCancel: (id: number) => void;
+  tickets: StaffTicketItem[];
+  onCallNext: (count: number) => Promise<void>;
+  onCancelTicket: (ticketId: string) => Promise<void>;
 }
 
-export default function ReservationsPage({ currentPage, receptions, onStatusChange, onCancel }: Props) {
-  const [selectedBooth, setSelectedBooth] = useState<BoothType | 'all'>('all');
+export default function ReservationsPage({ tickets, onCallNext, onCancelTicket }: Props) {
   const [searchNumber, setSearchNumber] = useState('');
+  const [calling, setCalling] = useState(false);
 
-  const boothType: BoothType | null = (() => {
-    if (currentPage === 'reservations-horse') return 'horse-race';
-    if (currentPage === 'reservations-parkour') return 'parkour';
-    if (currentPage === 'reservations-chanbara') return 'chanbara';
-    return null;
-  })();
+  const filtered = searchNumber
+    ? tickets.filter((t) => t.receptionNumber.toLowerCase().includes(searchNumber.toLowerCase()))
+    : tickets;
 
-  const pageReceptions = boothType ? receptions.filter((r) => r.booth === boothType) : receptions;
+  const priorityTickets = filtered.filter((t) => t.isPriorityCall && t.status !== 'admitted');
+  const normalTickets = filtered.filter((t) => !t.isPriorityCall || t.status === 'admitted');
 
-  const filteredReceptions = (() => {
-    let filtered = pageReceptions;
-    if (currentPage === 'reservations-all' && selectedBooth !== 'all') {
-      filtered = filtered.filter((r) => r.booth === selectedBooth);
-    }
-    if (searchNumber !== '') {
-      filtered = filtered.filter((r) =>
-        r.receptionNumber.toLowerCase().includes(searchNumber.toLowerCase())
-      );
-    }
-    return filtered;
-  })();
+  const waitingCount = tickets.filter((t) => t.status === 'waiting').length;
+  const calledCount = tickets.filter((t) => t.status === 'called').length;
+  const admittedCount = tickets.filter((t) => t.status === 'admitted').length;
 
-  const priorityReceptions = filteredReceptions.filter(
-    (r) => r.is_priority_call && r.status !== 'admitted' && r.status !== 'cancelled'
-  );
-  const normalReceptions = filteredReceptions.filter(
-    (r) => !r.is_priority_call || r.status === 'admitted' || r.status === 'cancelled'
-  );
-
-  const waitingCount = pageReceptions.filter((r) => r.status === 'waiting').length;
-  const calledCount = pageReceptions.filter((r) => r.status === 'called').length;
-  const admittedCount = pageReceptions.filter((r) => r.status === 'admitted').length;
-
-  const handleCallNext = () => {
-    const waitingList = pageReceptions.filter((r) => r.status === 'waiting');
-    if (waitingList.length > 0) {
-      onStatusChange(waitingList[0].id, 'called');
+  const handleCallNext = async () => {
+    setCalling(true);
+    try {
+      await onCallNext(1);
+    } finally {
+      setCalling(false);
     }
   };
 
-  const formatTime = (date: Date) => {
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  const formatTime = (iso: string) => {
+    const d = new Date(iso);
+    return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   };
 
   return (
     <>
       <StatsCards waitingCount={waitingCount} calledCount={calledCount} admittedCount={admittedCount} />
 
-      {/* コントロールエリア */}
       <div className="bg-white rounded-lg shadow p-6 mb-6">
         <div className="flex flex-wrap gap-4 items-end">
-          {currentPage === 'reservations-all' && (
-            <div className="flex-1 min-w-[200px]">
-              <label className="block text-sm font-bold text-gray-700 mb-2">ブースで絞り込み</label>
-              <select
-                value={selectedBooth}
-                onChange={(e) => setSelectedBooth(e.target.value as BoothType | 'all')}
-                className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#D4B946]"
-              >
-                <option value="all">すべて</option>
-                <option value="horse-race">馬レース</option>
-                <option value="parkour">パルクール</option>
-                <option value="chanbara">チャンバラ</option>
-              </select>
-            </div>
-          )}
-
           <div className="flex-1 min-w-[200px]">
             <label className="block text-sm font-bold text-gray-700 mb-2">受付番号で検索</label>
             <input
@@ -92,11 +53,10 @@ export default function ReservationsPage({ currentPage, receptions, onStatusChan
               className="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-[#D4B946]"
             />
           </div>
-
           <div>
             <button
               onClick={handleCallNext}
-              disabled={waitingCount === 0}
+              disabled={waitingCount === 0 || calling}
               className="px-6 py-2 bg-[#D4B946] text-white font-bold rounded-lg hover:bg-[#B89D3A] transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
             >
               次を呼び出す
@@ -105,8 +65,7 @@ export default function ReservationsPage({ currentPage, receptions, onStatusChan
         </div>
       </div>
 
-      {/* 優先呼び出しセクション */}
-      {priorityReceptions.length > 0 && (
+      {priorityTickets.length > 0 && (
         <div className="bg-amber-50 border-2 border-amber-400 rounded-lg p-4 mb-4">
           <div className="flex items-center gap-2 mb-3">
             <span className="text-lg">⭐</span>
@@ -114,126 +73,71 @@ export default function ReservationsPage({ currentPage, receptions, onStatusChan
             <span className="text-sm text-amber-600">（一度保留になった来場者）</span>
           </div>
           <div className="space-y-2">
-            {priorityReceptions.map((reception) => (
-              <div
-                key={reception.id}
-                className="bg-amber-100 rounded-lg p-3 flex items-center justify-between"
-              >
+            {priorityTickets.map((t) => (
+              <div key={t.ticketId} className="bg-amber-100 rounded-lg p-3 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <span className="text-lg font-bold text-amber-900">{reception.receptionNumber}</span>
-                  <span className="text-sm font-medium text-gray-800">{reception.nickname}</span>
-                  <span className="text-sm text-gray-600">{reception.partySize}名</span>
-                  {currentPage === 'reservations-all' && (
-                    <span className="text-xs text-gray-500">{BOOTH_NAMES[reception.booth]}</span>
-                  )}
-                  <span
-                    className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${STATUS_COLORS[reception.status]}`}
-                  >
-                    {STATUS_NAMES[reception.status]}
+                  <span className="text-lg font-bold text-amber-900">{t.receptionNumber}</span>
+                  <span className="text-sm font-medium text-gray-800">{t.nickname}</span>
+                  <span className="text-sm text-gray-600">{t.participantCount}名</span>
+                  <span className={`inline-block px-2 py-1 text-xs font-bold rounded-full ${STATUS_COLORS[t.status]}`}>
+                    {STATUS_NAMES[t.status]}
                   </span>
                 </div>
-                <div className="flex gap-2">
-                  {reception.status === 'pending' && (
-                    <button
-                      onClick={() => onStatusChange(reception.id, 'called')}
-                      className="px-3 py-1 bg-amber-500 text-white text-sm font-bold rounded hover:bg-amber-600 transition-colors"
-                    >
-                      呼び出す
-                    </button>
-                  )}
-                  {reception.status === 'called' && (
-                    <button
-                      onClick={() => onStatusChange(reception.id, 'admitted')}
-                      className="px-3 py-1 bg-green-500 text-white text-sm font-bold rounded hover:bg-green-600 transition-colors"
-                    >
-                      入場処理
-                    </button>
-                  )}
-                  <button
-                    onClick={() => onCancel(reception.id)}
-                    className="px-3 py-1 bg-gray-400 text-white text-sm font-bold rounded hover:bg-gray-500 transition-colors"
-                  >
-                    キャンセル
-                  </button>
-                </div>
+                <button
+                  onClick={() => onCancelTicket(t.ticketId)}
+                  className="px-3 py-1 bg-gray-400 text-white text-sm font-bold rounded hover:bg-gray-500 transition-colors"
+                >
+                  キャンセル
+                </button>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {/* 受付一覧テーブル */}
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-100">
               <tr>
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">受付番号</th>
-                {currentPage === 'reservations-all' && (
-                  <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">ブース</th>
-                )}
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">ニックネーム</th>
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">人数</th>
-                <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">年齢</th>
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">受付時刻</th>
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">状態</th>
                 <th className="px-4 py-3 text-left text-sm font-bold text-gray-700">操作</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {normalReceptions.map((reception) => (
-                <tr key={reception.id} className="hover:bg-gray-50">
+              {normalTickets.map((t) => (
+                <tr key={t.ticketId} className="hover:bg-gray-50">
                   <td className="px-4 py-3">
-                    <span className="text-lg font-bold text-[#5A4A20]">{reception.receptionNumber}</span>
-                  </td>
-                  {currentPage === 'reservations-all' && (
-                    <td className="px-4 py-3">
-                      <span className="text-sm text-gray-900">{BOOTH_NAMES[reception.booth]}</span>
-                    </td>
-                  )}
-                  <td className="px-4 py-3">
-                    <span className="text-sm font-medium text-gray-900">{reception.nickname}</span>
-                    {reception.guardianName && (
-                      <div className="text-xs text-gray-500">保護者: {reception.guardianName}</div>
-                    )}
+                    <span className="text-lg font-bold text-[#5A4A20]">{t.receptionNumber}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-sm text-gray-900">{reception.partySize}名</span>
+                    <span className="text-sm font-medium text-gray-900">{t.nickname}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-sm text-gray-900">{reception.ages.join(', ')}歳</span>
+                    <span className="text-sm text-gray-900">{t.participantCount}名</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span className="text-sm text-gray-900">{formatTime(reception.timestamp)}</span>
+                    <span className="text-sm text-gray-900">{formatTime(t.createdAt)}</span>
                   </td>
                   <td className="px-4 py-3">
-                    <span
-                      className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${STATUS_COLORS[reception.status]}`}
-                    >
-                      {STATUS_NAMES[reception.status]}
+                    <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${STATUS_COLORS[t.status]}`}>
+                      {STATUS_NAMES[t.status]}
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex gap-1">
-                      <select
-                        value={reception.status}
-                        onChange={(e) => onStatusChange(reception.id, e.target.value as ReceptionStatus)}
-                        className="text-sm px-2 py-1 border border-gray-300 rounded focus:outline-none focus:border-[#D4B946]"
-                      >
-                        <option value="waiting">待機中</option>
-                        <option value="called">呼出中</option>
-                        <option value="admitted">入場済み</option>
-                        <option value="pending">保留中</option>
-                        <option value="cancelled">キャンセル</option>
-                      </select>
+                    {t.status !== 'admitted' && t.status !== 'cancelled' && (
                       <button
-                        onClick={() => onCancel(reception.id)}
+                        onClick={() => onCancelTicket(t.ticketId)}
                         className="px-2 py-1 bg-gray-200 text-gray-600 text-xs font-bold rounded hover:bg-gray-300 transition-colors"
                         title="キャンセル"
                       >
-                        ✕
+                        キャンセル
                       </button>
-                    </div>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -241,13 +145,13 @@ export default function ReservationsPage({ currentPage, receptions, onStatusChan
           </table>
         </div>
 
-        {normalReceptions.length === 0 && priorityReceptions.length === 0 && (
+        {normalTickets.length === 0 && priorityTickets.length === 0 && (
           <div className="text-center py-12 text-gray-500">該当する受付がありません</div>
         )}
       </div>
 
       <div className="mt-6 text-center text-sm text-gray-500">
-        全 {filteredReceptions.length} 件の受付
+        全 {filtered.length} 件（待機 {waitingCount} / 呼出中 {calledCount} / 入場済み {admittedCount}）
       </div>
     </>
   );

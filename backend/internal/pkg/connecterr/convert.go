@@ -10,6 +10,7 @@ import (
 var (
 	ErrNotFound     = errors.New("not found")
 	ErrUnauthorized = errors.New("unauthorized")
+	ErrForbidden    = errors.New("forbidden")
 	ErrConflict     = errors.New("conflict")
 
 	// Ticket domain errors.
@@ -34,6 +35,8 @@ func Convert(err error) error {
 		return connect.NewError(connect.CodeNotFound, err)
 	case errors.Is(err, ErrUnauthorized):
 		return connect.NewError(connect.CodeUnauthenticated, err)
+	case errors.Is(err, ErrForbidden):
+		return connect.NewError(connect.CodePermissionDenied, err)
 	case errors.Is(err, ErrConflict):
 		return connect.NewError(connect.CodeAlreadyExists, err)
 	case errors.Is(err, ErrAlreadyHasTicket):
