@@ -236,6 +236,409 @@ export declare type UpdateBoothResponse = Message<"admin.v1.UpdateBoothResponse"
 export declare const UpdateBoothResponseSchema: GenMessage<UpdateBoothResponse>;
 
 /**
+ * @generated from message admin.v1.AdminBooth
+ */
+export declare type AdminBooth = Message<"admin.v1.AdminBooth"> & {
+  /**
+   * @generated from field: string booth_id = 1;
+   */
+  boothId: string;
+
+  /**
+   * @generated from field: string name = 2;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string description = 3;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string location = 4;
+   */
+  location: string;
+
+  /**
+   * @generated from field: string open_at = 5;
+   */
+  openAt: string;
+
+  /**
+   * @generated from field: string close_at = 6;
+   */
+  closeAt: string;
+
+  /**
+   * @generated from field: string experience_type = 7;
+   */
+  experienceType: string;
+
+  /**
+   * @generated from field: int32 max_participants_per_ticket = 8;
+   */
+  maxParticipantsPerTicket: number;
+
+  /**
+   * @generated from field: int32 concurrent_capacity = 9;
+   */
+  concurrentCapacity: number;
+
+  /**
+   * @generated from field: int32 target_party_size = 10;
+   */
+  targetPartySize: number;
+
+  /**
+   * @generated from field: int32 min_party_size = 11;
+   */
+  minPartySize: number;
+
+  /**
+   * @generated from field: bool allow_private_match = 12;
+   */
+  allowPrivateMatch: boolean;
+
+  /**
+   * @generated from field: int32 estimated_minutes_per_person = 13;
+   */
+  estimatedMinutesPerPerson: number;
+
+  /**
+   * @generated from field: int32 estimated_minutes_per_session = 14;
+   */
+  estimatedMinutesPerSession: number;
+
+  /**
+   * @generated from field: int32 call_threshold = 15;
+   */
+  callThreshold: number;
+
+  /**
+   * @generated from field: int32 call_resend_minutes = 16;
+   */
+  callResendMinutes: number;
+
+  /**
+   * @generated from field: int32 cooldown_minutes = 17;
+   */
+  cooldownMinutes: number;
+
+  /**
+   * @generated from field: bool is_accepting = 18;
+   */
+  isAccepting: boolean;
+
+  /**
+   * @generated from field: string cover_image_url = 19;
+   */
+  coverImageUrl: string;
+
+  /**
+   * @generated from field: string intro_video_url = 20;
+   */
+  introVideoUrl: string;
+
+  /**
+   * @generated from field: string survey_url = 21;
+   */
+  surveyUrl: string;
+
+  /**
+   * @generated from field: bool is_archived = 22;
+   */
+  isArchived: boolean;
+
+  /**
+   * @generated from field: string staff_password_updated_at = 23;
+   */
+  staffPasswordUpdatedAt: string;
+};
+
+/**
+ * Describes the message admin.v1.AdminBooth.
+ * Use `create(AdminBoothSchema)` to create a new message.
+ */
+export declare const AdminBoothSchema: GenMessage<AdminBooth>;
+
+/**
+ * @generated from message admin.v1.ListAdminBoothsRequest
+ */
+export declare type ListAdminBoothsRequest = Message<"admin.v1.ListAdminBoothsRequest"> & {
+};
+
+/**
+ * Describes the message admin.v1.ListAdminBoothsRequest.
+ * Use `create(ListAdminBoothsRequestSchema)` to create a new message.
+ */
+export declare const ListAdminBoothsRequestSchema: GenMessage<ListAdminBoothsRequest>;
+
+/**
+ * @generated from message admin.v1.ListAdminBoothsResponse
+ */
+export declare type ListAdminBoothsResponse = Message<"admin.v1.ListAdminBoothsResponse"> & {
+  /**
+   * @generated from field: repeated admin.v1.AdminBooth booths = 1;
+   */
+  booths: AdminBooth[];
+};
+
+/**
+ * Describes the message admin.v1.ListAdminBoothsResponse.
+ * Use `create(ListAdminBoothsResponseSchema)` to create a new message.
+ */
+export declare const ListAdminBoothsResponseSchema: GenMessage<ListAdminBoothsResponse>;
+
+/**
+ * @generated from message admin.v1.CreateBoothRequest
+ */
+export declare type CreateBoothRequest = Message<"admin.v1.CreateBoothRequest"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string description = 2;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string location = 3;
+   */
+  location: string;
+
+  /**
+   * @generated from field: string open_at = 4;
+   */
+  openAt: string;
+
+  /**
+   * @generated from field: string close_at = 5;
+   */
+  closeAt: string;
+
+  /**
+   * @generated from field: string experience_type = 6;
+   */
+  experienceType: string;
+
+  /**
+   * @generated from field: int32 max_participants_per_ticket = 7;
+   */
+  maxParticipantsPerTicket: number;
+
+  /**
+   * @generated from field: int32 concurrent_capacity = 8;
+   */
+  concurrentCapacity: number;
+
+  /**
+   * @generated from field: int32 target_party_size = 9;
+   */
+  targetPartySize: number;
+
+  /**
+   * @generated from field: int32 min_party_size = 10;
+   */
+  minPartySize: number;
+
+  /**
+   * @generated from field: bool allow_private_match = 11;
+   */
+  allowPrivateMatch: boolean;
+
+  /**
+   * @generated from field: int32 estimated_minutes_per_person = 12;
+   */
+  estimatedMinutesPerPerson: number;
+
+  /**
+   * @generated from field: int32 estimated_minutes_per_session = 13;
+   */
+  estimatedMinutesPerSession: number;
+
+  /**
+   * @generated from field: int32 call_threshold = 14;
+   */
+  callThreshold: number;
+
+  /**
+   * @generated from field: int32 call_resend_minutes = 15;
+   */
+  callResendMinutes: number;
+
+  /**
+   * @generated from field: int32 cooldown_minutes = 16;
+   */
+  cooldownMinutes: number;
+
+  /**
+   * @generated from field: bool is_accepting = 17;
+   */
+  isAccepting: boolean;
+
+  /**
+   * @generated from field: string cover_image_url = 18;
+   */
+  coverImageUrl: string;
+
+  /**
+   * @generated from field: string intro_video_url = 19;
+   */
+  introVideoUrl: string;
+
+  /**
+   * @generated from field: string survey_url = 20;
+   */
+  surveyUrl: string;
+
+  /**
+   * @generated from field: string staff_password = 21;
+   */
+  staffPassword: string;
+};
+
+/**
+ * Describes the message admin.v1.CreateBoothRequest.
+ * Use `create(CreateBoothRequestSchema)` to create a new message.
+ */
+export declare const CreateBoothRequestSchema: GenMessage<CreateBoothRequest>;
+
+/**
+ * @generated from message admin.v1.CreateBoothResponse
+ */
+export declare type CreateBoothResponse = Message<"admin.v1.CreateBoothResponse"> & {
+  /**
+   * @generated from field: admin.v1.AdminBooth booth = 1;
+   */
+  booth?: AdminBooth | undefined;
+};
+
+/**
+ * Describes the message admin.v1.CreateBoothResponse.
+ * Use `create(CreateBoothResponseSchema)` to create a new message.
+ */
+export declare const CreateBoothResponseSchema: GenMessage<CreateBoothResponse>;
+
+/**
+ * @generated from message admin.v1.ArchiveBoothRequest
+ */
+export declare type ArchiveBoothRequest = Message<"admin.v1.ArchiveBoothRequest"> & {
+  /**
+   * @generated from field: string booth_id = 1;
+   */
+  boothId: string;
+};
+
+/**
+ * Describes the message admin.v1.ArchiveBoothRequest.
+ * Use `create(ArchiveBoothRequestSchema)` to create a new message.
+ */
+export declare const ArchiveBoothRequestSchema: GenMessage<ArchiveBoothRequest>;
+
+/**
+ * @generated from message admin.v1.ArchiveBoothResponse
+ */
+export declare type ArchiveBoothResponse = Message<"admin.v1.ArchiveBoothResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.ArchiveBoothResponse.
+ * Use `create(ArchiveBoothResponseSchema)` to create a new message.
+ */
+export declare const ArchiveBoothResponseSchema: GenMessage<ArchiveBoothResponse>;
+
+/**
+ * @generated from message admin.v1.UnarchiveBoothRequest
+ */
+export declare type UnarchiveBoothRequest = Message<"admin.v1.UnarchiveBoothRequest"> & {
+  /**
+   * @generated from field: string booth_id = 1;
+   */
+  boothId: string;
+};
+
+/**
+ * Describes the message admin.v1.UnarchiveBoothRequest.
+ * Use `create(UnarchiveBoothRequestSchema)` to create a new message.
+ */
+export declare const UnarchiveBoothRequestSchema: GenMessage<UnarchiveBoothRequest>;
+
+/**
+ * @generated from message admin.v1.UnarchiveBoothResponse
+ */
+export declare type UnarchiveBoothResponse = Message<"admin.v1.UnarchiveBoothResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.UnarchiveBoothResponse.
+ * Use `create(UnarchiveBoothResponseSchema)` to create a new message.
+ */
+export declare const UnarchiveBoothResponseSchema: GenMessage<UnarchiveBoothResponse>;
+
+/**
+ * @generated from message admin.v1.DeleteBoothRequest
+ */
+export declare type DeleteBoothRequest = Message<"admin.v1.DeleteBoothRequest"> & {
+  /**
+   * @generated from field: string booth_id = 1;
+   */
+  boothId: string;
+};
+
+/**
+ * Describes the message admin.v1.DeleteBoothRequest.
+ * Use `create(DeleteBoothRequestSchema)` to create a new message.
+ */
+export declare const DeleteBoothRequestSchema: GenMessage<DeleteBoothRequest>;
+
+/**
+ * @generated from message admin.v1.DeleteBoothResponse
+ */
+export declare type DeleteBoothResponse = Message<"admin.v1.DeleteBoothResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.DeleteBoothResponse.
+ * Use `create(DeleteBoothResponseSchema)` to create a new message.
+ */
+export declare const DeleteBoothResponseSchema: GenMessage<DeleteBoothResponse>;
+
+/**
+ * @generated from message admin.v1.UpdateBoothPasswordRequest
+ */
+export declare type UpdateBoothPasswordRequest = Message<"admin.v1.UpdateBoothPasswordRequest"> & {
+  /**
+   * @generated from field: string booth_id = 1;
+   */
+  boothId: string;
+
+  /**
+   * @generated from field: string new_password = 2;
+   */
+  newPassword: string;
+};
+
+/**
+ * Describes the message admin.v1.UpdateBoothPasswordRequest.
+ * Use `create(UpdateBoothPasswordRequestSchema)` to create a new message.
+ */
+export declare const UpdateBoothPasswordRequestSchema: GenMessage<UpdateBoothPasswordRequest>;
+
+/**
+ * @generated from message admin.v1.UpdateBoothPasswordResponse
+ */
+export declare type UpdateBoothPasswordResponse = Message<"admin.v1.UpdateBoothPasswordResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.UpdateBoothPasswordResponse.
+ * Use `create(UpdateBoothPasswordResponseSchema)` to create a new message.
+ */
+export declare const UpdateBoothPasswordResponseSchema: GenMessage<UpdateBoothPasswordResponse>;
+
+/**
  * @generated from message admin.v1.LoginAsStaffRequest
  */
 export declare type LoginAsStaffRequest = Message<"admin.v1.LoginAsStaffRequest"> & {
@@ -528,6 +931,11 @@ export declare type StaffTicket = Message<"admin.v1.StaffTicket"> & {
    * @generated from field: string created_at = 8;
    */
   createdAt: string;
+
+  /**
+   * @generated from field: string pending_at = 9;
+   */
+  pendingAt: string;
 };
 
 /**
@@ -563,6 +971,452 @@ export declare type ListTicketsByBoothResponse = Message<"admin.v1.ListTicketsBy
  * Use `create(ListTicketsByBoothResponseSchema)` to create a new message.
  */
 export declare const ListTicketsByBoothResponseSchema: GenMessage<ListTicketsByBoothResponse>;
+
+/**
+ * @generated from message admin.v1.RestorePendingTicketRequest
+ */
+export declare type RestorePendingTicketRequest = Message<"admin.v1.RestorePendingTicketRequest"> & {
+  /**
+   * @generated from field: string ticket_id = 1;
+   */
+  ticketId: string;
+};
+
+/**
+ * Describes the message admin.v1.RestorePendingTicketRequest.
+ * Use `create(RestorePendingTicketRequestSchema)` to create a new message.
+ */
+export declare const RestorePendingTicketRequestSchema: GenMessage<RestorePendingTicketRequest>;
+
+/**
+ * @generated from message admin.v1.RestorePendingTicketResponse
+ */
+export declare type RestorePendingTicketResponse = Message<"admin.v1.RestorePendingTicketResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.RestorePendingTicketResponse.
+ * Use `create(RestorePendingTicketResponseSchema)` to create a new message.
+ */
+export declare const RestorePendingTicketResponseSchema: GenMessage<RestorePendingTicketResponse>;
+
+/**
+ * @generated from message admin.v1.GetRiskExplanationRequest
+ */
+export declare type GetRiskExplanationRequest = Message<"admin.v1.GetRiskExplanationRequest"> & {
+};
+
+/**
+ * Describes the message admin.v1.GetRiskExplanationRequest.
+ * Use `create(GetRiskExplanationRequestSchema)` to create a new message.
+ */
+export declare const GetRiskExplanationRequestSchema: GenMessage<GetRiskExplanationRequest>;
+
+/**
+ * @generated from message admin.v1.GetRiskExplanationResponse
+ */
+export declare type GetRiskExplanationResponse = Message<"admin.v1.GetRiskExplanationResponse"> & {
+  /**
+   * @generated from field: string body = 1;
+   */
+  body: string;
+
+  /**
+   * @generated from field: string updated_at = 2;
+   */
+  updatedAt: string;
+};
+
+/**
+ * Describes the message admin.v1.GetRiskExplanationResponse.
+ * Use `create(GetRiskExplanationResponseSchema)` to create a new message.
+ */
+export declare const GetRiskExplanationResponseSchema: GenMessage<GetRiskExplanationResponse>;
+
+/**
+ * @generated from message admin.v1.UpdateRiskExplanationRequest
+ */
+export declare type UpdateRiskExplanationRequest = Message<"admin.v1.UpdateRiskExplanationRequest"> & {
+  /**
+   * @generated from field: string body = 1;
+   */
+  body: string;
+};
+
+/**
+ * Describes the message admin.v1.UpdateRiskExplanationRequest.
+ * Use `create(UpdateRiskExplanationRequestSchema)` to create a new message.
+ */
+export declare const UpdateRiskExplanationRequestSchema: GenMessage<UpdateRiskExplanationRequest>;
+
+/**
+ * @generated from message admin.v1.UpdateRiskExplanationResponse
+ */
+export declare type UpdateRiskExplanationResponse = Message<"admin.v1.UpdateRiskExplanationResponse"> & {
+  /**
+   * @generated from field: string updated_at = 1;
+   */
+  updatedAt: string;
+};
+
+/**
+ * Describes the message admin.v1.UpdateRiskExplanationResponse.
+ * Use `create(UpdateRiskExplanationResponseSchema)` to create a new message.
+ */
+export declare const UpdateRiskExplanationResponseSchema: GenMessage<UpdateRiskExplanationResponse>;
+
+/**
+ * @generated from message admin.v1.ForceStartMatchRequest
+ */
+export declare type ForceStartMatchRequest = Message<"admin.v1.ForceStartMatchRequest"> & {
+};
+
+/**
+ * Describes the message admin.v1.ForceStartMatchRequest.
+ * Use `create(ForceStartMatchRequestSchema)` to create a new message.
+ */
+export declare const ForceStartMatchRequestSchema: GenMessage<ForceStartMatchRequest>;
+
+/**
+ * @generated from message admin.v1.ForceStartMatchResponse
+ */
+export declare type ForceStartMatchResponse = Message<"admin.v1.ForceStartMatchResponse"> & {
+  /**
+   * @generated from field: string session_id = 1;
+   */
+  sessionId: string;
+};
+
+/**
+ * Describes the message admin.v1.ForceStartMatchResponse.
+ * Use `create(ForceStartMatchResponseSchema)` to create a new message.
+ */
+export declare const ForceStartMatchResponseSchema: GenMessage<ForceStartMatchResponse>;
+
+/**
+ * @generated from message admin.v1.CallPrivateMatchRequest
+ */
+export declare type CallPrivateMatchRequest = Message<"admin.v1.CallPrivateMatchRequest"> & {
+  /**
+   * ID of the private ticket whose match session should be called.
+   *
+   * @generated from field: string ticket_id = 1;
+   */
+  ticketId: string;
+};
+
+/**
+ * Describes the message admin.v1.CallPrivateMatchRequest.
+ * Use `create(CallPrivateMatchRequestSchema)` to create a new message.
+ */
+export declare const CallPrivateMatchRequestSchema: GenMessage<CallPrivateMatchRequest>;
+
+/**
+ * @generated from message admin.v1.CallPrivateMatchResponse
+ */
+export declare type CallPrivateMatchResponse = Message<"admin.v1.CallPrivateMatchResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.CallPrivateMatchResponse.
+ * Use `create(CallPrivateMatchResponseSchema)` to create a new message.
+ */
+export declare const CallPrivateMatchResponseSchema: GenMessage<CallPrivateMatchResponse>;
+
+/**
+ * @generated from message admin.v1.CompleteMatchSessionRequest
+ */
+export declare type CompleteMatchSessionRequest = Message<"admin.v1.CompleteMatchSessionRequest"> & {
+  /**
+   * @generated from field: string session_id = 1;
+   */
+  sessionId: string;
+};
+
+/**
+ * Describes the message admin.v1.CompleteMatchSessionRequest.
+ * Use `create(CompleteMatchSessionRequestSchema)` to create a new message.
+ */
+export declare const CompleteMatchSessionRequestSchema: GenMessage<CompleteMatchSessionRequest>;
+
+/**
+ * @generated from message admin.v1.CompleteMatchSessionResponse
+ */
+export declare type CompleteMatchSessionResponse = Message<"admin.v1.CompleteMatchSessionResponse"> & {
+};
+
+/**
+ * Describes the message admin.v1.CompleteMatchSessionResponse.
+ * Use `create(CompleteMatchSessionResponseSchema)` to create a new message.
+ */
+export declare const CompleteMatchSessionResponseSchema: GenMessage<CompleteMatchSessionResponse>;
+
+/**
+ * One group waiting in public mode.
+ *
+ * @generated from message admin.v1.PublicWaitingGroup
+ */
+export declare type PublicWaitingGroup = Message<"admin.v1.PublicWaitingGroup"> & {
+  /**
+   * @generated from field: string ticket_id = 1;
+   */
+  ticketId: string;
+
+  /**
+   * @generated from field: int32 sequence_in_booth = 2;
+   */
+  sequenceInBooth: number;
+
+  /**
+   * @generated from field: int32 participant_count = 3;
+   */
+  participantCount: number;
+};
+
+/**
+ * Describes the message admin.v1.PublicWaitingGroup.
+ * Use `create(PublicWaitingGroupSchema)` to create a new message.
+ */
+export declare const PublicWaitingGroupSchema: GenMessage<PublicWaitingGroup>;
+
+/**
+ * One group waiting in private mode.
+ *
+ * @generated from message admin.v1.PrivateWaitingGroup
+ */
+export declare type PrivateWaitingGroup = Message<"admin.v1.PrivateWaitingGroup"> & {
+  /**
+   * @generated from field: string ticket_id = 1;
+   */
+  ticketId: string;
+
+  /**
+   * @generated from field: int32 sequence_in_booth = 2;
+   */
+  sequenceInBooth: number;
+
+  /**
+   * @generated from field: int32 participant_count = 3;
+   */
+  participantCount: number;
+
+  /**
+   * @generated from field: string reception_number = 4;
+   */
+  receptionNumber: string;
+
+  /**
+   * @generated from field: string nickname = 5;
+   */
+  nickname: string;
+};
+
+/**
+ * Describes the message admin.v1.PrivateWaitingGroup.
+ * Use `create(PrivateWaitingGroupSchema)` to create a new message.
+ */
+export declare const PrivateWaitingGroupSchema: GenMessage<PrivateWaitingGroup>;
+
+/**
+ * An in-progress or waiting match session.
+ *
+ * @generated from message admin.v1.MatchQueueSession
+ */
+export declare type MatchQueueSession = Message<"admin.v1.MatchQueueSession"> & {
+  /**
+   * @generated from field: string session_id = 1;
+   */
+  sessionId: string;
+
+  /**
+   * @generated from field: string mode = 2;
+   */
+  mode: string;
+
+  /**
+   * @generated from field: string status = 3;
+   */
+  status: string;
+
+  /**
+   * @generated from field: int32 participant_count = 4;
+   */
+  participantCount: number;
+
+  /**
+   * @generated from field: string created_at = 5;
+   */
+  createdAt: string;
+};
+
+/**
+ * Describes the message admin.v1.MatchQueueSession.
+ * Use `create(MatchQueueSessionSchema)` to create a new message.
+ */
+export declare const MatchQueueSessionSchema: GenMessage<MatchQueueSession>;
+
+/**
+ * @generated from message admin.v1.GetMatchQueueStatusRequest
+ */
+export declare type GetMatchQueueStatusRequest = Message<"admin.v1.GetMatchQueueStatusRequest"> & {
+};
+
+/**
+ * Describes the message admin.v1.GetMatchQueueStatusRequest.
+ * Use `create(GetMatchQueueStatusRequestSchema)` to create a new message.
+ */
+export declare const GetMatchQueueStatusRequestSchema: GenMessage<GetMatchQueueStatusRequest>;
+
+/**
+ * @generated from message admin.v1.GetMatchQueueStatusResponse
+ */
+export declare type GetMatchQueueStatusResponse = Message<"admin.v1.GetMatchQueueStatusResponse"> & {
+  /**
+   * @generated from field: repeated admin.v1.PublicWaitingGroup public_waiting = 1;
+   */
+  publicWaiting: PublicWaitingGroup[];
+
+  /**
+   * @generated from field: int32 public_waiting_total = 2;
+   */
+  publicWaitingTotal: number;
+
+  /**
+   * @generated from field: int32 target_party_size = 3;
+   */
+  targetPartySize: number;
+
+  /**
+   * @generated from field: int32 min_party_size = 4;
+   */
+  minPartySize: number;
+
+  /**
+   * @generated from field: repeated admin.v1.PrivateWaitingGroup private_waiting = 5;
+   */
+  privateWaiting: PrivateWaitingGroup[];
+
+  /**
+   * @generated from field: repeated admin.v1.MatchQueueSession active_sessions = 6;
+   */
+  activeSessions: MatchQueueSession[];
+};
+
+/**
+ * Describes the message admin.v1.GetMatchQueueStatusResponse.
+ * Use `create(GetMatchQueueStatusResponseSchema)` to create a new message.
+ */
+export declare const GetMatchQueueStatusResponseSchema: GenMessage<GetMatchQueueStatusResponse>;
+
+/**
+ * @generated from message admin.v1.NotificationTemplate
+ */
+export declare type NotificationTemplate = Message<"admin.v1.NotificationTemplate"> & {
+  /**
+   * @generated from field: string key = 1;
+   */
+  key: string;
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * @generated from field: string body = 3;
+   */
+  body: string;
+
+  /**
+   * empty string means no icon
+   *
+   * @generated from field: string icon_url = 4;
+   */
+  iconUrl: string;
+};
+
+/**
+ * Describes the message admin.v1.NotificationTemplate.
+ * Use `create(NotificationTemplateSchema)` to create a new message.
+ */
+export declare const NotificationTemplateSchema: GenMessage<NotificationTemplate>;
+
+/**
+ * @generated from message admin.v1.ListNotificationTemplatesRequest
+ */
+export declare type ListNotificationTemplatesRequest = Message<"admin.v1.ListNotificationTemplatesRequest"> & {
+};
+
+/**
+ * Describes the message admin.v1.ListNotificationTemplatesRequest.
+ * Use `create(ListNotificationTemplatesRequestSchema)` to create a new message.
+ */
+export declare const ListNotificationTemplatesRequestSchema: GenMessage<ListNotificationTemplatesRequest>;
+
+/**
+ * @generated from message admin.v1.ListNotificationTemplatesResponse
+ */
+export declare type ListNotificationTemplatesResponse = Message<"admin.v1.ListNotificationTemplatesResponse"> & {
+  /**
+   * @generated from field: repeated admin.v1.NotificationTemplate templates = 1;
+   */
+  templates: NotificationTemplate[];
+};
+
+/**
+ * Describes the message admin.v1.ListNotificationTemplatesResponse.
+ * Use `create(ListNotificationTemplatesResponseSchema)` to create a new message.
+ */
+export declare const ListNotificationTemplatesResponseSchema: GenMessage<ListNotificationTemplatesResponse>;
+
+/**
+ * @generated from message admin.v1.UpdateNotificationTemplateRequest
+ */
+export declare type UpdateNotificationTemplateRequest = Message<"admin.v1.UpdateNotificationTemplateRequest"> & {
+  /**
+   * @generated from field: string key = 1;
+   */
+  key: string;
+
+  /**
+   * @generated from field: string title = 2;
+   */
+  title: string;
+
+  /**
+   * @generated from field: string body = 3;
+   */
+  body: string;
+
+  /**
+   * empty string clears the icon
+   *
+   * @generated from field: string icon_url = 4;
+   */
+  iconUrl: string;
+};
+
+/**
+ * Describes the message admin.v1.UpdateNotificationTemplateRequest.
+ * Use `create(UpdateNotificationTemplateRequestSchema)` to create a new message.
+ */
+export declare const UpdateNotificationTemplateRequestSchema: GenMessage<UpdateNotificationTemplateRequest>;
+
+/**
+ * @generated from message admin.v1.UpdateNotificationTemplateResponse
+ */
+export declare type UpdateNotificationTemplateResponse = Message<"admin.v1.UpdateNotificationTemplateResponse"> & {
+  /**
+   * @generated from field: admin.v1.NotificationTemplate template = 1;
+   */
+  template?: NotificationTemplate | undefined;
+};
+
+/**
+ * Describes the message admin.v1.UpdateNotificationTemplateResponse.
+ * Use `create(UpdateNotificationTemplateResponseSchema)` to create a new message.
+ */
+export declare const UpdateNotificationTemplateResponseSchema: GenMessage<UpdateNotificationTemplateResponse>;
 
 /**
  * AdmitOutcome describes the result of a QR scan or manual admission attempt.
@@ -652,6 +1506,106 @@ export declare const AdminService: GenService<{
     input: typeof UpdateBoothRequestSchema;
     output: typeof UpdateBoothResponseSchema;
   },
+  /**
+   * ListAdminBooths returns all booths (including archived) for admin management.
+   *
+   * @generated from rpc admin.v1.AdminService.ListAdminBooths
+   */
+  listAdminBooths: {
+    methodKind: "unary";
+    input: typeof ListAdminBoothsRequestSchema;
+    output: typeof ListAdminBoothsResponseSchema;
+  },
+  /**
+   * CreateBooth creates a new booth.
+   *
+   * @generated from rpc admin.v1.AdminService.CreateBooth
+   */
+  createBooth: {
+    methodKind: "unary";
+    input: typeof CreateBoothRequestSchema;
+    output: typeof CreateBoothResponseSchema;
+  },
+  /**
+   * ArchiveBooth soft-deletes a booth (sets is_archived=true).
+   *
+   * @generated from rpc admin.v1.AdminService.ArchiveBooth
+   */
+  archiveBooth: {
+    methodKind: "unary";
+    input: typeof ArchiveBoothRequestSchema;
+    output: typeof ArchiveBoothResponseSchema;
+  },
+  /**
+   * UnarchiveBooth restores an archived booth.
+   *
+   * @generated from rpc admin.v1.AdminService.UnarchiveBooth
+   */
+  unarchiveBooth: {
+    methodKind: "unary";
+    input: typeof UnarchiveBoothRequestSchema;
+    output: typeof UnarchiveBoothResponseSchema;
+  },
+  /**
+   * DeleteBooth permanently deletes a booth (only allowed when no active tickets).
+   *
+   * @generated from rpc admin.v1.AdminService.DeleteBooth
+   */
+  deleteBooth: {
+    methodKind: "unary";
+    input: typeof DeleteBoothRequestSchema;
+    output: typeof DeleteBoothResponseSchema;
+  },
+  /**
+   * UpdateBoothPassword changes the staff shared password for a booth.
+   *
+   * @generated from rpc admin.v1.AdminService.UpdateBoothPassword
+   */
+  updateBoothPassword: {
+    methodKind: "unary";
+    input: typeof UpdateBoothPasswordRequestSchema;
+    output: typeof UpdateBoothPasswordResponseSchema;
+  },
+  /**
+   * GetRiskExplanation returns the current singleton risk explanation text.
+   *
+   * @generated from rpc admin.v1.AdminService.GetRiskExplanation
+   */
+  getRiskExplanation: {
+    methodKind: "unary";
+    input: typeof GetRiskExplanationRequestSchema;
+    output: typeof GetRiskExplanationResponseSchema;
+  },
+  /**
+   * UpdateRiskExplanation replaces the risk explanation body.
+   *
+   * @generated from rpc admin.v1.AdminService.UpdateRiskExplanation
+   */
+  updateRiskExplanation: {
+    methodKind: "unary";
+    input: typeof UpdateRiskExplanationRequestSchema;
+    output: typeof UpdateRiskExplanationResponseSchema;
+  },
+  /**
+   * ListNotificationTemplates returns all notification templates for editing.
+   *
+   * @generated from rpc admin.v1.AdminService.ListNotificationTemplates
+   */
+  listNotificationTemplates: {
+    methodKind: "unary";
+    input: typeof ListNotificationTemplatesRequestSchema;
+    output: typeof ListNotificationTemplatesResponseSchema;
+  },
+  /**
+   * UpdateNotificationTemplate updates a notification template by key.
+   *
+   * @generated from rpc admin.v1.AdminService.UpdateNotificationTemplate
+   */
+  updateNotificationTemplate: {
+    methodKind: "unary";
+    input: typeof UpdateNotificationTemplateRequestSchema;
+    output: typeof UpdateNotificationTemplateResponseSchema;
+  },
 }>;
 
 /**
@@ -739,6 +1693,57 @@ export declare const StaffService: GenService<{
     methodKind: "unary";
     input: typeof ListTicketsByBoothRequestSchema;
     output: typeof ListTicketsByBoothResponseSchema;
+  },
+  /**
+   * RestorePendingTicket manually moves a pending ticket back to called with priority flag.
+   *
+   * @generated from rpc admin.v1.StaffService.RestorePendingTicket
+   */
+  restorePendingTicket: {
+    methodKind: "unary";
+    input: typeof RestorePendingTicketRequestSchema;
+    output: typeof RestorePendingTicketResponseSchema;
+  },
+  /**
+   * ForceStartMatch force-starts a match session with the current public waiting tickets
+   * (requires at least min_party_size participants).
+   *
+   * @generated from rpc admin.v1.StaffService.ForceStartMatch
+   */
+  forceStartMatch: {
+    methodKind: "unary";
+    input: typeof ForceStartMatchRequestSchema;
+    output: typeof ForceStartMatchResponseSchema;
+  },
+  /**
+   * CallPrivateMatch calls all tickets in a private waiting match session (waiting → called).
+   *
+   * @generated from rpc admin.v1.StaffService.CallPrivateMatch
+   */
+  callPrivateMatch: {
+    methodKind: "unary";
+    input: typeof CallPrivateMatchRequestSchema;
+    output: typeof CallPrivateMatchResponseSchema;
+  },
+  /**
+   * CompleteMatchSession marks a session as completed and admits all its tickets.
+   *
+   * @generated from rpc admin.v1.StaffService.CompleteMatchSession
+   */
+  completeMatchSession: {
+    methodKind: "unary";
+    input: typeof CompleteMatchSessionRequestSchema;
+    output: typeof CompleteMatchSessionResponseSchema;
+  },
+  /**
+   * GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
+   *
+   * @generated from rpc admin.v1.StaffService.GetMatchQueueStatus
+   */
+  getMatchQueueStatus: {
+    methodKind: "unary";
+    input: typeof GetMatchQueueStatusRequestSchema;
+    output: typeof GetMatchQueueStatusResponseSchema;
   },
 }>;
 

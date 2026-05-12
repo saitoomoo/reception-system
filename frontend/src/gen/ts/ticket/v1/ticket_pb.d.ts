@@ -207,6 +207,38 @@ export declare type GetTicketStatusRequest = Message<"ticket.v1.GetTicketStatusR
 export declare const GetTicketStatusRequestSchema: GenMessage<GetTicketStatusRequest>;
 
 /**
+ * MatchmakingInfo is included for matchmaking booths to show queue context.
+ *
+ * @generated from message ticket.v1.MatchmakingInfo
+ */
+export declare type MatchmakingInfo = Message<"ticket.v1.MatchmakingInfo"> & {
+  /**
+   * "public" or "private"
+   *
+   * @generated from field: string match_mode = 1;
+   */
+  matchMode: string;
+
+  /**
+   * Number of public-waiting participants ahead (public mode only).
+   *
+   * @generated from field: int32 public_waiting_count = 2;
+   */
+  publicWaitingCount: number;
+
+  /**
+   * @generated from field: int32 target_party_size = 3;
+   */
+  targetPartySize: number;
+};
+
+/**
+ * Describes the message ticket.v1.MatchmakingInfo.
+ * Use `create(MatchmakingInfoSchema)` to create a new message.
+ */
+export declare const MatchmakingInfoSchema: GenMessage<MatchmakingInfo>;
+
+/**
  * @generated from message ticket.v1.GetTicketStatusResponse
  */
 export declare type GetTicketStatusResponse = Message<"ticket.v1.GetTicketStatusResponse"> & {
@@ -249,6 +281,13 @@ export declare type GetTicketStatusResponse = Message<"ticket.v1.GetTicketStatus
    * @generated from field: string created_at = 8;
    */
   createdAt: string;
+
+  /**
+   * Set only for matchmaking booths.
+   *
+   * @generated from field: ticket.v1.MatchmakingInfo matchmaking_info = 9;
+   */
+  matchmakingInfo?: MatchmakingInfo | undefined;
 };
 
 /**

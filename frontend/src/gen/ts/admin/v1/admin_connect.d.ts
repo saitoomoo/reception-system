@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AdmitByQRRequest, AdmitByQRResponse, AdmitManuallyRequest, AdmitManuallyResponse, CallNextTicketsRequest, CallNextTicketsResponse, CallTicketRequest, CallTicketResponse, CancelTicketByStaffRequest, CancelTicketByStaffResponse, GetDashboardRequest, GetDashboardResponse, GetStaffSessionRequest, GetStaffSessionResponse, ListTicketsByBoothRequest, ListTicketsByBoothResponse, LoginAsGlobalAdminRequest, LoginAsGlobalAdminResponse, LoginAsStaffRequest, LoginAsStaffResponse, UpdateBoothRequest, UpdateBoothResponse } from "./admin_pb.js";
+import { AdmitByQRRequest, AdmitByQRResponse, AdmitManuallyRequest, AdmitManuallyResponse, ArchiveBoothRequest, ArchiveBoothResponse, CallNextTicketsRequest, CallNextTicketsResponse, CallPrivateMatchRequest, CallPrivateMatchResponse, CallTicketRequest, CallTicketResponse, CancelTicketByStaffRequest, CancelTicketByStaffResponse, CompleteMatchSessionRequest, CompleteMatchSessionResponse, CreateBoothRequest, CreateBoothResponse, DeleteBoothRequest, DeleteBoothResponse, ForceStartMatchRequest, ForceStartMatchResponse, GetDashboardRequest, GetDashboardResponse, GetMatchQueueStatusRequest, GetMatchQueueStatusResponse, GetRiskExplanationRequest, GetRiskExplanationResponse, GetStaffSessionRequest, GetStaffSessionResponse, ListAdminBoothsRequest, ListAdminBoothsResponse, ListNotificationTemplatesRequest, ListNotificationTemplatesResponse, ListTicketsByBoothRequest, ListTicketsByBoothResponse, LoginAsGlobalAdminRequest, LoginAsGlobalAdminResponse, LoginAsStaffRequest, LoginAsStaffResponse, RestorePendingTicketRequest, RestorePendingTicketResponse, UnarchiveBoothRequest, UnarchiveBoothResponse, UpdateBoothPasswordRequest, UpdateBoothPasswordResponse, UpdateBoothRequest, UpdateBoothResponse, UpdateNotificationTemplateRequest, UpdateNotificationTemplateResponse, UpdateRiskExplanationRequest, UpdateRiskExplanationResponse } from "./admin_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -45,6 +45,116 @@ export declare const AdminService: {
       readonly name: "UpdateBooth",
       readonly I: typeof UpdateBoothRequest,
       readonly O: typeof UpdateBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ListAdminBooths returns all booths (including archived) for admin management.
+     *
+     * @generated from rpc admin.v1.AdminService.ListAdminBooths
+     */
+    readonly listAdminBooths: {
+      readonly name: "ListAdminBooths",
+      readonly I: typeof ListAdminBoothsRequest,
+      readonly O: typeof ListAdminBoothsResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * CreateBooth creates a new booth.
+     *
+     * @generated from rpc admin.v1.AdminService.CreateBooth
+     */
+    readonly createBooth: {
+      readonly name: "CreateBooth",
+      readonly I: typeof CreateBoothRequest,
+      readonly O: typeof CreateBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ArchiveBooth soft-deletes a booth (sets is_archived=true).
+     *
+     * @generated from rpc admin.v1.AdminService.ArchiveBooth
+     */
+    readonly archiveBooth: {
+      readonly name: "ArchiveBooth",
+      readonly I: typeof ArchiveBoothRequest,
+      readonly O: typeof ArchiveBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * UnarchiveBooth restores an archived booth.
+     *
+     * @generated from rpc admin.v1.AdminService.UnarchiveBooth
+     */
+    readonly unarchiveBooth: {
+      readonly name: "UnarchiveBooth",
+      readonly I: typeof UnarchiveBoothRequest,
+      readonly O: typeof UnarchiveBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * DeleteBooth permanently deletes a booth (only allowed when no active tickets).
+     *
+     * @generated from rpc admin.v1.AdminService.DeleteBooth
+     */
+    readonly deleteBooth: {
+      readonly name: "DeleteBooth",
+      readonly I: typeof DeleteBoothRequest,
+      readonly O: typeof DeleteBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * UpdateBoothPassword changes the staff shared password for a booth.
+     *
+     * @generated from rpc admin.v1.AdminService.UpdateBoothPassword
+     */
+    readonly updateBoothPassword: {
+      readonly name: "UpdateBoothPassword",
+      readonly I: typeof UpdateBoothPasswordRequest,
+      readonly O: typeof UpdateBoothPasswordResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * GetRiskExplanation returns the current singleton risk explanation text.
+     *
+     * @generated from rpc admin.v1.AdminService.GetRiskExplanation
+     */
+    readonly getRiskExplanation: {
+      readonly name: "GetRiskExplanation",
+      readonly I: typeof GetRiskExplanationRequest,
+      readonly O: typeof GetRiskExplanationResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * UpdateRiskExplanation replaces the risk explanation body.
+     *
+     * @generated from rpc admin.v1.AdminService.UpdateRiskExplanation
+     */
+    readonly updateRiskExplanation: {
+      readonly name: "UpdateRiskExplanation",
+      readonly I: typeof UpdateRiskExplanationRequest,
+      readonly O: typeof UpdateRiskExplanationResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ListNotificationTemplates returns all notification templates for editing.
+     *
+     * @generated from rpc admin.v1.AdminService.ListNotificationTemplates
+     */
+    readonly listNotificationTemplates: {
+      readonly name: "ListNotificationTemplates",
+      readonly I: typeof ListNotificationTemplatesRequest,
+      readonly O: typeof ListNotificationTemplatesResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * UpdateNotificationTemplate updates a notification template by key.
+     *
+     * @generated from rpc admin.v1.AdminService.UpdateNotificationTemplate
+     */
+    readonly updateNotificationTemplate: {
+      readonly name: "UpdateNotificationTemplate",
+      readonly I: typeof UpdateNotificationTemplateRequest,
+      readonly O: typeof UpdateNotificationTemplateResponse,
       readonly kind: MethodKind.Unary,
     },
   }
@@ -144,6 +254,62 @@ export declare const StaffService: {
       readonly name: "ListTicketsByBooth",
       readonly I: typeof ListTicketsByBoothRequest,
       readonly O: typeof ListTicketsByBoothResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * RestorePendingTicket manually moves a pending ticket back to called with priority flag.
+     *
+     * @generated from rpc admin.v1.StaffService.RestorePendingTicket
+     */
+    readonly restorePendingTicket: {
+      readonly name: "RestorePendingTicket",
+      readonly I: typeof RestorePendingTicketRequest,
+      readonly O: typeof RestorePendingTicketResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ForceStartMatch force-starts a match session with the current public waiting tickets
+     * (requires at least min_party_size participants).
+     *
+     * @generated from rpc admin.v1.StaffService.ForceStartMatch
+     */
+    readonly forceStartMatch: {
+      readonly name: "ForceStartMatch",
+      readonly I: typeof ForceStartMatchRequest,
+      readonly O: typeof ForceStartMatchResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * CallPrivateMatch calls all tickets in a private waiting match session (waiting → called).
+     *
+     * @generated from rpc admin.v1.StaffService.CallPrivateMatch
+     */
+    readonly callPrivateMatch: {
+      readonly name: "CallPrivateMatch",
+      readonly I: typeof CallPrivateMatchRequest,
+      readonly O: typeof CallPrivateMatchResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * CompleteMatchSession marks a session as completed and admits all its tickets.
+     *
+     * @generated from rpc admin.v1.StaffService.CompleteMatchSession
+     */
+    readonly completeMatchSession: {
+      readonly name: "CompleteMatchSession",
+      readonly I: typeof CompleteMatchSessionRequest,
+      readonly O: typeof CompleteMatchSessionResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
+     *
+     * @generated from rpc admin.v1.StaffService.GetMatchQueueStatus
+     */
+    readonly getMatchQueueStatus: {
+      readonly name: "GetMatchQueueStatus",
+      readonly I: typeof GetMatchQueueStatusRequest,
+      readonly O: typeof GetMatchQueueStatusResponse,
       readonly kind: MethodKind.Unary,
     },
   }

@@ -43,6 +43,7 @@ type Booth struct {
 	SurveyUrl                  *string
 	StaffPasswordHash          string
 	StaffPasswordUpdatedAt     pgtype.Timestamptz
+	IsArchived                 bool
 }
 
 type GlobalAdmin struct {

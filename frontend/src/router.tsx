@@ -12,6 +12,9 @@ import WaitingStatusScreen from '@/screens/waiting-status';
 import AdminScreen from '@/screens/admin';
 import GlobalLoginScreen from '@/screens/admin/global-login';
 import GlobalDashboardScreen from '@/screens/admin/global-dashboard';
+import GlobalBoothsScreen from '@/screens/admin/global-booths';
+import GlobalRiskExplanationScreen from '@/screens/admin/global-risk-explanation';
+import GlobalNotificationsScreen from '@/screens/admin/global-notifications';
 import BoothStatusScreen from '@/screens/booth-status';
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -41,6 +44,9 @@ const router = createBrowserRouter([
   { path: '/admin', element: <AdminScreen /> },
   { path: '/admin/global/login', element: <GlobalLoginScreen /> },
   { path: '/admin/global/dashboard', element: <GlobalDashboardScreen /> },
+  { path: '/admin/global/booths', element: <GlobalBoothsScreen /> },
+  { path: '/admin/global/risk-explanation', element: <GlobalRiskExplanationScreen /> },
+  { path: '/admin/global/notifications', element: <GlobalNotificationsScreen /> },
 ]);
 
 export default function Router() {

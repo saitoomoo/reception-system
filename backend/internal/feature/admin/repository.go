@@ -14,6 +14,9 @@ import (
 	"reception-system/internal/pkg/connecterr"
 )
 
+// ErrBoothHasActiveTickets is returned when deleting a booth that still has active tickets.
+var ErrBoothHasActiveTickets = errors.New("booth has active tickets")
+
 type Repository struct {
 	pool    *pgxpool.Pool
 	queries *db.Queries
@@ -91,6 +94,105 @@ func (r *Repository) GetDashboard(ctx context.Context) ([]BoothStats, error) {
 func (r *Repository) UpdateBooth(ctx context.Context, p db.UpdateBoothParams) error {
 	if err := r.queries.UpdateBooth(ctx, p); err != nil {
 		return fmt.Errorf("admin repository: update booth: %w", err)
+	}
+	return nil
+}
+
+// ListAllBooths returns all booths including archived ones.
+func (r *Repository) ListAllBooths(ctx context.Context) ([]db.Booth, error) {
+	booths, err := r.queries.ListAllBooths(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("admin repository: list all booths: %w", err)
+	}
+	return booths, nil
+}
+
+// CreateBooth inserts a new booth record.
+func (r *Repository) CreateBooth(ctx context.Context, p db.CreateBoothParams) (db.Booth, error) {
+	booth, err := r.queries.CreateBooth(ctx, p)
+	if err != nil {
+		return db.Booth{}, fmt.Errorf("admin repository: create booth: %w", err)
+	}
+	return booth, nil
+}
+
+// ArchiveBooth soft-deletes a booth.
+func (r *Repository) ArchiveBooth(ctx context.Context, boothID int64) error {
+	if err := r.queries.ArchiveBooth(ctx, boothID); err != nil {
+		return fmt.Errorf("admin repository: archive booth: %w", err)
+	}
+	return nil
+}
+
+// UnarchiveBooth restores an archived booth.
+func (r *Repository) UnarchiveBooth(ctx context.Context, boothID int64) error {
+	if err := r.queries.UnarchiveBooth(ctx, boothID); err != nil {
+		return fmt.Errorf("admin repository: unarchive booth: %w", err)
+	}
+	return nil
+}
+
+// DeleteBooth permanently deletes a booth; fails if active tickets exist.
+func (r *Repository) DeleteBooth(ctx context.Context, boothID int64) error {
+	count, err := r.queries.GetBoothActiveTicketCount(ctx, boothID)
+	if err != nil {
+		return fmt.Errorf("admin repository: get active ticket count: %w", err)
+	}
+	if count > 0 {
+		return ErrBoothHasActiveTickets
+	}
+	if err := r.queries.DeleteBooth(ctx, boothID); err != nil {
+		return fmt.Errorf("admin repository: delete booth: %w", err)
+	}
+	return nil
+}
+
+// GetRiskExplanation returns the current singleton risk explanation. Returns empty body if none exists.
+func (r *Repository) GetRiskExplanation(ctx context.Context) (db.RiskExplanation, error) {
+	row, err := r.queries.GetRiskExplanation(ctx)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return db.RiskExplanation{}, nil
+	}
+	if err != nil {
+		return db.RiskExplanation{}, fmt.Errorf("admin repository: get risk explanation: %w", err)
+	}
+	return row, nil
+}
+
+// SetRiskExplanation updates the singleton row, inserting it if it doesn't exist yet.
+func (r *Repository) SetRiskExplanation(ctx context.Context, body string) (db.RiskExplanation, error) {
+	existing, err := r.queries.GetRiskExplanation(ctx)
+	if errors.Is(err, pgx.ErrNoRows) {
+		row, err := r.queries.InsertRiskExplanation(ctx, body)
+		if err != nil {
+			return db.RiskExplanation{}, fmt.Errorf("admin repository: insert risk explanation: %w", err)
+		}
+		return row, nil
+	}
+	if err != nil {
+		return db.RiskExplanation{}, fmt.Errorf("admin repository: get risk explanation: %w", err)
+	}
+	row, err := r.queries.UpdateRiskExplanationBody(ctx, db.UpdateRiskExplanationBodyParams{
+		ID:   existing.ID,
+		Body: body,
+	})
+	if err != nil {
+		return db.RiskExplanation{}, fmt.Errorf("admin repository: update risk explanation: %w", err)
+	}
+	return row, nil
+}
+
+// UpdateBoothPassword sets a new bcrypt-hashed staff password for the booth.
+func (r *Repository) UpdateBoothPassword(ctx context.Context, boothID int64, newPassword string) error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	if err != nil {
+		return fmt.Errorf("admin repository: hash password: %w", err)
+	}
+	if err := r.queries.UpdateBoothPassword(ctx, db.UpdateBoothPasswordParams{
+		ID:               boothID,
+		StaffPasswordHash: string(hash),
+	}); err != nil {
+		return fmt.Errorf("admin repository: update booth password: %w", err)
 	}
 	return nil
 }

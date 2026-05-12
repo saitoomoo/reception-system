@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
 import { QRCodeSVG } from 'qrcode.react';
@@ -5,6 +6,9 @@ import { useAuth } from '@/hooks/use-auth';
 import { ticketClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
 import type { TicketSummary } from '@/gen/ts/ticket/v1/ticket_pb';
+import { isPushSupported, registerPush } from '@/lib/push/register';
+import { subscribePush } from '@/lib/push/subscribe';
+import { unsubscribePush, isSubscribed } from '@/lib/push/unsubscribe';
 
 const STATUS_LABEL: Record<string, string> = {
   waiting: '待機中',
@@ -25,6 +29,35 @@ const STATUS_COLOR: Record<string, string> = {
 export default function MypageScreen() {
   const navigate = useNavigate();
   const { receptionNumber, visitorId, logout } = useAuth();
+  const [notifEnabled, setNotifEnabled] = useState<boolean | null>(null);
+  const [notifLoading, setNotifLoading] = useState(false);
+
+  useEffect(() => {
+    if (isPushSupported()) {
+      isSubscribed().then(setNotifEnabled);
+    }
+  }, []);
+
+  const handleToggleNotification = async () => {
+    if (!visitorId || notifLoading) return;
+    setNotifLoading(true);
+    try {
+      if (notifEnabled) {
+        await unsubscribePush();
+        setNotifEnabled(false);
+      } else {
+        const granted = await registerPush();
+        if (granted) {
+          const ok = await subscribePush(visitorId);
+          setNotifEnabled(ok);
+        } else {
+          setNotifEnabled(false);
+        }
+      }
+    } finally {
+      setNotifLoading(false);
+    }
+  };
 
   const { data } = useQuery({
     queryKey: ['myTickets', visitorId],
@@ -63,6 +96,26 @@ export default function MypageScreen() {
             スタッフにこのQRコードをご提示ください
           </p>
         </div>
+
+        {isPushSupported() && notifEnabled !== null && (
+          <div className="bg-white rounded-2xl p-5 shadow-[0_4px_12px_rgba(0,0,0,0.15)] flex items-center justify-between">
+            <div>
+              <p className="text-[15px] font-bold text-[#5A4A20]">呼び出し通知</p>
+              <p className="text-[12px] text-[#5A4A20] opacity-60">
+                {notifEnabled ? '有効 — 順番が来たら通知されます' : '無効 — 画面を開いて確認してください'}
+              </p>
+            </div>
+            <button
+              onClick={handleToggleNotification}
+              disabled={notifLoading}
+              className={`relative w-14 h-7 rounded-full transition-colors duration-200 ${notifEnabled ? 'bg-[#D4B946]' : 'bg-gray-300'}`}
+            >
+              <span
+                className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow transition-transform duration-200 ${notifEnabled ? 'translate-x-7' : 'translate-x-0'}`}
+              />
+            </button>
+          </div>
+        )}
 
         {tickets.length > 0 && (
           <div className="bg-white rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden">

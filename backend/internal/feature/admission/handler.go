@@ -10,6 +10,7 @@ import (
 	"connectrpc.com/connect"
 	adminv1 "reception-system/gen/go/admin/v1"
 	"reception-system/gen/go/admin/v1/adminv1connect"
+	"reception-system/internal/feature/notification"
 	"reception-system/internal/pkg/auth"
 	"reception-system/internal/pkg/connecterr"
 )
@@ -19,12 +20,13 @@ import (
 type StaffHandler struct {
 	adminv1connect.UnimplementedStaffServiceHandler
 	repo          *Repository
+	notifRepo     *notification.Repository
 	sessionSecret string
 	logger        *slog.Logger
 }
 
-func NewStaffHandler(repo *Repository, sessionSecret string, logger *slog.Logger) *StaffHandler {
-	return &StaffHandler{repo: repo, sessionSecret: sessionSecret, logger: logger}
+func NewStaffHandler(repo *Repository, notifRepo *notification.Repository, sessionSecret string, logger *slog.Logger) *StaffHandler {
+	return &StaffHandler{repo: repo, notifRepo: notifRepo, sessionSecret: sessionSecret, logger: logger}
 }
 
 func (h *StaffHandler) AdmitByQR(
@@ -93,11 +95,37 @@ func (h *StaffHandler) CancelTicketByStaff(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid ticket_id"))
 	}
 
-	if err := h.repo.CancelTicketByStaff(ctx, ticketID, boothID); err != nil {
+	visitorID, err := h.repo.CancelTicketByStaff(ctx, ticketID, boothID)
+	if err != nil {
 		return nil, connecterr.Convert(err)
 	}
 
+	if err := h.notifRepo.EnqueueForVisitor(ctx, &ticketID, visitorID, "cancelled_by_staff"); err != nil {
+		h.logger.Error("enqueue cancelled_by_staff notification", slog.Any("error", err))
+	}
+
 	return connect.NewResponse(&adminv1.CancelTicketByStaffResponse{}), nil
+}
+
+func (h *StaffHandler) RestorePendingTicket(
+	ctx context.Context,
+	req *connect.Request[adminv1.RestorePendingTicketRequest],
+) (*connect.Response[adminv1.RestorePendingTicketResponse], error) {
+	_, boothID, err := h.requireStaffSession(req.Header())
+	if err != nil {
+		return nil, err
+	}
+
+	ticketID, err := strconv.ParseInt(req.Msg.TicketId, 10, 64)
+	if err != nil || ticketID <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid ticket_id"))
+	}
+
+	if err := h.repo.RestoreTicket(ctx, ticketID, boothID); err != nil {
+		return nil, connecterr.Convert(err)
+	}
+
+	return connect.NewResponse(&adminv1.RestorePendingTicketResponse{}), nil
 }
 
 // requireStaffSession extracts and validates the staff session cookie.

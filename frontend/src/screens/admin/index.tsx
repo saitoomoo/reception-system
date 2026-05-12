@@ -7,6 +7,7 @@ import AdminHeader from './_components/admin-header';
 import ReservationsPage from './_components/reservations-page';
 import QrScanner from './_components/qr-scanner';
 import ManualAdmit from './_components/manual-admit';
+import MatchQueue from './_components/match-queue';
 
 interface Session {
   boothId: string;
@@ -46,6 +47,7 @@ export default function AdminScreen() {
           status: t.status as StaffTicketItem['status'],
           isPriorityCall: t.isPriorityCall,
           createdAt: t.createdAt,
+          pendingAt: t.pendingAt || undefined,
         }))
       );
     } catch {
@@ -77,6 +79,11 @@ export default function AdminScreen() {
 
   const handleCancelTicket = async (ticketId: string) => {
     await staffClient.cancelTicketByStaff({ ticketId });
+    await fetchTickets();
+  };
+
+  const handleRestoreTicket = async (ticketId: string) => {
+    await staffClient.restorePendingTicket({ ticketId });
     await fetchTickets();
   };
 
@@ -116,6 +123,7 @@ export default function AdminScreen() {
             tickets={tickets}
             onCallNext={handleCallNext}
             onCancelTicket={handleCancelTicket}
+            onRestoreTicket={handleRestoreTicket}
           />
         )}
         {currentPage === 'qr-scanner' && (
@@ -123,6 +131,9 @@ export default function AdminScreen() {
         )}
         {currentPage === 'manual-admit' && (
           <ManualAdmit />
+        )}
+        {currentPage === 'match-queue' && (
+          <MatchQueue />
         )}
       </div>
     </div>

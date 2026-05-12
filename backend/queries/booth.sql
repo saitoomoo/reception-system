@@ -1,5 +1,10 @@
 -- name: ListBooths :many
 SELECT * FROM booths
+WHERE is_archived = false
+ORDER BY id;
+
+-- name: ListAllBooths :many
+SELECT * FROM booths
 ORDER BY id;
 
 -- name: GetBoothByID :one
@@ -49,6 +54,41 @@ WHERE id = $1;
 
 -- name: UpdateBoothAccepting :exec
 UPDATE booths SET is_accepting = $2 WHERE id = $1;
+
+-- name: CreateBooth :one
+INSERT INTO booths (
+    name, description, location, open_at, close_at,
+    experience_type, max_participants_per_ticket, concurrent_capacity,
+    target_party_size, min_party_size, allow_private_match,
+    estimated_minutes_per_person, estimated_minutes_per_session,
+    call_threshold, call_resend_minutes, cooldown_minutes,
+    is_accepting, cover_image_url, intro_video_url, survey_url,
+    staff_password_hash, staff_password_updated_at
+) VALUES (
+    $1, $2, $3, $4, $5,
+    $6, $7, $8,
+    $9, $10, $11,
+    $12, $13,
+    $14, $15, $16,
+    $17, $18, $19, $20,
+    $21, now()
+)
+RETURNING *;
+
+-- name: ArchiveBooth :exec
+UPDATE booths SET is_archived = true WHERE id = $1;
+
+-- name: UnarchiveBooth :exec
+UPDATE booths SET is_archived = false WHERE id = $1;
+
+-- name: GetBoothActiveTicketCount :one
+SELECT COUNT(*)::int AS ticket_count
+FROM tickets
+WHERE booth_id = $1
+  AND status NOT IN ('admitted', 'cancelled');
+
+-- name: DeleteBooth :exec
+DELETE FROM booths WHERE id = $1;
 
 -- name: GetBoothStatusCounts :one
 -- Returns waiting+called count, pending count, and the sequence_in_booth of the

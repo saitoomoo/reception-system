@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
 	"strings"
 
 	"connectrpc.com/connect"
@@ -19,6 +20,8 @@ import (
 	"reception-system/internal/feature/admin"
 	"reception-system/internal/feature/admission"
 	"reception-system/internal/feature/booth"
+	"reception-system/internal/feature/match"
+	"reception-system/internal/feature/notification"
 	"reception-system/internal/feature/ticket"
 	"reception-system/internal/feature/visitor"
 )
@@ -42,14 +45,17 @@ func main() {
 		os.Exit(1)
 	}
 
-	pool, err := pgxpool.New(context.Background(), dbURL)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
+	pool, err := pgxpool.New(ctx, dbURL)
 	if err != nil {
 		logger.Error("connect to database", slog.Any("error", err))
 		os.Exit(1)
 	}
 	defer pool.Close()
 
-	if err := pool.Ping(context.Background()); err != nil {
+	if err := pool.Ping(ctx); err != nil {
 		logger.Error("ping database", slog.Any("error", err))
 		os.Exit(1)
 	}
@@ -62,27 +68,46 @@ func main() {
 	path, handler := visitorv1connect.NewVisitorServiceHandler(visitorHandler)
 	mux.Handle(path, handler)
 
+	notifRepo := notification.NewRepository(pool)
+	notifWorker := notification.NewWorker(
+		notifRepo,
+		os.Getenv("VAPID_PUBLIC_KEY"),
+		os.Getenv("VAPID_PRIVATE_KEY"),
+		os.Getenv("VAPID_SUBJECT"),
+		logger,
+	)
+	go notifWorker.Run(ctx)
+
 	boothRepo := booth.NewRepository(pool)
 	boothHandler := booth.NewHandler(boothRepo, logger)
 	path, handler = boothv1connect.NewBoothServiceHandler(boothHandler)
 	mux.Handle(path, handler)
 
 	ticketRepo := ticket.NewRepository(pool)
-	ticketHandler := ticket.NewHandler(ticketRepo, logger)
+	ticketHandler := ticket.NewHandler(ticketRepo, notifRepo, logger)
 	path, handler = ticketv1connect.NewTicketServiceHandler(ticketHandler)
 	mux.Handle(path, handler)
 
+	pendingWorker := ticket.NewPendingWorker(ticketRepo, notifRepo, logger)
+	go pendingWorker.Run(ctx)
+
+	matchRepo := match.NewRepository(pool)
+	matchSvc := match.NewService(matchRepo, logger)
+	ticketHandler.SetMatchService(matchSvc)
+
 	adminRepo := admin.NewRepository(pool)
-	adminHandler := admin.NewAdminHandler(adminRepo, sessionSecret, logger)
+	adminHandler := admin.NewAdminHandler(adminRepo, notifRepo, sessionSecret, logger)
 	path, handler = adminv1connect.NewAdminServiceHandler(adminHandler)
 	mux.Handle(path, handler)
 
-	boothStaffH := booth.NewStaffHandler(boothRepo, sessionSecret, logger)
+	boothStaffH := booth.NewStaffHandler(boothRepo, notifRepo, sessionSecret, logger)
 	admissionRepo := admission.NewRepository(pool)
-	admissionStaffH := admission.NewStaffHandler(admissionRepo, sessionSecret, logger)
+	admissionStaffH := admission.NewStaffHandler(admissionRepo, notifRepo, sessionSecret, logger)
+	matchStaffH := match.NewStaffHandler(matchSvc, sessionSecret, logger)
 	staffHandler := &combinedStaffHandler{
 		boothH:     boothStaffH,
 		admissionH: admissionStaffH,
+		matchH:     matchStaffH,
 	}
 	path, handler = adminv1connect.NewStaffServiceHandler(staffHandler)
 	mux.Handle(path, handler)
@@ -103,10 +128,12 @@ func main() {
 // combinedStaffHandler routes StaffService RPCs to the appropriate sub-handler.
 // booth RPCs: LoginAsStaff, CallTicket, CallNextTickets
 // admission RPCs: AdmitByQR, AdmitManually, CancelTicketByStaff
+// match RPCs: ForceStartMatch, CallPrivateMatch, CompleteMatchSession, GetMatchQueueStatus
 type combinedStaffHandler struct {
 	adminv1connect.UnimplementedStaffServiceHandler
 	boothH     *booth.StaffHandler
 	admissionH *admission.StaffHandler
+	matchH     *match.StaffHandler
 }
 
 func (h *combinedStaffHandler) LoginAsStaff(ctx context.Context, req *connect.Request[adminv1.LoginAsStaffRequest]) (*connect.Response[adminv1.LoginAsStaffResponse], error) {
@@ -132,6 +159,21 @@ func (h *combinedStaffHandler) GetStaffSession(ctx context.Context, req *connect
 }
 func (h *combinedStaffHandler) ListTicketsByBooth(ctx context.Context, req *connect.Request[adminv1.ListTicketsByBoothRequest]) (*connect.Response[adminv1.ListTicketsByBoothResponse], error) {
 	return h.boothH.ListTicketsByBooth(ctx, req)
+}
+func (h *combinedStaffHandler) RestorePendingTicket(ctx context.Context, req *connect.Request[adminv1.RestorePendingTicketRequest]) (*connect.Response[adminv1.RestorePendingTicketResponse], error) {
+	return h.admissionH.RestorePendingTicket(ctx, req)
+}
+func (h *combinedStaffHandler) ForceStartMatch(ctx context.Context, req *connect.Request[adminv1.ForceStartMatchRequest]) (*connect.Response[adminv1.ForceStartMatchResponse], error) {
+	return h.matchH.ForceStartMatch(ctx, req)
+}
+func (h *combinedStaffHandler) CallPrivateMatch(ctx context.Context, req *connect.Request[adminv1.CallPrivateMatchRequest]) (*connect.Response[adminv1.CallPrivateMatchResponse], error) {
+	return h.matchH.CallPrivateMatch(ctx, req)
+}
+func (h *combinedStaffHandler) CompleteMatchSession(ctx context.Context, req *connect.Request[adminv1.CompleteMatchSessionRequest]) (*connect.Response[adminv1.CompleteMatchSessionResponse], error) {
+	return h.matchH.CompleteMatchSession(ctx, req)
+}
+func (h *combinedStaffHandler) GetMatchQueueStatus(ctx context.Context, req *connect.Request[adminv1.GetMatchQueueStatusRequest]) (*connect.Response[adminv1.GetMatchQueueStatusResponse], error) {
+	return h.matchH.GetMatchQueueStatus(ctx, req)
 }
 
 func corsMiddleware(next http.Handler) http.Handler {

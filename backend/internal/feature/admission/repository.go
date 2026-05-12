@@ -51,28 +51,33 @@ func (r *Repository) AdmitManually(ctx context.Context, boothID int64, reception
 }
 
 // CancelTicketByStaff cancels a ticket if it belongs to boothID.
-// Returns ErrNotFound if the ticket doesn't exist or belongs to a different booth.
-func (r *Repository) CancelTicketByStaff(ctx context.Context, ticketID, boothID int64) error {
-	err := r.queries.CancelTicketByStaff(ctx, db.CancelTicketByStaffParams{
+// Returns the visitor_id for notification enqueueing, or ErrNotFound if the
+// ticket doesn't exist or belongs to a different booth.
+func (r *Repository) CancelTicketByStaff(ctx context.Context, ticketID, boothID int64) (int64, error) {
+	visitorID, err := r.queries.CancelTicketByStaff(ctx, db.CancelTicketByStaffParams{
 		ID:      ticketID,
 		BoothID: boothID,
 	})
-	if err != nil {
-		return fmt.Errorf("admission repository: cancel ticket by staff: %w", err)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return 0, connecterr.ErrNotFound
 	}
+	if err != nil {
+		return 0, fmt.Errorf("admission repository: cancel ticket by staff: %w", err)
+	}
+	return visitorID, nil
+}
 
-	// CancelTicketByStaff is :exec — verify the row was actually updated.
-	var status string
-	err = r.pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, ticketID).Scan(&status)
+// RestoreTicket manually returns a pending ticket to called (priority). Used by RestorePendingTicket RPC.
+func (r *Repository) RestoreTicket(ctx context.Context, ticketID, boothID int64) error {
+	_, err := r.queries.ReturnFromPending(ctx, db.ReturnFromPendingParams{
+		ID:      ticketID,
+		BoothID: boothID,
+	})
 	if errors.Is(err, pgx.ErrNoRows) {
 		return connecterr.ErrNotFound
 	}
 	if err != nil {
-		return fmt.Errorf("admission repository: verify cancel: %w", err)
-	}
-	if status != "cancelled" {
-		// The UPDATE matched no row (wrong booth_id or already admitted).
-		return connecterr.ErrNotFound
+		return fmt.Errorf("admission repository: restore ticket: %w", err)
 	}
 	return nil
 }

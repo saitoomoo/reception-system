@@ -51,6 +51,94 @@ func (q *Queries) AdmitTicketByStaff(ctx context.Context, arg AdmitTicketByStaff
 	return i, err
 }
 
+const assignTicketsToMatchSession = `-- name: AssignTicketsToMatchSession :exec
+UPDATE tickets
+SET match_session_id = $2
+WHERE id = ANY($1::bigint[])
+`
+
+type AssignTicketsToMatchSessionParams struct {
+	Column1        []int64
+	MatchSessionID *int64
+}
+
+// Bulk-assign a set of ticket IDs to a match session.
+func (q *Queries) AssignTicketsToMatchSession(ctx context.Context, arg AssignTicketsToMatchSessionParams) error {
+	_, err := q.db.Exec(ctx, assignTicketsToMatchSession, arg.Column1, arg.MatchSessionID)
+	return err
+}
+
+const bulkCallMatchTickets = `-- name: BulkCallMatchTickets :many
+UPDATE tickets
+SET status    = 'called',
+    called_at = now()
+WHERE id = ANY($1::bigint[])
+  AND status IN ('waiting', 'called')
+RETURNING id, visitor_id
+`
+
+type BulkCallMatchTicketsRow struct {
+	ID        int64
+	VisitorID int64
+}
+
+// Transitions the given tickets to called. Returns id+visitor_id for notification.
+func (q *Queries) BulkCallMatchTickets(ctx context.Context, dollar_1 []int64) ([]BulkCallMatchTicketsRow, error) {
+	rows, err := q.db.Query(ctx, bulkCallMatchTickets, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []BulkCallMatchTicketsRow{}
+	for rows.Next() {
+		var i BulkCallMatchTicketsRow
+		if err := rows.Scan(&i.ID, &i.VisitorID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const bulkSetPending = `-- name: BulkSetPending :many
+UPDATE tickets
+SET status     = 'pending',
+    pending_at = now()
+WHERE id = ANY($1::bigint[])
+  AND status = 'called'
+RETURNING id, booth_id, visitor_id
+`
+
+type BulkSetPendingRow struct {
+	ID        int64
+	BoothID   int64
+	VisitorID int64
+}
+
+// Transitions the given called tickets to pending. Returns updated rows.
+func (q *Queries) BulkSetPending(ctx context.Context, dollar_1 []int64) ([]BulkSetPendingRow, error) {
+	rows, err := q.db.Query(ctx, bulkSetPending, dollar_1)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []BulkSetPendingRow{}
+	for rows.Next() {
+		var i BulkSetPendingRow
+		if err := rows.Scan(&i.ID, &i.BoothID, &i.VisitorID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const callNextTickets = `-- name: CallNextTickets :many
 UPDATE tickets
 SET status    = 'called',
@@ -132,13 +220,14 @@ func (q *Queries) CallTicket(ctx context.Context, arg CallTicketParams) error {
 	return err
 }
 
-const cancelTicketByStaff = `-- name: CancelTicketByStaff :exec
+const cancelTicketByStaff = `-- name: CancelTicketByStaff :one
 UPDATE tickets
 SET status       = 'cancelled',
     cancelled_at = now()
 WHERE id       = $1
   AND booth_id = $2
   AND status  != 'admitted'
+RETURNING visitor_id
 `
 
 type CancelTicketByStaffParams struct {
@@ -149,9 +238,12 @@ type CancelTicketByStaffParams struct {
 // Staff can cancel a ticket in any non-admitted state.
 // The booth_id guard is intentional: omitting it would let staff cancel tickets
 // belonging to other booths.
-func (q *Queries) CancelTicketByStaff(ctx context.Context, arg CancelTicketByStaffParams) error {
-	_, err := q.db.Exec(ctx, cancelTicketByStaff, arg.ID, arg.BoothID)
-	return err
+// Returns visitor_id for notification enqueueing.
+func (q *Queries) CancelTicketByStaff(ctx context.Context, arg CancelTicketByStaffParams) (int64, error) {
+	row := q.db.QueryRow(ctx, cancelTicketByStaff, arg.ID, arg.BoothID)
+	var visitor_id int64
+	err := row.Scan(&visitor_id)
+	return visitor_id, err
 }
 
 const createTicket = `-- name: CreateTicket :one
@@ -203,6 +295,42 @@ func (q *Queries) CreateTicket(ctx context.Context, arg CreateTicketParams) (Tic
 		&i.CancelledAt,
 	)
 	return i, err
+}
+
+const findExpiredCalledTickets = `-- name: FindExpiredCalledTickets :many
+SELECT t.id, t.booth_id
+FROM tickets t
+JOIN booths b ON b.id = t.booth_id
+WHERE t.status = 'called'
+  AND t.called_at IS NOT NULL
+  AND t.called_at + (b.call_resend_minutes * INTERVAL '1 minute') < now()
+`
+
+type FindExpiredCalledTicketsRow struct {
+	ID      int64
+	BoothID int64
+}
+
+// Returns called tickets whose call_resend_minutes have elapsed since called_at.
+// Used by the pending worker to bulk-transition No-Show tickets.
+func (q *Queries) FindExpiredCalledTickets(ctx context.Context) ([]FindExpiredCalledTicketsRow, error) {
+	rows, err := q.db.Query(ctx, findExpiredCalledTickets)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []FindExpiredCalledTicketsRow{}
+	for rows.Next() {
+		var i FindExpiredCalledTicketsRow
+		if err := rows.Scan(&i.ID, &i.BoothID); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
 }
 
 const forceAdmitTicket = `-- name: ForceAdmitTicket :one
@@ -407,6 +535,49 @@ func (q *Queries) GetTicketPosition(ctx context.Context, id int64) (int32, error
 	return position, err
 }
 
+const getTicketsByMatchSession = `-- name: GetTicketsByMatchSession :many
+SELECT id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at FROM tickets
+WHERE match_session_id = $1
+  AND status != 'cancelled'
+`
+
+// Returns all non-cancelled tickets belonging to a match session.
+func (q *Queries) GetTicketsByMatchSession(ctx context.Context, matchSessionID *int64) ([]Ticket, error) {
+	rows, err := q.db.Query(ctx, getTicketsByMatchSession, matchSessionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Ticket{}
+	for rows.Next() {
+		var i Ticket
+		if err := rows.Scan(
+			&i.ID,
+			&i.VisitorID,
+			&i.BoothID,
+			&i.TicketGroupID,
+			&i.MatchSessionID,
+			&i.SequenceInBooth,
+			&i.Status,
+			&i.MatchMode,
+			&i.IsPriorityCall,
+			&i.CreatedAt,
+			&i.CalledAt,
+			&i.PendingAt,
+			&i.ReturnedAt,
+			&i.AdmittedAt,
+			&i.CancelledAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listTicketsByBoothForStaff = `-- name: ListTicketsByBoothForStaff :many
 SELECT
     t.id,
@@ -414,6 +585,7 @@ SELECT
     t.status,
     t.is_priority_call,
     t.created_at,
+    t.pending_at,
     v.reception_number,
     v.nickname,
     tg.participant_count
@@ -433,6 +605,7 @@ type ListTicketsByBoothForStaffRow struct {
 	Status           string
 	IsPriorityCall   bool
 	CreatedAt        pgtype.Timestamptz
+	PendingAt        pgtype.Timestamptz
 	ReceptionNumber  string
 	Nickname         string
 	ParticipantCount int32
@@ -454,6 +627,7 @@ func (q *Queries) ListTicketsByBoothForStaff(ctx context.Context, boothID int64)
 			&i.Status,
 			&i.IsPriorityCall,
 			&i.CreatedAt,
+			&i.PendingAt,
 			&i.ReceptionNumber,
 			&i.Nickname,
 			&i.ParticipantCount,
@@ -548,6 +722,90 @@ func (q *Queries) ListTicketsByVisitorID(ctx context.Context, visitorID int64) (
 			&i.AdmittedAt,
 			&i.CancelledAt,
 		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listWaitingPrivateTicketsByBooth = `-- name: ListWaitingPrivateTicketsByBooth :many
+SELECT t.id, t.sequence_in_booth, tg.participant_count, v.reception_number, v.nickname
+FROM tickets t
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+JOIN visitors v ON v.id = t.visitor_id
+WHERE t.booth_id = $1
+  AND t.status = 'waiting'
+  AND t.match_mode = 'private'
+ORDER BY t.sequence_in_booth
+`
+
+type ListWaitingPrivateTicketsByBoothRow struct {
+	ID               int64
+	SequenceInBooth  int32
+	ParticipantCount int32
+	ReceptionNumber  string
+	Nickname         string
+}
+
+// Returns waiting private-mode tickets (awaiting staff call) for matchmaking.
+func (q *Queries) ListWaitingPrivateTicketsByBooth(ctx context.Context, boothID int64) ([]ListWaitingPrivateTicketsByBoothRow, error) {
+	rows, err := q.db.Query(ctx, listWaitingPrivateTicketsByBooth, boothID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListWaitingPrivateTicketsByBoothRow{}
+	for rows.Next() {
+		var i ListWaitingPrivateTicketsByBoothRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.SequenceInBooth,
+			&i.ParticipantCount,
+			&i.ReceptionNumber,
+			&i.Nickname,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listWaitingPublicTicketsByBooth = `-- name: ListWaitingPublicTicketsByBooth :many
+SELECT t.id, t.sequence_in_booth, tg.participant_count
+FROM tickets t
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+WHERE t.booth_id = $1
+  AND t.status = 'waiting'
+  AND t.match_mode = 'public'
+  AND t.match_session_id IS NULL
+ORDER BY t.sequence_in_booth
+`
+
+type ListWaitingPublicTicketsByBoothRow struct {
+	ID               int64
+	SequenceInBooth  int32
+	ParticipantCount int32
+}
+
+// Returns waiting public-mode tickets ordered by sequence for matchmaking logic.
+func (q *Queries) ListWaitingPublicTicketsByBooth(ctx context.Context, boothID int64) ([]ListWaitingPublicTicketsByBoothRow, error) {
+	rows, err := q.db.Query(ctx, listWaitingPublicTicketsByBooth, boothID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListWaitingPublicTicketsByBoothRow{}
+	for rows.Next() {
+		var i ListWaitingPublicTicketsByBoothRow
+		if err := rows.Scan(&i.ID, &i.SequenceInBooth, &i.ParticipantCount); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

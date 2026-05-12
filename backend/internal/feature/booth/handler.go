@@ -12,6 +12,7 @@ import (
 	"reception-system/gen/go/admin/v1/adminv1connect"
 	boothv1 "reception-system/gen/go/booth/v1"
 	"reception-system/gen/go/booth/v1/boothv1connect"
+	"reception-system/internal/feature/notification"
 	"reception-system/internal/pkg/auth"
 	"reception-system/internal/pkg/connecterr"
 )
@@ -31,12 +32,13 @@ func NewHandler(repo *Repository, logger *slog.Logger) *Handler {
 type StaffHandler struct {
 	adminv1connect.UnimplementedStaffServiceHandler
 	repo          *Repository
+	notifRepo     *notification.Repository
 	sessionSecret string
 	logger        *slog.Logger
 }
 
-func NewStaffHandler(repo *Repository, sessionSecret string, logger *slog.Logger) *StaffHandler {
-	return &StaffHandler{repo: repo, sessionSecret: sessionSecret, logger: logger}
+func NewStaffHandler(repo *Repository, notifRepo *notification.Repository, sessionSecret string, logger *slog.Logger) *StaffHandler {
+	return &StaffHandler{repo: repo, notifRepo: notifRepo, sessionSecret: sessionSecret, logger: logger}
 }
 
 func (h *StaffHandler) LoginAsStaff(
@@ -79,8 +81,13 @@ func (h *StaffHandler) CallTicket(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid ticket_id"))
 	}
 
-	if err := h.repo.CallTicket(ctx, ticketID, boothID); err != nil {
+	visitorID, err := h.repo.CallTicket(ctx, ticketID, boothID)
+	if err != nil {
 		return nil, connecterr.Convert(err)
+	}
+
+	if err := h.notifRepo.EnqueueForVisitor(ctx, &ticketID, visitorID, "call_initial"); err != nil {
+		h.logger.Error("enqueue call_initial notification", slog.Any("error", err))
 	}
 
 	return connect.NewResponse(&adminv1.CallTicketResponse{}), nil
@@ -99,15 +106,18 @@ func (h *StaffHandler) CallNextTickets(
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("count must be >= 1"))
 	}
 
-	ids, err := h.repo.CallNextTickets(ctx, boothID, req.Msg.Count)
+	called, err := h.repo.CallNextTickets(ctx, boothID, req.Msg.Count)
 	if err != nil {
 		h.logger.Error("call next tickets", slog.Any("error", err))
 		return nil, connecterr.Convert(err)
 	}
 
-	strIDs := make([]string, len(ids))
-	for i, id := range ids {
-		strIDs[i] = strconv.FormatInt(id, 10)
+	strIDs := make([]string, len(called))
+	for i, c := range called {
+		strIDs[i] = strconv.FormatInt(c.TicketID, 10)
+		if err := h.notifRepo.EnqueueForVisitor(ctx, &c.TicketID, c.VisitorID, "call_initial"); err != nil {
+			h.logger.Error("enqueue call_initial notification", slog.Any("error", err))
+		}
 	}
 
 	return connect.NewResponse(&adminv1.CallNextTicketsResponse{TicketIds: strIDs}), nil
@@ -150,7 +160,7 @@ func (h *StaffHandler) ListTicketsByBooth(
 
 	tickets := make([]*adminv1.StaffTicket, len(rows))
 	for i, row := range rows {
-		tickets[i] = &adminv1.StaffTicket{
+		t := &adminv1.StaffTicket{
 			TicketId:         strconv.FormatInt(row.ID, 10),
 			SequenceInBooth:  row.SequenceInBooth,
 			ReceptionNumber:  row.ReceptionNumber,
@@ -160,6 +170,10 @@ func (h *StaffHandler) ListTicketsByBooth(
 			IsPriorityCall:   row.IsPriorityCall,
 			CreatedAt:        row.CreatedAt.Time.UTC().Format("2006-01-02T15:04:05Z"),
 		}
+		if row.PendingAt.Valid {
+			t.PendingAt = row.PendingAt.Time.UTC().Format("2006-01-02T15:04:05Z")
+		}
+		tickets[i] = t
 	}
 
 	return connect.NewResponse(&adminv1.ListTicketsByBoothResponse{Tickets: tickets}), nil

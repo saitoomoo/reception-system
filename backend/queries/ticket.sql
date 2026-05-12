@@ -37,6 +37,7 @@ SELECT
     t.status,
     t.is_priority_call,
     t.created_at,
+    t.pending_at,
     v.reception_number,
     v.nickname,
     tg.participant_count
@@ -144,16 +145,18 @@ WHERE t.booth_id         = $1
 ORDER BY t.created_at DESC
 LIMIT 1;
 
--- name: CancelTicketByStaff :exec
+-- name: CancelTicketByStaff :one
 -- Staff can cancel a ticket in any non-admitted state.
 -- The booth_id guard is intentional: omitting it would let staff cancel tickets
 -- belonging to other booths.
+-- Returns visitor_id for notification enqueueing.
 UPDATE tickets
 SET status       = 'cancelled',
     cancelled_at = now()
 WHERE id       = $1
   AND booth_id = $2
-  AND status  != 'admitted';
+  AND status  != 'admitted'
+RETURNING visitor_id;
 
 -- name: SetTicketPending :exec
 -- Transitions a called ticket to pending (No-Show after call_resend_minutes).
@@ -176,6 +179,68 @@ WHERE id       = $1
   AND booth_id = $2
   AND status   = 'pending'
 RETURNING *;
+
+-- name: FindExpiredCalledTickets :many
+-- Returns called tickets whose call_resend_minutes have elapsed since called_at.
+-- Used by the pending worker to bulk-transition No-Show tickets.
+SELECT t.id, t.booth_id
+FROM tickets t
+JOIN booths b ON b.id = t.booth_id
+WHERE t.status = 'called'
+  AND t.called_at IS NOT NULL
+  AND t.called_at + (b.call_resend_minutes * INTERVAL '1 minute') < now();
+
+-- name: BulkSetPending :many
+-- Transitions the given called tickets to pending. Returns updated rows.
+UPDATE tickets
+SET status     = 'pending',
+    pending_at = now()
+WHERE id = ANY($1::bigint[])
+  AND status = 'called'
+RETURNING id, booth_id, visitor_id;
+
+-- name: ListWaitingPublicTicketsByBooth :many
+-- Returns waiting public-mode tickets ordered by sequence for matchmaking logic.
+SELECT t.id, t.sequence_in_booth, tg.participant_count
+FROM tickets t
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+WHERE t.booth_id = $1
+  AND t.status = 'waiting'
+  AND t.match_mode = 'public'
+  AND t.match_session_id IS NULL
+ORDER BY t.sequence_in_booth;
+
+-- name: ListWaitingPrivateTicketsByBooth :many
+-- Returns waiting private-mode tickets (awaiting staff call) for matchmaking.
+SELECT t.id, t.sequence_in_booth, tg.participant_count, v.reception_number, v.nickname
+FROM tickets t
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+JOIN visitors v ON v.id = t.visitor_id
+WHERE t.booth_id = $1
+  AND t.status = 'waiting'
+  AND t.match_mode = 'private'
+ORDER BY t.sequence_in_booth;
+
+-- name: AssignTicketsToMatchSession :exec
+-- Bulk-assign a set of ticket IDs to a match session.
+UPDATE tickets
+SET match_session_id = $2
+WHERE id = ANY($1::bigint[]);
+
+-- name: BulkCallMatchTickets :many
+-- Transitions the given tickets to called. Returns id+visitor_id for notification.
+UPDATE tickets
+SET status    = 'called',
+    called_at = now()
+WHERE id = ANY($1::bigint[])
+  AND status IN ('waiting', 'called')
+RETURNING id, visitor_id;
+
+-- name: GetTicketsByMatchSession :many
+-- Returns all non-cancelled tickets belonging to a match session.
+SELECT * FROM tickets
+WHERE match_session_id = $1
+  AND status != 'cancelled';
 
 -- name: GetActiveTicketByBoothAndReceptionNumber :one
 -- Returns the most recent non-cancelled ticket for a visitor at a specific booth,

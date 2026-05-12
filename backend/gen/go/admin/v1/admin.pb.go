@@ -569,6 +569,882 @@ func (*UpdateBoothResponse) Descriptor() ([]byte, []int) {
 	return file_admin_v1_admin_proto_rawDescGZIP(), []int{6}
 }
 
+type AdminBooth struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	BoothId                    string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
+	Name                       string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description                string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Location                   string                 `protobuf:"bytes,4,opt,name=location,proto3" json:"location,omitempty"`
+	OpenAt                     string                 `protobuf:"bytes,5,opt,name=open_at,json=openAt,proto3" json:"open_at,omitempty"`
+	CloseAt                    string                 `protobuf:"bytes,6,opt,name=close_at,json=closeAt,proto3" json:"close_at,omitempty"`
+	ExperienceType             string                 `protobuf:"bytes,7,opt,name=experience_type,json=experienceType,proto3" json:"experience_type,omitempty"`
+	MaxParticipantsPerTicket   int32                  `protobuf:"varint,8,opt,name=max_participants_per_ticket,json=maxParticipantsPerTicket,proto3" json:"max_participants_per_ticket,omitempty"`
+	ConcurrentCapacity         int32                  `protobuf:"varint,9,opt,name=concurrent_capacity,json=concurrentCapacity,proto3" json:"concurrent_capacity,omitempty"`
+	TargetPartySize            int32                  `protobuf:"varint,10,opt,name=target_party_size,json=targetPartySize,proto3" json:"target_party_size,omitempty"`
+	MinPartySize               int32                  `protobuf:"varint,11,opt,name=min_party_size,json=minPartySize,proto3" json:"min_party_size,omitempty"`
+	AllowPrivateMatch          bool                   `protobuf:"varint,12,opt,name=allow_private_match,json=allowPrivateMatch,proto3" json:"allow_private_match,omitempty"`
+	EstimatedMinutesPerPerson  int32                  `protobuf:"varint,13,opt,name=estimated_minutes_per_person,json=estimatedMinutesPerPerson,proto3" json:"estimated_minutes_per_person,omitempty"`
+	EstimatedMinutesPerSession int32                  `protobuf:"varint,14,opt,name=estimated_minutes_per_session,json=estimatedMinutesPerSession,proto3" json:"estimated_minutes_per_session,omitempty"`
+	CallThreshold              int32                  `protobuf:"varint,15,opt,name=call_threshold,json=callThreshold,proto3" json:"call_threshold,omitempty"`
+	CallResendMinutes          int32                  `protobuf:"varint,16,opt,name=call_resend_minutes,json=callResendMinutes,proto3" json:"call_resend_minutes,omitempty"`
+	CooldownMinutes            int32                  `protobuf:"varint,17,opt,name=cooldown_minutes,json=cooldownMinutes,proto3" json:"cooldown_minutes,omitempty"`
+	IsAccepting                bool                   `protobuf:"varint,18,opt,name=is_accepting,json=isAccepting,proto3" json:"is_accepting,omitempty"`
+	CoverImageUrl              string                 `protobuf:"bytes,19,opt,name=cover_image_url,json=coverImageUrl,proto3" json:"cover_image_url,omitempty"`
+	IntroVideoUrl              string                 `protobuf:"bytes,20,opt,name=intro_video_url,json=introVideoUrl,proto3" json:"intro_video_url,omitempty"`
+	SurveyUrl                  string                 `protobuf:"bytes,21,opt,name=survey_url,json=surveyUrl,proto3" json:"survey_url,omitempty"`
+	IsArchived                 bool                   `protobuf:"varint,22,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	StaffPasswordUpdatedAt     string                 `protobuf:"bytes,23,opt,name=staff_password_updated_at,json=staffPasswordUpdatedAt,proto3" json:"staff_password_updated_at,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *AdminBooth) Reset() {
+	*x = AdminBooth{}
+	mi := &file_admin_v1_admin_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AdminBooth) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AdminBooth) ProtoMessage() {}
+
+func (x *AdminBooth) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AdminBooth.ProtoReflect.Descriptor instead.
+func (*AdminBooth) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AdminBooth) GetBoothId() string {
+	if x != nil {
+		return x.BoothId
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetOpenAt() string {
+	if x != nil {
+		return x.OpenAt
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetCloseAt() string {
+	if x != nil {
+		return x.CloseAt
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetExperienceType() string {
+	if x != nil {
+		return x.ExperienceType
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetMaxParticipantsPerTicket() int32 {
+	if x != nil {
+		return x.MaxParticipantsPerTicket
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetConcurrentCapacity() int32 {
+	if x != nil {
+		return x.ConcurrentCapacity
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetTargetPartySize() int32 {
+	if x != nil {
+		return x.TargetPartySize
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetMinPartySize() int32 {
+	if x != nil {
+		return x.MinPartySize
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetAllowPrivateMatch() bool {
+	if x != nil {
+		return x.AllowPrivateMatch
+	}
+	return false
+}
+
+func (x *AdminBooth) GetEstimatedMinutesPerPerson() int32 {
+	if x != nil {
+		return x.EstimatedMinutesPerPerson
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetEstimatedMinutesPerSession() int32 {
+	if x != nil {
+		return x.EstimatedMinutesPerSession
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetCallThreshold() int32 {
+	if x != nil {
+		return x.CallThreshold
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetCallResendMinutes() int32 {
+	if x != nil {
+		return x.CallResendMinutes
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetCooldownMinutes() int32 {
+	if x != nil {
+		return x.CooldownMinutes
+	}
+	return 0
+}
+
+func (x *AdminBooth) GetIsAccepting() bool {
+	if x != nil {
+		return x.IsAccepting
+	}
+	return false
+}
+
+func (x *AdminBooth) GetCoverImageUrl() string {
+	if x != nil {
+		return x.CoverImageUrl
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetIntroVideoUrl() string {
+	if x != nil {
+		return x.IntroVideoUrl
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetSurveyUrl() string {
+	if x != nil {
+		return x.SurveyUrl
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+func (x *AdminBooth) GetStaffPasswordUpdatedAt() string {
+	if x != nil {
+		return x.StaffPasswordUpdatedAt
+	}
+	return ""
+}
+
+type ListAdminBoothsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAdminBoothsRequest) Reset() {
+	*x = ListAdminBoothsRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAdminBoothsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAdminBoothsRequest) ProtoMessage() {}
+
+func (x *ListAdminBoothsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAdminBoothsRequest.ProtoReflect.Descriptor instead.
+func (*ListAdminBoothsRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{8}
+}
+
+type ListAdminBoothsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Booths        []*AdminBooth          `protobuf:"bytes,1,rep,name=booths,proto3" json:"booths,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAdminBoothsResponse) Reset() {
+	*x = ListAdminBoothsResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAdminBoothsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAdminBoothsResponse) ProtoMessage() {}
+
+func (x *ListAdminBoothsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAdminBoothsResponse.ProtoReflect.Descriptor instead.
+func (*ListAdminBoothsResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListAdminBoothsResponse) GetBooths() []*AdminBooth {
+	if x != nil {
+		return x.Booths
+	}
+	return nil
+}
+
+type CreateBoothRequest struct {
+	state                      protoimpl.MessageState `protogen:"open.v1"`
+	Name                       string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description                string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	Location                   string                 `protobuf:"bytes,3,opt,name=location,proto3" json:"location,omitempty"`
+	OpenAt                     string                 `protobuf:"bytes,4,opt,name=open_at,json=openAt,proto3" json:"open_at,omitempty"`
+	CloseAt                    string                 `protobuf:"bytes,5,opt,name=close_at,json=closeAt,proto3" json:"close_at,omitempty"`
+	ExperienceType             string                 `protobuf:"bytes,6,opt,name=experience_type,json=experienceType,proto3" json:"experience_type,omitempty"`
+	MaxParticipantsPerTicket   int32                  `protobuf:"varint,7,opt,name=max_participants_per_ticket,json=maxParticipantsPerTicket,proto3" json:"max_participants_per_ticket,omitempty"`
+	ConcurrentCapacity         int32                  `protobuf:"varint,8,opt,name=concurrent_capacity,json=concurrentCapacity,proto3" json:"concurrent_capacity,omitempty"`
+	TargetPartySize            int32                  `protobuf:"varint,9,opt,name=target_party_size,json=targetPartySize,proto3" json:"target_party_size,omitempty"`
+	MinPartySize               int32                  `protobuf:"varint,10,opt,name=min_party_size,json=minPartySize,proto3" json:"min_party_size,omitempty"`
+	AllowPrivateMatch          bool                   `protobuf:"varint,11,opt,name=allow_private_match,json=allowPrivateMatch,proto3" json:"allow_private_match,omitempty"`
+	EstimatedMinutesPerPerson  int32                  `protobuf:"varint,12,opt,name=estimated_minutes_per_person,json=estimatedMinutesPerPerson,proto3" json:"estimated_minutes_per_person,omitempty"`
+	EstimatedMinutesPerSession int32                  `protobuf:"varint,13,opt,name=estimated_minutes_per_session,json=estimatedMinutesPerSession,proto3" json:"estimated_minutes_per_session,omitempty"`
+	CallThreshold              int32                  `protobuf:"varint,14,opt,name=call_threshold,json=callThreshold,proto3" json:"call_threshold,omitempty"`
+	CallResendMinutes          int32                  `protobuf:"varint,15,opt,name=call_resend_minutes,json=callResendMinutes,proto3" json:"call_resend_minutes,omitempty"`
+	CooldownMinutes            int32                  `protobuf:"varint,16,opt,name=cooldown_minutes,json=cooldownMinutes,proto3" json:"cooldown_minutes,omitempty"`
+	IsAccepting                bool                   `protobuf:"varint,17,opt,name=is_accepting,json=isAccepting,proto3" json:"is_accepting,omitempty"`
+	CoverImageUrl              string                 `protobuf:"bytes,18,opt,name=cover_image_url,json=coverImageUrl,proto3" json:"cover_image_url,omitempty"`
+	IntroVideoUrl              string                 `protobuf:"bytes,19,opt,name=intro_video_url,json=introVideoUrl,proto3" json:"intro_video_url,omitempty"`
+	SurveyUrl                  string                 `protobuf:"bytes,20,opt,name=survey_url,json=surveyUrl,proto3" json:"survey_url,omitempty"`
+	StaffPassword              string                 `protobuf:"bytes,21,opt,name=staff_password,json=staffPassword,proto3" json:"staff_password,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *CreateBoothRequest) Reset() {
+	*x = CreateBoothRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBoothRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBoothRequest) ProtoMessage() {}
+
+func (x *CreateBoothRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBoothRequest.ProtoReflect.Descriptor instead.
+func (*CreateBoothRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CreateBoothRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetLocation() string {
+	if x != nil {
+		return x.Location
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetOpenAt() string {
+	if x != nil {
+		return x.OpenAt
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetCloseAt() string {
+	if x != nil {
+		return x.CloseAt
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetExperienceType() string {
+	if x != nil {
+		return x.ExperienceType
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetMaxParticipantsPerTicket() int32 {
+	if x != nil {
+		return x.MaxParticipantsPerTicket
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetConcurrentCapacity() int32 {
+	if x != nil {
+		return x.ConcurrentCapacity
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetTargetPartySize() int32 {
+	if x != nil {
+		return x.TargetPartySize
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetMinPartySize() int32 {
+	if x != nil {
+		return x.MinPartySize
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetAllowPrivateMatch() bool {
+	if x != nil {
+		return x.AllowPrivateMatch
+	}
+	return false
+}
+
+func (x *CreateBoothRequest) GetEstimatedMinutesPerPerson() int32 {
+	if x != nil {
+		return x.EstimatedMinutesPerPerson
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetEstimatedMinutesPerSession() int32 {
+	if x != nil {
+		return x.EstimatedMinutesPerSession
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetCallThreshold() int32 {
+	if x != nil {
+		return x.CallThreshold
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetCallResendMinutes() int32 {
+	if x != nil {
+		return x.CallResendMinutes
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetCooldownMinutes() int32 {
+	if x != nil {
+		return x.CooldownMinutes
+	}
+	return 0
+}
+
+func (x *CreateBoothRequest) GetIsAccepting() bool {
+	if x != nil {
+		return x.IsAccepting
+	}
+	return false
+}
+
+func (x *CreateBoothRequest) GetCoverImageUrl() string {
+	if x != nil {
+		return x.CoverImageUrl
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetIntroVideoUrl() string {
+	if x != nil {
+		return x.IntroVideoUrl
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetSurveyUrl() string {
+	if x != nil {
+		return x.SurveyUrl
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetStaffPassword() string {
+	if x != nil {
+		return x.StaffPassword
+	}
+	return ""
+}
+
+type CreateBoothResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Booth         *AdminBooth            `protobuf:"bytes,1,opt,name=booth,proto3" json:"booth,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateBoothResponse) Reset() {
+	*x = CreateBoothResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBoothResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBoothResponse) ProtoMessage() {}
+
+func (x *CreateBoothResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBoothResponse.ProtoReflect.Descriptor instead.
+func (*CreateBoothResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CreateBoothResponse) GetBooth() *AdminBooth {
+	if x != nil {
+		return x.Booth
+	}
+	return nil
+}
+
+type ArchiveBoothRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ArchiveBoothRequest) Reset() {
+	*x = ArchiveBoothRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ArchiveBoothRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArchiveBoothRequest) ProtoMessage() {}
+
+func (x *ArchiveBoothRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArchiveBoothRequest.ProtoReflect.Descriptor instead.
+func (*ArchiveBoothRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ArchiveBoothRequest) GetBoothId() string {
+	if x != nil {
+		return x.BoothId
+	}
+	return ""
+}
+
+type ArchiveBoothResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ArchiveBoothResponse) Reset() {
+	*x = ArchiveBoothResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ArchiveBoothResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ArchiveBoothResponse) ProtoMessage() {}
+
+func (x *ArchiveBoothResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ArchiveBoothResponse.ProtoReflect.Descriptor instead.
+func (*ArchiveBoothResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{13}
+}
+
+type UnarchiveBoothRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnarchiveBoothRequest) Reset() {
+	*x = UnarchiveBoothRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnarchiveBoothRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnarchiveBoothRequest) ProtoMessage() {}
+
+func (x *UnarchiveBoothRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnarchiveBoothRequest.ProtoReflect.Descriptor instead.
+func (*UnarchiveBoothRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UnarchiveBoothRequest) GetBoothId() string {
+	if x != nil {
+		return x.BoothId
+	}
+	return ""
+}
+
+type UnarchiveBoothResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnarchiveBoothResponse) Reset() {
+	*x = UnarchiveBoothResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnarchiveBoothResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnarchiveBoothResponse) ProtoMessage() {}
+
+func (x *UnarchiveBoothResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnarchiveBoothResponse.ProtoReflect.Descriptor instead.
+func (*UnarchiveBoothResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{15}
+}
+
+type DeleteBoothRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBoothRequest) Reset() {
+	*x = DeleteBoothRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBoothRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBoothRequest) ProtoMessage() {}
+
+func (x *DeleteBoothRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBoothRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBoothRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DeleteBoothRequest) GetBoothId() string {
+	if x != nil {
+		return x.BoothId
+	}
+	return ""
+}
+
+type DeleteBoothResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBoothResponse) Reset() {
+	*x = DeleteBoothResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBoothResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBoothResponse) ProtoMessage() {}
+
+func (x *DeleteBoothResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBoothResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBoothResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{17}
+}
+
+type UpdateBoothPasswordRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
+	NewPassword   string                 `protobuf:"bytes,2,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBoothPasswordRequest) Reset() {
+	*x = UpdateBoothPasswordRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBoothPasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBoothPasswordRequest) ProtoMessage() {}
+
+func (x *UpdateBoothPasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBoothPasswordRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBoothPasswordRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *UpdateBoothPasswordRequest) GetBoothId() string {
+	if x != nil {
+		return x.BoothId
+	}
+	return ""
+}
+
+func (x *UpdateBoothPasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+type UpdateBoothPasswordResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBoothPasswordResponse) Reset() {
+	*x = UpdateBoothPasswordResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBoothPasswordResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBoothPasswordResponse) ProtoMessage() {}
+
+func (x *UpdateBoothPasswordResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBoothPasswordResponse.ProtoReflect.Descriptor instead.
+func (*UpdateBoothPasswordResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{19}
+}
+
 type LoginAsStaffRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
@@ -579,7 +1455,7 @@ type LoginAsStaffRequest struct {
 
 func (x *LoginAsStaffRequest) Reset() {
 	*x = LoginAsStaffRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[7]
+	mi := &file_admin_v1_admin_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -591,7 +1467,7 @@ func (x *LoginAsStaffRequest) String() string {
 func (*LoginAsStaffRequest) ProtoMessage() {}
 
 func (x *LoginAsStaffRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[7]
+	mi := &file_admin_v1_admin_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -604,7 +1480,7 @@ func (x *LoginAsStaffRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginAsStaffRequest.ProtoReflect.Descriptor instead.
 func (*LoginAsStaffRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{7}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *LoginAsStaffRequest) GetBoothId() string {
@@ -631,7 +1507,7 @@ type LoginAsStaffResponse struct {
 
 func (x *LoginAsStaffResponse) Reset() {
 	*x = LoginAsStaffResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[8]
+	mi := &file_admin_v1_admin_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -643,7 +1519,7 @@ func (x *LoginAsStaffResponse) String() string {
 func (*LoginAsStaffResponse) ProtoMessage() {}
 
 func (x *LoginAsStaffResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[8]
+	mi := &file_admin_v1_admin_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -656,7 +1532,7 @@ func (x *LoginAsStaffResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LoginAsStaffResponse.ProtoReflect.Descriptor instead.
 func (*LoginAsStaffResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{8}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *LoginAsStaffResponse) GetBoothId() string {
@@ -682,7 +1558,7 @@ type CallTicketRequest struct {
 
 func (x *CallTicketRequest) Reset() {
 	*x = CallTicketRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[9]
+	mi := &file_admin_v1_admin_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -694,7 +1570,7 @@ func (x *CallTicketRequest) String() string {
 func (*CallTicketRequest) ProtoMessage() {}
 
 func (x *CallTicketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[9]
+	mi := &file_admin_v1_admin_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -707,7 +1583,7 @@ func (x *CallTicketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CallTicketRequest.ProtoReflect.Descriptor instead.
 func (*CallTicketRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{9}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CallTicketRequest) GetTicketId() string {
@@ -725,7 +1601,7 @@ type CallTicketResponse struct {
 
 func (x *CallTicketResponse) Reset() {
 	*x = CallTicketResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[10]
+	mi := &file_admin_v1_admin_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -737,7 +1613,7 @@ func (x *CallTicketResponse) String() string {
 func (*CallTicketResponse) ProtoMessage() {}
 
 func (x *CallTicketResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[10]
+	mi := &file_admin_v1_admin_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -750,7 +1626,7 @@ func (x *CallTicketResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CallTicketResponse.ProtoReflect.Descriptor instead.
 func (*CallTicketResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{10}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{23}
 }
 
 type CallNextTicketsRequest struct {
@@ -763,7 +1639,7 @@ type CallNextTicketsRequest struct {
 
 func (x *CallNextTicketsRequest) Reset() {
 	*x = CallNextTicketsRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[11]
+	mi := &file_admin_v1_admin_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -775,7 +1651,7 @@ func (x *CallNextTicketsRequest) String() string {
 func (*CallNextTicketsRequest) ProtoMessage() {}
 
 func (x *CallNextTicketsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[11]
+	mi := &file_admin_v1_admin_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -788,7 +1664,7 @@ func (x *CallNextTicketsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CallNextTicketsRequest.ProtoReflect.Descriptor instead.
 func (*CallNextTicketsRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{11}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *CallNextTicketsRequest) GetCount() int32 {
@@ -808,7 +1684,7 @@ type CallNextTicketsResponse struct {
 
 func (x *CallNextTicketsResponse) Reset() {
 	*x = CallNextTicketsResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[12]
+	mi := &file_admin_v1_admin_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -820,7 +1696,7 @@ func (x *CallNextTicketsResponse) String() string {
 func (*CallNextTicketsResponse) ProtoMessage() {}
 
 func (x *CallNextTicketsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[12]
+	mi := &file_admin_v1_admin_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -833,7 +1709,7 @@ func (x *CallNextTicketsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CallNextTicketsResponse.ProtoReflect.Descriptor instead.
 func (*CallNextTicketsResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{12}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *CallNextTicketsResponse) GetTicketIds() []string {
@@ -853,7 +1729,7 @@ type AdmitByQRRequest struct {
 
 func (x *AdmitByQRRequest) Reset() {
 	*x = AdmitByQRRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[13]
+	mi := &file_admin_v1_admin_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -865,7 +1741,7 @@ func (x *AdmitByQRRequest) String() string {
 func (*AdmitByQRRequest) ProtoMessage() {}
 
 func (x *AdmitByQRRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[13]
+	mi := &file_admin_v1_admin_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -878,7 +1754,7 @@ func (x *AdmitByQRRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdmitByQRRequest.ProtoReflect.Descriptor instead.
 func (*AdmitByQRRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{13}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *AdmitByQRRequest) GetReceptionNumber() string {
@@ -898,7 +1774,7 @@ type AdmitByQRResponse struct {
 
 func (x *AdmitByQRResponse) Reset() {
 	*x = AdmitByQRResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[14]
+	mi := &file_admin_v1_admin_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -910,7 +1786,7 @@ func (x *AdmitByQRResponse) String() string {
 func (*AdmitByQRResponse) ProtoMessage() {}
 
 func (x *AdmitByQRResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[14]
+	mi := &file_admin_v1_admin_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -923,7 +1799,7 @@ func (x *AdmitByQRResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdmitByQRResponse.ProtoReflect.Descriptor instead.
 func (*AdmitByQRResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{14}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *AdmitByQRResponse) GetOutcome() AdmitOutcome {
@@ -951,7 +1827,7 @@ type AdmitManuallyRequest struct {
 
 func (x *AdmitManuallyRequest) Reset() {
 	*x = AdmitManuallyRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[15]
+	mi := &file_admin_v1_admin_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -963,7 +1839,7 @@ func (x *AdmitManuallyRequest) String() string {
 func (*AdmitManuallyRequest) ProtoMessage() {}
 
 func (x *AdmitManuallyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[15]
+	mi := &file_admin_v1_admin_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -976,7 +1852,7 @@ func (x *AdmitManuallyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdmitManuallyRequest.ProtoReflect.Descriptor instead.
 func (*AdmitManuallyRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{15}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *AdmitManuallyRequest) GetReceptionNumber() string {
@@ -1003,7 +1879,7 @@ type AdmitManuallyResponse struct {
 
 func (x *AdmitManuallyResponse) Reset() {
 	*x = AdmitManuallyResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[16]
+	mi := &file_admin_v1_admin_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1015,7 +1891,7 @@ func (x *AdmitManuallyResponse) String() string {
 func (*AdmitManuallyResponse) ProtoMessage() {}
 
 func (x *AdmitManuallyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[16]
+	mi := &file_admin_v1_admin_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1028,7 +1904,7 @@ func (x *AdmitManuallyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdmitManuallyResponse.ProtoReflect.Descriptor instead.
 func (*AdmitManuallyResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{16}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *AdmitManuallyResponse) GetOutcome() AdmitOutcome {
@@ -1054,7 +1930,7 @@ type CancelTicketByStaffRequest struct {
 
 func (x *CancelTicketByStaffRequest) Reset() {
 	*x = CancelTicketByStaffRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[17]
+	mi := &file_admin_v1_admin_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1066,7 +1942,7 @@ func (x *CancelTicketByStaffRequest) String() string {
 func (*CancelTicketByStaffRequest) ProtoMessage() {}
 
 func (x *CancelTicketByStaffRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[17]
+	mi := &file_admin_v1_admin_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1079,7 +1955,7 @@ func (x *CancelTicketByStaffRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTicketByStaffRequest.ProtoReflect.Descriptor instead.
 func (*CancelTicketByStaffRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{17}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *CancelTicketByStaffRequest) GetTicketId() string {
@@ -1097,7 +1973,7 @@ type CancelTicketByStaffResponse struct {
 
 func (x *CancelTicketByStaffResponse) Reset() {
 	*x = CancelTicketByStaffResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[18]
+	mi := &file_admin_v1_admin_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1109,7 +1985,7 @@ func (x *CancelTicketByStaffResponse) String() string {
 func (*CancelTicketByStaffResponse) ProtoMessage() {}
 
 func (x *CancelTicketByStaffResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[18]
+	mi := &file_admin_v1_admin_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1122,7 +1998,7 @@ func (x *CancelTicketByStaffResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTicketByStaffResponse.ProtoReflect.Descriptor instead.
 func (*CancelTicketByStaffResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{18}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{31}
 }
 
 type GetStaffSessionRequest struct {
@@ -1133,7 +2009,7 @@ type GetStaffSessionRequest struct {
 
 func (x *GetStaffSessionRequest) Reset() {
 	*x = GetStaffSessionRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[19]
+	mi := &file_admin_v1_admin_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1145,7 +2021,7 @@ func (x *GetStaffSessionRequest) String() string {
 func (*GetStaffSessionRequest) ProtoMessage() {}
 
 func (x *GetStaffSessionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[19]
+	mi := &file_admin_v1_admin_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1158,7 +2034,7 @@ func (x *GetStaffSessionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStaffSessionRequest.ProtoReflect.Descriptor instead.
 func (*GetStaffSessionRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{19}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{32}
 }
 
 type GetStaffSessionResponse struct {
@@ -1171,7 +2047,7 @@ type GetStaffSessionResponse struct {
 
 func (x *GetStaffSessionResponse) Reset() {
 	*x = GetStaffSessionResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[20]
+	mi := &file_admin_v1_admin_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1183,7 +2059,7 @@ func (x *GetStaffSessionResponse) String() string {
 func (*GetStaffSessionResponse) ProtoMessage() {}
 
 func (x *GetStaffSessionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[20]
+	mi := &file_admin_v1_admin_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1196,7 +2072,7 @@ func (x *GetStaffSessionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetStaffSessionResponse.ProtoReflect.Descriptor instead.
 func (*GetStaffSessionResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{20}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *GetStaffSessionResponse) GetBoothId() string {
@@ -1223,13 +2099,14 @@ type StaffTicket struct {
 	Status           string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
 	IsPriorityCall   bool                   `protobuf:"varint,7,opt,name=is_priority_call,json=isPriorityCall,proto3" json:"is_priority_call,omitempty"`
 	CreatedAt        string                 `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	PendingAt        string                 `protobuf:"bytes,9,opt,name=pending_at,json=pendingAt,proto3" json:"pending_at,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
 
 func (x *StaffTicket) Reset() {
 	*x = StaffTicket{}
-	mi := &file_admin_v1_admin_proto_msgTypes[21]
+	mi := &file_admin_v1_admin_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1241,7 +2118,7 @@ func (x *StaffTicket) String() string {
 func (*StaffTicket) ProtoMessage() {}
 
 func (x *StaffTicket) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[21]
+	mi := &file_admin_v1_admin_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1254,7 +2131,7 @@ func (x *StaffTicket) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StaffTicket.ProtoReflect.Descriptor instead.
 func (*StaffTicket) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{21}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *StaffTicket) GetTicketId() string {
@@ -1313,6 +2190,13 @@ func (x *StaffTicket) GetCreatedAt() string {
 	return ""
 }
 
+func (x *StaffTicket) GetPendingAt() string {
+	if x != nil {
+		return x.PendingAt
+	}
+	return ""
+}
+
 type ListTicketsByBoothRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1321,7 +2205,7 @@ type ListTicketsByBoothRequest struct {
 
 func (x *ListTicketsByBoothRequest) Reset() {
 	*x = ListTicketsByBoothRequest{}
-	mi := &file_admin_v1_admin_proto_msgTypes[22]
+	mi := &file_admin_v1_admin_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1333,7 +2217,7 @@ func (x *ListTicketsByBoothRequest) String() string {
 func (*ListTicketsByBoothRequest) ProtoMessage() {}
 
 func (x *ListTicketsByBoothRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[22]
+	mi := &file_admin_v1_admin_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1346,7 +2230,7 @@ func (x *ListTicketsByBoothRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTicketsByBoothRequest.ProtoReflect.Descriptor instead.
 func (*ListTicketsByBoothRequest) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{22}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{35}
 }
 
 type ListTicketsByBoothResponse struct {
@@ -1358,7 +2242,7 @@ type ListTicketsByBoothResponse struct {
 
 func (x *ListTicketsByBoothResponse) Reset() {
 	*x = ListTicketsByBoothResponse{}
-	mi := &file_admin_v1_admin_proto_msgTypes[23]
+	mi := &file_admin_v1_admin_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1370,7 +2254,7 @@ func (x *ListTicketsByBoothResponse) String() string {
 func (*ListTicketsByBoothResponse) ProtoMessage() {}
 
 func (x *ListTicketsByBoothResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_admin_v1_admin_proto_msgTypes[23]
+	mi := &file_admin_v1_admin_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1383,12 +2267,1104 @@ func (x *ListTicketsByBoothResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTicketsByBoothResponse.ProtoReflect.Descriptor instead.
 func (*ListTicketsByBoothResponse) Descriptor() ([]byte, []int) {
-	return file_admin_v1_admin_proto_rawDescGZIP(), []int{23}
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ListTicketsByBoothResponse) GetTickets() []*StaffTicket {
 	if x != nil {
 		return x.Tickets
+	}
+	return nil
+}
+
+type RestorePendingTicketRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TicketId      string                 `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RestorePendingTicketRequest) Reset() {
+	*x = RestorePendingTicketRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestorePendingTicketRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestorePendingTicketRequest) ProtoMessage() {}
+
+func (x *RestorePendingTicketRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestorePendingTicketRequest.ProtoReflect.Descriptor instead.
+func (*RestorePendingTicketRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *RestorePendingTicketRequest) GetTicketId() string {
+	if x != nil {
+		return x.TicketId
+	}
+	return ""
+}
+
+type RestorePendingTicketResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RestorePendingTicketResponse) Reset() {
+	*x = RestorePendingTicketResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RestorePendingTicketResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RestorePendingTicketResponse) ProtoMessage() {}
+
+func (x *RestorePendingTicketResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RestorePendingTicketResponse.ProtoReflect.Descriptor instead.
+func (*RestorePendingTicketResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{38}
+}
+
+type GetRiskExplanationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRiskExplanationRequest) Reset() {
+	*x = GetRiskExplanationRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRiskExplanationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRiskExplanationRequest) ProtoMessage() {}
+
+func (x *GetRiskExplanationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRiskExplanationRequest.ProtoReflect.Descriptor instead.
+func (*GetRiskExplanationRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{39}
+}
+
+type GetRiskExplanationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Body          string                 `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	UpdatedAt     string                 `protobuf:"bytes,2,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRiskExplanationResponse) Reset() {
+	*x = GetRiskExplanationResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRiskExplanationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRiskExplanationResponse) ProtoMessage() {}
+
+func (x *GetRiskExplanationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRiskExplanationResponse.ProtoReflect.Descriptor instead.
+func (*GetRiskExplanationResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *GetRiskExplanationResponse) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *GetRiskExplanationResponse) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+type UpdateRiskExplanationRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Body          string                 `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateRiskExplanationRequest) Reset() {
+	*x = UpdateRiskExplanationRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateRiskExplanationRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateRiskExplanationRequest) ProtoMessage() {}
+
+func (x *UpdateRiskExplanationRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateRiskExplanationRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRiskExplanationRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *UpdateRiskExplanationRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type UpdateRiskExplanationResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UpdatedAt     string                 `protobuf:"bytes,1,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateRiskExplanationResponse) Reset() {
+	*x = UpdateRiskExplanationResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateRiskExplanationResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateRiskExplanationResponse) ProtoMessage() {}
+
+func (x *UpdateRiskExplanationResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateRiskExplanationResponse.ProtoReflect.Descriptor instead.
+func (*UpdateRiskExplanationResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *UpdateRiskExplanationResponse) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+type ForceStartMatchRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ForceStartMatchRequest) Reset() {
+	*x = ForceStartMatchRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ForceStartMatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ForceStartMatchRequest) ProtoMessage() {}
+
+func (x *ForceStartMatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ForceStartMatchRequest.ProtoReflect.Descriptor instead.
+func (*ForceStartMatchRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{43}
+}
+
+type ForceStartMatchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ForceStartMatchResponse) Reset() {
+	*x = ForceStartMatchResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ForceStartMatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ForceStartMatchResponse) ProtoMessage() {}
+
+func (x *ForceStartMatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ForceStartMatchResponse.ProtoReflect.Descriptor instead.
+func (*ForceStartMatchResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *ForceStartMatchResponse) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type CallPrivateMatchRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// ID of the private ticket whose match session should be called.
+	TicketId      string `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CallPrivateMatchRequest) Reset() {
+	*x = CallPrivateMatchRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[45]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CallPrivateMatchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallPrivateMatchRequest) ProtoMessage() {}
+
+func (x *CallPrivateMatchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[45]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CallPrivateMatchRequest.ProtoReflect.Descriptor instead.
+func (*CallPrivateMatchRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{45}
+}
+
+func (x *CallPrivateMatchRequest) GetTicketId() string {
+	if x != nil {
+		return x.TicketId
+	}
+	return ""
+}
+
+type CallPrivateMatchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CallPrivateMatchResponse) Reset() {
+	*x = CallPrivateMatchResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[46]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CallPrivateMatchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CallPrivateMatchResponse) ProtoMessage() {}
+
+func (x *CallPrivateMatchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[46]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CallPrivateMatchResponse.ProtoReflect.Descriptor instead.
+func (*CallPrivateMatchResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{46}
+}
+
+type CompleteMatchSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionId     string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CompleteMatchSessionRequest) Reset() {
+	*x = CompleteMatchSessionRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[47]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CompleteMatchSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompleteMatchSessionRequest) ProtoMessage() {}
+
+func (x *CompleteMatchSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[47]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompleteMatchSessionRequest.ProtoReflect.Descriptor instead.
+func (*CompleteMatchSessionRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{47}
+}
+
+func (x *CompleteMatchSessionRequest) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+type CompleteMatchSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CompleteMatchSessionResponse) Reset() {
+	*x = CompleteMatchSessionResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[48]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CompleteMatchSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CompleteMatchSessionResponse) ProtoMessage() {}
+
+func (x *CompleteMatchSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[48]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CompleteMatchSessionResponse.ProtoReflect.Descriptor instead.
+func (*CompleteMatchSessionResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{48}
+}
+
+// One group waiting in public mode.
+type PublicWaitingGroup struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TicketId         string                 `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
+	SequenceInBooth  int32                  `protobuf:"varint,2,opt,name=sequence_in_booth,json=sequenceInBooth,proto3" json:"sequence_in_booth,omitempty"`
+	ParticipantCount int32                  `protobuf:"varint,3,opt,name=participant_count,json=participantCount,proto3" json:"participant_count,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *PublicWaitingGroup) Reset() {
+	*x = PublicWaitingGroup{}
+	mi := &file_admin_v1_admin_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PublicWaitingGroup) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PublicWaitingGroup) ProtoMessage() {}
+
+func (x *PublicWaitingGroup) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PublicWaitingGroup.ProtoReflect.Descriptor instead.
+func (*PublicWaitingGroup) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *PublicWaitingGroup) GetTicketId() string {
+	if x != nil {
+		return x.TicketId
+	}
+	return ""
+}
+
+func (x *PublicWaitingGroup) GetSequenceInBooth() int32 {
+	if x != nil {
+		return x.SequenceInBooth
+	}
+	return 0
+}
+
+func (x *PublicWaitingGroup) GetParticipantCount() int32 {
+	if x != nil {
+		return x.ParticipantCount
+	}
+	return 0
+}
+
+// One group waiting in private mode.
+type PrivateWaitingGroup struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TicketId         string                 `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
+	SequenceInBooth  int32                  `protobuf:"varint,2,opt,name=sequence_in_booth,json=sequenceInBooth,proto3" json:"sequence_in_booth,omitempty"`
+	ParticipantCount int32                  `protobuf:"varint,3,opt,name=participant_count,json=participantCount,proto3" json:"participant_count,omitempty"`
+	ReceptionNumber  string                 `protobuf:"bytes,4,opt,name=reception_number,json=receptionNumber,proto3" json:"reception_number,omitempty"`
+	Nickname         string                 `protobuf:"bytes,5,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *PrivateWaitingGroup) Reset() {
+	*x = PrivateWaitingGroup{}
+	mi := &file_admin_v1_admin_proto_msgTypes[50]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PrivateWaitingGroup) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PrivateWaitingGroup) ProtoMessage() {}
+
+func (x *PrivateWaitingGroup) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[50]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PrivateWaitingGroup.ProtoReflect.Descriptor instead.
+func (*PrivateWaitingGroup) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *PrivateWaitingGroup) GetTicketId() string {
+	if x != nil {
+		return x.TicketId
+	}
+	return ""
+}
+
+func (x *PrivateWaitingGroup) GetSequenceInBooth() int32 {
+	if x != nil {
+		return x.SequenceInBooth
+	}
+	return 0
+}
+
+func (x *PrivateWaitingGroup) GetParticipantCount() int32 {
+	if x != nil {
+		return x.ParticipantCount
+	}
+	return 0
+}
+
+func (x *PrivateWaitingGroup) GetReceptionNumber() string {
+	if x != nil {
+		return x.ReceptionNumber
+	}
+	return ""
+}
+
+func (x *PrivateWaitingGroup) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
+// An in-progress or waiting match session.
+type MatchQueueSession struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	SessionId        string                 `protobuf:"bytes,1,opt,name=session_id,json=sessionId,proto3" json:"session_id,omitempty"`
+	Mode             string                 `protobuf:"bytes,2,opt,name=mode,proto3" json:"mode,omitempty"`
+	Status           string                 `protobuf:"bytes,3,opt,name=status,proto3" json:"status,omitempty"`
+	ParticipantCount int32                  `protobuf:"varint,4,opt,name=participant_count,json=participantCount,proto3" json:"participant_count,omitempty"`
+	CreatedAt        string                 `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *MatchQueueSession) Reset() {
+	*x = MatchQueueSession{}
+	mi := &file_admin_v1_admin_proto_msgTypes[51]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MatchQueueSession) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MatchQueueSession) ProtoMessage() {}
+
+func (x *MatchQueueSession) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[51]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MatchQueueSession.ProtoReflect.Descriptor instead.
+func (*MatchQueueSession) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *MatchQueueSession) GetSessionId() string {
+	if x != nil {
+		return x.SessionId
+	}
+	return ""
+}
+
+func (x *MatchQueueSession) GetMode() string {
+	if x != nil {
+		return x.Mode
+	}
+	return ""
+}
+
+func (x *MatchQueueSession) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
+func (x *MatchQueueSession) GetParticipantCount() int32 {
+	if x != nil {
+		return x.ParticipantCount
+	}
+	return 0
+}
+
+func (x *MatchQueueSession) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+type GetMatchQueueStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMatchQueueStatusRequest) Reset() {
+	*x = GetMatchQueueStatusRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMatchQueueStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMatchQueueStatusRequest) ProtoMessage() {}
+
+func (x *GetMatchQueueStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMatchQueueStatusRequest.ProtoReflect.Descriptor instead.
+func (*GetMatchQueueStatusRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{52}
+}
+
+type GetMatchQueueStatusResponse struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	PublicWaiting      []*PublicWaitingGroup  `protobuf:"bytes,1,rep,name=public_waiting,json=publicWaiting,proto3" json:"public_waiting,omitempty"`
+	PublicWaitingTotal int32                  `protobuf:"varint,2,opt,name=public_waiting_total,json=publicWaitingTotal,proto3" json:"public_waiting_total,omitempty"`
+	TargetPartySize    int32                  `protobuf:"varint,3,opt,name=target_party_size,json=targetPartySize,proto3" json:"target_party_size,omitempty"`
+	MinPartySize       int32                  `protobuf:"varint,4,opt,name=min_party_size,json=minPartySize,proto3" json:"min_party_size,omitempty"`
+	PrivateWaiting     []*PrivateWaitingGroup `protobuf:"bytes,5,rep,name=private_waiting,json=privateWaiting,proto3" json:"private_waiting,omitempty"`
+	ActiveSessions     []*MatchQueueSession   `protobuf:"bytes,6,rep,name=active_sessions,json=activeSessions,proto3" json:"active_sessions,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *GetMatchQueueStatusResponse) Reset() {
+	*x = GetMatchQueueStatusResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMatchQueueStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMatchQueueStatusResponse) ProtoMessage() {}
+
+func (x *GetMatchQueueStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMatchQueueStatusResponse.ProtoReflect.Descriptor instead.
+func (*GetMatchQueueStatusResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *GetMatchQueueStatusResponse) GetPublicWaiting() []*PublicWaitingGroup {
+	if x != nil {
+		return x.PublicWaiting
+	}
+	return nil
+}
+
+func (x *GetMatchQueueStatusResponse) GetPublicWaitingTotal() int32 {
+	if x != nil {
+		return x.PublicWaitingTotal
+	}
+	return 0
+}
+
+func (x *GetMatchQueueStatusResponse) GetTargetPartySize() int32 {
+	if x != nil {
+		return x.TargetPartySize
+	}
+	return 0
+}
+
+func (x *GetMatchQueueStatusResponse) GetMinPartySize() int32 {
+	if x != nil {
+		return x.MinPartySize
+	}
+	return 0
+}
+
+func (x *GetMatchQueueStatusResponse) GetPrivateWaiting() []*PrivateWaitingGroup {
+	if x != nil {
+		return x.PrivateWaiting
+	}
+	return nil
+}
+
+func (x *GetMatchQueueStatusResponse) GetActiveSessions() []*MatchQueueSession {
+	if x != nil {
+		return x.ActiveSessions
+	}
+	return nil
+}
+
+type NotificationTemplate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
+	IconUrl       string                 `protobuf:"bytes,4,opt,name=icon_url,json=iconUrl,proto3" json:"icon_url,omitempty"` // empty string means no icon
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NotificationTemplate) Reset() {
+	*x = NotificationTemplate{}
+	mi := &file_admin_v1_admin_proto_msgTypes[54]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NotificationTemplate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NotificationTemplate) ProtoMessage() {}
+
+func (x *NotificationTemplate) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[54]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NotificationTemplate.ProtoReflect.Descriptor instead.
+func (*NotificationTemplate) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{54}
+}
+
+func (x *NotificationTemplate) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *NotificationTemplate) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *NotificationTemplate) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *NotificationTemplate) GetIconUrl() string {
+	if x != nil {
+		return x.IconUrl
+	}
+	return ""
+}
+
+type ListNotificationTemplatesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListNotificationTemplatesRequest) Reset() {
+	*x = ListNotificationTemplatesRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[55]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListNotificationTemplatesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListNotificationTemplatesRequest) ProtoMessage() {}
+
+func (x *ListNotificationTemplatesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[55]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListNotificationTemplatesRequest.ProtoReflect.Descriptor instead.
+func (*ListNotificationTemplatesRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{55}
+}
+
+type ListNotificationTemplatesResponse struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	Templates     []*NotificationTemplate `protobuf:"bytes,1,rep,name=templates,proto3" json:"templates,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListNotificationTemplatesResponse) Reset() {
+	*x = ListNotificationTemplatesResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListNotificationTemplatesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListNotificationTemplatesResponse) ProtoMessage() {}
+
+func (x *ListNotificationTemplatesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListNotificationTemplatesResponse.ProtoReflect.Descriptor instead.
+func (*ListNotificationTemplatesResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *ListNotificationTemplatesResponse) GetTemplates() []*NotificationTemplate {
+	if x != nil {
+		return x.Templates
+	}
+	return nil
+}
+
+type UpdateNotificationTemplateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
+	IconUrl       string                 `protobuf:"bytes,4,opt,name=icon_url,json=iconUrl,proto3" json:"icon_url,omitempty"` // empty string clears the icon
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateNotificationTemplateRequest) Reset() {
+	*x = UpdateNotificationTemplateRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateNotificationTemplateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateNotificationTemplateRequest) ProtoMessage() {}
+
+func (x *UpdateNotificationTemplateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateNotificationTemplateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateNotificationTemplateRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *UpdateNotificationTemplateRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *UpdateNotificationTemplateRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *UpdateNotificationTemplateRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *UpdateNotificationTemplateRequest) GetIconUrl() string {
+	if x != nil {
+		return x.IconUrl
+	}
+	return ""
+}
+
+type UpdateNotificationTemplateResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Template      *NotificationTemplate  `protobuf:"bytes,1,opt,name=template,proto3" json:"template,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateNotificationTemplateResponse) Reset() {
+	*x = UpdateNotificationTemplateResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateNotificationTemplateResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateNotificationTemplateResponse) ProtoMessage() {}
+
+func (x *UpdateNotificationTemplateResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateNotificationTemplateResponse.ProtoReflect.Descriptor instead.
+func (*UpdateNotificationTemplateResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *UpdateNotificationTemplateResponse) GetTemplate() *NotificationTemplate {
+	if x != nil {
+		return x.Template
 	}
 	return nil
 }
@@ -1437,7 +3413,77 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x0fintro_video_url\x18\x14 \x01(\tR\rintroVideoUrl\x12\x1d\n" +
 	"\n" +
 	"survey_url\x18\x15 \x01(\tR\tsurveyUrl\"\x15\n" +
-	"\x13UpdateBoothResponse\"L\n" +
+	"\x13UpdateBoothResponse\"\xbc\a\n" +
+	"\n" +
+	"AdminBooth\x12\x19\n" +
+	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x1a\n" +
+	"\blocation\x18\x04 \x01(\tR\blocation\x12\x17\n" +
+	"\aopen_at\x18\x05 \x01(\tR\x06openAt\x12\x19\n" +
+	"\bclose_at\x18\x06 \x01(\tR\acloseAt\x12'\n" +
+	"\x0fexperience_type\x18\a \x01(\tR\x0eexperienceType\x12=\n" +
+	"\x1bmax_participants_per_ticket\x18\b \x01(\x05R\x18maxParticipantsPerTicket\x12/\n" +
+	"\x13concurrent_capacity\x18\t \x01(\x05R\x12concurrentCapacity\x12*\n" +
+	"\x11target_party_size\x18\n" +
+	" \x01(\x05R\x0ftargetPartySize\x12$\n" +
+	"\x0emin_party_size\x18\v \x01(\x05R\fminPartySize\x12.\n" +
+	"\x13allow_private_match\x18\f \x01(\bR\x11allowPrivateMatch\x12?\n" +
+	"\x1cestimated_minutes_per_person\x18\r \x01(\x05R\x19estimatedMinutesPerPerson\x12A\n" +
+	"\x1destimated_minutes_per_session\x18\x0e \x01(\x05R\x1aestimatedMinutesPerSession\x12%\n" +
+	"\x0ecall_threshold\x18\x0f \x01(\x05R\rcallThreshold\x12.\n" +
+	"\x13call_resend_minutes\x18\x10 \x01(\x05R\x11callResendMinutes\x12)\n" +
+	"\x10cooldown_minutes\x18\x11 \x01(\x05R\x0fcooldownMinutes\x12!\n" +
+	"\fis_accepting\x18\x12 \x01(\bR\visAccepting\x12&\n" +
+	"\x0fcover_image_url\x18\x13 \x01(\tR\rcoverImageUrl\x12&\n" +
+	"\x0fintro_video_url\x18\x14 \x01(\tR\rintroVideoUrl\x12\x1d\n" +
+	"\n" +
+	"survey_url\x18\x15 \x01(\tR\tsurveyUrl\x12\x1f\n" +
+	"\vis_archived\x18\x16 \x01(\bR\n" +
+	"isArchived\x129\n" +
+	"\x19staff_password_updated_at\x18\x17 \x01(\tR\x16staffPasswordUpdatedAt\"\x18\n" +
+	"\x16ListAdminBoothsRequest\"G\n" +
+	"\x17ListAdminBoothsResponse\x12,\n" +
+	"\x06booths\x18\x01 \x03(\v2\x14.admin.v1.AdminBoothR\x06booths\"\xf4\x06\n" +
+	"\x12CreateBoothRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
+	"\blocation\x18\x03 \x01(\tR\blocation\x12\x17\n" +
+	"\aopen_at\x18\x04 \x01(\tR\x06openAt\x12\x19\n" +
+	"\bclose_at\x18\x05 \x01(\tR\acloseAt\x12'\n" +
+	"\x0fexperience_type\x18\x06 \x01(\tR\x0eexperienceType\x12=\n" +
+	"\x1bmax_participants_per_ticket\x18\a \x01(\x05R\x18maxParticipantsPerTicket\x12/\n" +
+	"\x13concurrent_capacity\x18\b \x01(\x05R\x12concurrentCapacity\x12*\n" +
+	"\x11target_party_size\x18\t \x01(\x05R\x0ftargetPartySize\x12$\n" +
+	"\x0emin_party_size\x18\n" +
+	" \x01(\x05R\fminPartySize\x12.\n" +
+	"\x13allow_private_match\x18\v \x01(\bR\x11allowPrivateMatch\x12?\n" +
+	"\x1cestimated_minutes_per_person\x18\f \x01(\x05R\x19estimatedMinutesPerPerson\x12A\n" +
+	"\x1destimated_minutes_per_session\x18\r \x01(\x05R\x1aestimatedMinutesPerSession\x12%\n" +
+	"\x0ecall_threshold\x18\x0e \x01(\x05R\rcallThreshold\x12.\n" +
+	"\x13call_resend_minutes\x18\x0f \x01(\x05R\x11callResendMinutes\x12)\n" +
+	"\x10cooldown_minutes\x18\x10 \x01(\x05R\x0fcooldownMinutes\x12!\n" +
+	"\fis_accepting\x18\x11 \x01(\bR\visAccepting\x12&\n" +
+	"\x0fcover_image_url\x18\x12 \x01(\tR\rcoverImageUrl\x12&\n" +
+	"\x0fintro_video_url\x18\x13 \x01(\tR\rintroVideoUrl\x12\x1d\n" +
+	"\n" +
+	"survey_url\x18\x14 \x01(\tR\tsurveyUrl\x12%\n" +
+	"\x0estaff_password\x18\x15 \x01(\tR\rstaffPassword\"A\n" +
+	"\x13CreateBoothResponse\x12*\n" +
+	"\x05booth\x18\x01 \x01(\v2\x14.admin.v1.AdminBoothR\x05booth\"0\n" +
+	"\x13ArchiveBoothRequest\x12\x19\n" +
+	"\bbooth_id\x18\x01 \x01(\tR\aboothId\"\x16\n" +
+	"\x14ArchiveBoothResponse\"2\n" +
+	"\x15UnarchiveBoothRequest\x12\x19\n" +
+	"\bbooth_id\x18\x01 \x01(\tR\aboothId\"\x18\n" +
+	"\x16UnarchiveBoothResponse\"/\n" +
+	"\x12DeleteBoothRequest\x12\x19\n" +
+	"\bbooth_id\x18\x01 \x01(\tR\aboothId\"\x15\n" +
+	"\x13DeleteBoothResponse\"Z\n" +
+	"\x1aUpdateBoothPasswordRequest\x12\x19\n" +
+	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12!\n" +
+	"\fnew_password\x18\x02 \x01(\tR\vnewPassword\"\x1d\n" +
+	"\x1bUpdateBoothPasswordResponse\"L\n" +
 	"\x13LoginAsStaffRequest\x12\x19\n" +
 	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"P\n" +
@@ -1471,7 +3517,7 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x17GetStaffSessionResponse\x12\x19\n" +
 	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12\x1d\n" +
 	"\n" +
-	"booth_name\x18\x02 \x01(\tR\tboothName\"\xab\x02\n" +
+	"booth_name\x18\x02 \x01(\tR\tboothName\"\xca\x02\n" +
 	"\vStaffTicket\x12\x1b\n" +
 	"\tticket_id\x18\x01 \x01(\tR\bticketId\x12*\n" +
 	"\x11sequence_in_booth\x18\x02 \x01(\x05R\x0fsequenceInBooth\x12)\n" +
@@ -1481,21 +3527,98 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x06status\x18\x06 \x01(\tR\x06status\x12(\n" +
 	"\x10is_priority_call\x18\a \x01(\bR\x0eisPriorityCall\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\b \x01(\tR\tcreatedAt\"\x1b\n" +
+	"created_at\x18\b \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"pending_at\x18\t \x01(\tR\tpendingAt\"\x1b\n" +
 	"\x19ListTicketsByBoothRequest\"M\n" +
 	"\x1aListTicketsByBoothResponse\x12/\n" +
-	"\atickets\x18\x01 \x03(\v2\x15.admin.v1.StaffTicketR\atickets*\xe6\x01\n" +
+	"\atickets\x18\x01 \x03(\v2\x15.admin.v1.StaffTicketR\atickets\":\n" +
+	"\x1bRestorePendingTicketRequest\x12\x1b\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\"\x1e\n" +
+	"\x1cRestorePendingTicketResponse\"\x1b\n" +
+	"\x19GetRiskExplanationRequest\"O\n" +
+	"\x1aGetRiskExplanationResponse\x12\x12\n" +
+	"\x04body\x18\x01 \x01(\tR\x04body\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x02 \x01(\tR\tupdatedAt\"2\n" +
+	"\x1cUpdateRiskExplanationRequest\x12\x12\n" +
+	"\x04body\x18\x01 \x01(\tR\x04body\">\n" +
+	"\x1dUpdateRiskExplanationResponse\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x01 \x01(\tR\tupdatedAt\"\x18\n" +
+	"\x16ForceStartMatchRequest\"8\n" +
+	"\x17ForceStartMatchResponse\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"6\n" +
+	"\x17CallPrivateMatchRequest\x12\x1b\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\"\x1a\n" +
+	"\x18CallPrivateMatchResponse\"<\n" +
+	"\x1bCompleteMatchSessionRequest\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"\x1e\n" +
+	"\x1cCompleteMatchSessionResponse\"\x8a\x01\n" +
+	"\x12PublicWaitingGroup\x12\x1b\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\x12*\n" +
+	"\x11sequence_in_booth\x18\x02 \x01(\x05R\x0fsequenceInBooth\x12+\n" +
+	"\x11participant_count\x18\x03 \x01(\x05R\x10participantCount\"\xd2\x01\n" +
+	"\x13PrivateWaitingGroup\x12\x1b\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\x12*\n" +
+	"\x11sequence_in_booth\x18\x02 \x01(\x05R\x0fsequenceInBooth\x12+\n" +
+	"\x11participant_count\x18\x03 \x01(\x05R\x10participantCount\x12)\n" +
+	"\x10reception_number\x18\x04 \x01(\tR\x0freceptionNumber\x12\x1a\n" +
+	"\bnickname\x18\x05 \x01(\tR\bnickname\"\xaa\x01\n" +
+	"\x11MatchQueueSession\x12\x1d\n" +
+	"\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\x12\x12\n" +
+	"\x04mode\x18\x02 \x01(\tR\x04mode\x12\x16\n" +
+	"\x06status\x18\x03 \x01(\tR\x06status\x12+\n" +
+	"\x11participant_count\x18\x04 \x01(\x05R\x10participantCount\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\tR\tcreatedAt\"\x1c\n" +
+	"\x1aGetMatchQueueStatusRequest\"\xf4\x02\n" +
+	"\x1bGetMatchQueueStatusResponse\x12C\n" +
+	"\x0epublic_waiting\x18\x01 \x03(\v2\x1c.admin.v1.PublicWaitingGroupR\rpublicWaiting\x120\n" +
+	"\x14public_waiting_total\x18\x02 \x01(\x05R\x12publicWaitingTotal\x12*\n" +
+	"\x11target_party_size\x18\x03 \x01(\x05R\x0ftargetPartySize\x12$\n" +
+	"\x0emin_party_size\x18\x04 \x01(\x05R\fminPartySize\x12F\n" +
+	"\x0fprivate_waiting\x18\x05 \x03(\v2\x1d.admin.v1.PrivateWaitingGroupR\x0eprivateWaiting\x12D\n" +
+	"\x0factive_sessions\x18\x06 \x03(\v2\x1b.admin.v1.MatchQueueSessionR\x0eactiveSessions\"m\n" +
+	"\x14NotificationTemplate\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
+	"\x04body\x18\x03 \x01(\tR\x04body\x12\x19\n" +
+	"\bicon_url\x18\x04 \x01(\tR\aiconUrl\"\"\n" +
+	" ListNotificationTemplatesRequest\"a\n" +
+	"!ListNotificationTemplatesResponse\x12<\n" +
+	"\ttemplates\x18\x01 \x03(\v2\x1e.admin.v1.NotificationTemplateR\ttemplates\"z\n" +
+	"!UpdateNotificationTemplateRequest\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
+	"\x04body\x18\x03 \x01(\tR\x04body\x12\x19\n" +
+	"\bicon_url\x18\x04 \x01(\tR\aiconUrl\"`\n" +
+	"\"UpdateNotificationTemplateResponse\x12:\n" +
+	"\btemplate\x18\x01 \x01(\v2\x1e.admin.v1.NotificationTemplateR\btemplate*\xe6\x01\n" +
 	"\fAdmitOutcome\x12\x1d\n" +
 	"\x19ADMIT_OUTCOME_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16ADMIT_OUTCOME_ADMITTED\x10\x01\x12+\n" +
 	"'ADMIT_OUTCOME_RESTORED_TO_PRIORITY_CALL\x10\x02\x12-\n" +
 	")ADMIT_OUTCOME_WAITING_CONFIRMATION_NEEDED\x10\x03\x12\"\n" +
 	"\x1eADMIT_OUTCOME_ALREADY_ADMITTED\x10\x04\x12\x1b\n" +
-	"\x17ADMIT_OUTCOME_NOT_FOUND\x10\x052\x8a\x02\n" +
+	"\x17ADMIT_OUTCOME_NOT_FOUND\x10\x052\xbc\t\n" +
 	"\fAdminService\x12_\n" +
 	"\x12LoginAsGlobalAdmin\x12#.admin.v1.LoginAsGlobalAdminRequest\x1a$.admin.v1.LoginAsGlobalAdminResponse\x12M\n" +
 	"\fGetDashboard\x12\x1d.admin.v1.GetDashboardRequest\x1a\x1e.admin.v1.GetDashboardResponse\x12J\n" +
-	"\vUpdateBooth\x12\x1c.admin.v1.UpdateBoothRequest\x1a\x1d.admin.v1.UpdateBoothResponse2\xb3\x05\n" +
+	"\vUpdateBooth\x12\x1c.admin.v1.UpdateBoothRequest\x1a\x1d.admin.v1.UpdateBoothResponse\x12V\n" +
+	"\x0fListAdminBooths\x12 .admin.v1.ListAdminBoothsRequest\x1a!.admin.v1.ListAdminBoothsResponse\x12J\n" +
+	"\vCreateBooth\x12\x1c.admin.v1.CreateBoothRequest\x1a\x1d.admin.v1.CreateBoothResponse\x12M\n" +
+	"\fArchiveBooth\x12\x1d.admin.v1.ArchiveBoothRequest\x1a\x1e.admin.v1.ArchiveBoothResponse\x12S\n" +
+	"\x0eUnarchiveBooth\x12\x1f.admin.v1.UnarchiveBoothRequest\x1a .admin.v1.UnarchiveBoothResponse\x12J\n" +
+	"\vDeleteBooth\x12\x1c.admin.v1.DeleteBoothRequest\x1a\x1d.admin.v1.DeleteBoothResponse\x12b\n" +
+	"\x13UpdateBoothPassword\x12$.admin.v1.UpdateBoothPasswordRequest\x1a%.admin.v1.UpdateBoothPasswordResponse\x12_\n" +
+	"\x12GetRiskExplanation\x12#.admin.v1.GetRiskExplanationRequest\x1a$.admin.v1.GetRiskExplanationResponse\x12h\n" +
+	"\x15UpdateRiskExplanation\x12&.admin.v1.UpdateRiskExplanationRequest\x1a'.admin.v1.UpdateRiskExplanationResponse\x12t\n" +
+	"\x19ListNotificationTemplates\x12*.admin.v1.ListNotificationTemplatesRequest\x1a+.admin.v1.ListNotificationTemplatesResponse\x12w\n" +
+	"\x1aUpdateNotificationTemplate\x12+.admin.v1.UpdateNotificationTemplateRequest\x1a,.admin.v1.UpdateNotificationTemplateResponse2\x98\t\n" +
 	"\fStaffService\x12M\n" +
 	"\fLoginAsStaff\x12\x1d.admin.v1.LoginAsStaffRequest\x1a\x1e.admin.v1.LoginAsStaffResponse\x12G\n" +
 	"\n" +
@@ -1505,7 +3628,12 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\rAdmitManually\x12\x1e.admin.v1.AdmitManuallyRequest\x1a\x1f.admin.v1.AdmitManuallyResponse\x12b\n" +
 	"\x13CancelTicketByStaff\x12$.admin.v1.CancelTicketByStaffRequest\x1a%.admin.v1.CancelTicketByStaffResponse\x12V\n" +
 	"\x0fGetStaffSession\x12 .admin.v1.GetStaffSessionRequest\x1a!.admin.v1.GetStaffSessionResponse\x12_\n" +
-	"\x12ListTicketsByBooth\x12#.admin.v1.ListTicketsByBoothRequest\x1a$.admin.v1.ListTicketsByBoothResponseB*Z(reception-system/gen/go/admin/v1;adminv1b\x06proto3"
+	"\x12ListTicketsByBooth\x12#.admin.v1.ListTicketsByBoothRequest\x1a$.admin.v1.ListTicketsByBoothResponse\x12e\n" +
+	"\x14RestorePendingTicket\x12%.admin.v1.RestorePendingTicketRequest\x1a&.admin.v1.RestorePendingTicketResponse\x12V\n" +
+	"\x0fForceStartMatch\x12 .admin.v1.ForceStartMatchRequest\x1a!.admin.v1.ForceStartMatchResponse\x12Y\n" +
+	"\x10CallPrivateMatch\x12!.admin.v1.CallPrivateMatchRequest\x1a\".admin.v1.CallPrivateMatchResponse\x12e\n" +
+	"\x14CompleteMatchSession\x12%.admin.v1.CompleteMatchSessionRequest\x1a&.admin.v1.CompleteMatchSessionResponse\x12b\n" +
+	"\x13GetMatchQueueStatus\x12$.admin.v1.GetMatchQueueStatusRequest\x1a%.admin.v1.GetMatchQueueStatusResponseB*Z(reception-system/gen/go/admin/v1;adminv1b\x06proto3"
 
 var (
 	file_admin_v1_admin_proto_rawDescOnce sync.Once
@@ -1520,66 +3648,138 @@ func file_admin_v1_admin_proto_rawDescGZIP() []byte {
 }
 
 var file_admin_v1_admin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 59)
 var file_admin_v1_admin_proto_goTypes = []any{
-	(AdmitOutcome)(0),                   // 0: admin.v1.AdmitOutcome
-	(*BoothStats)(nil),                  // 1: admin.v1.BoothStats
-	(*LoginAsGlobalAdminRequest)(nil),   // 2: admin.v1.LoginAsGlobalAdminRequest
-	(*LoginAsGlobalAdminResponse)(nil),  // 3: admin.v1.LoginAsGlobalAdminResponse
-	(*GetDashboardRequest)(nil),         // 4: admin.v1.GetDashboardRequest
-	(*GetDashboardResponse)(nil),        // 5: admin.v1.GetDashboardResponse
-	(*UpdateBoothRequest)(nil),          // 6: admin.v1.UpdateBoothRequest
-	(*UpdateBoothResponse)(nil),         // 7: admin.v1.UpdateBoothResponse
-	(*LoginAsStaffRequest)(nil),         // 8: admin.v1.LoginAsStaffRequest
-	(*LoginAsStaffResponse)(nil),        // 9: admin.v1.LoginAsStaffResponse
-	(*CallTicketRequest)(nil),           // 10: admin.v1.CallTicketRequest
-	(*CallTicketResponse)(nil),          // 11: admin.v1.CallTicketResponse
-	(*CallNextTicketsRequest)(nil),      // 12: admin.v1.CallNextTicketsRequest
-	(*CallNextTicketsResponse)(nil),     // 13: admin.v1.CallNextTicketsResponse
-	(*AdmitByQRRequest)(nil),            // 14: admin.v1.AdmitByQRRequest
-	(*AdmitByQRResponse)(nil),           // 15: admin.v1.AdmitByQRResponse
-	(*AdmitManuallyRequest)(nil),        // 16: admin.v1.AdmitManuallyRequest
-	(*AdmitManuallyResponse)(nil),       // 17: admin.v1.AdmitManuallyResponse
-	(*CancelTicketByStaffRequest)(nil),  // 18: admin.v1.CancelTicketByStaffRequest
-	(*CancelTicketByStaffResponse)(nil), // 19: admin.v1.CancelTicketByStaffResponse
-	(*GetStaffSessionRequest)(nil),      // 20: admin.v1.GetStaffSessionRequest
-	(*GetStaffSessionResponse)(nil),     // 21: admin.v1.GetStaffSessionResponse
-	(*StaffTicket)(nil),                 // 22: admin.v1.StaffTicket
-	(*ListTicketsByBoothRequest)(nil),   // 23: admin.v1.ListTicketsByBoothRequest
-	(*ListTicketsByBoothResponse)(nil),  // 24: admin.v1.ListTicketsByBoothResponse
+	(AdmitOutcome)(0),                          // 0: admin.v1.AdmitOutcome
+	(*BoothStats)(nil),                         // 1: admin.v1.BoothStats
+	(*LoginAsGlobalAdminRequest)(nil),          // 2: admin.v1.LoginAsGlobalAdminRequest
+	(*LoginAsGlobalAdminResponse)(nil),         // 3: admin.v1.LoginAsGlobalAdminResponse
+	(*GetDashboardRequest)(nil),                // 4: admin.v1.GetDashboardRequest
+	(*GetDashboardResponse)(nil),               // 5: admin.v1.GetDashboardResponse
+	(*UpdateBoothRequest)(nil),                 // 6: admin.v1.UpdateBoothRequest
+	(*UpdateBoothResponse)(nil),                // 7: admin.v1.UpdateBoothResponse
+	(*AdminBooth)(nil),                         // 8: admin.v1.AdminBooth
+	(*ListAdminBoothsRequest)(nil),             // 9: admin.v1.ListAdminBoothsRequest
+	(*ListAdminBoothsResponse)(nil),            // 10: admin.v1.ListAdminBoothsResponse
+	(*CreateBoothRequest)(nil),                 // 11: admin.v1.CreateBoothRequest
+	(*CreateBoothResponse)(nil),                // 12: admin.v1.CreateBoothResponse
+	(*ArchiveBoothRequest)(nil),                // 13: admin.v1.ArchiveBoothRequest
+	(*ArchiveBoothResponse)(nil),               // 14: admin.v1.ArchiveBoothResponse
+	(*UnarchiveBoothRequest)(nil),              // 15: admin.v1.UnarchiveBoothRequest
+	(*UnarchiveBoothResponse)(nil),             // 16: admin.v1.UnarchiveBoothResponse
+	(*DeleteBoothRequest)(nil),                 // 17: admin.v1.DeleteBoothRequest
+	(*DeleteBoothResponse)(nil),                // 18: admin.v1.DeleteBoothResponse
+	(*UpdateBoothPasswordRequest)(nil),         // 19: admin.v1.UpdateBoothPasswordRequest
+	(*UpdateBoothPasswordResponse)(nil),        // 20: admin.v1.UpdateBoothPasswordResponse
+	(*LoginAsStaffRequest)(nil),                // 21: admin.v1.LoginAsStaffRequest
+	(*LoginAsStaffResponse)(nil),               // 22: admin.v1.LoginAsStaffResponse
+	(*CallTicketRequest)(nil),                  // 23: admin.v1.CallTicketRequest
+	(*CallTicketResponse)(nil),                 // 24: admin.v1.CallTicketResponse
+	(*CallNextTicketsRequest)(nil),             // 25: admin.v1.CallNextTicketsRequest
+	(*CallNextTicketsResponse)(nil),            // 26: admin.v1.CallNextTicketsResponse
+	(*AdmitByQRRequest)(nil),                   // 27: admin.v1.AdmitByQRRequest
+	(*AdmitByQRResponse)(nil),                  // 28: admin.v1.AdmitByQRResponse
+	(*AdmitManuallyRequest)(nil),               // 29: admin.v1.AdmitManuallyRequest
+	(*AdmitManuallyResponse)(nil),              // 30: admin.v1.AdmitManuallyResponse
+	(*CancelTicketByStaffRequest)(nil),         // 31: admin.v1.CancelTicketByStaffRequest
+	(*CancelTicketByStaffResponse)(nil),        // 32: admin.v1.CancelTicketByStaffResponse
+	(*GetStaffSessionRequest)(nil),             // 33: admin.v1.GetStaffSessionRequest
+	(*GetStaffSessionResponse)(nil),            // 34: admin.v1.GetStaffSessionResponse
+	(*StaffTicket)(nil),                        // 35: admin.v1.StaffTicket
+	(*ListTicketsByBoothRequest)(nil),          // 36: admin.v1.ListTicketsByBoothRequest
+	(*ListTicketsByBoothResponse)(nil),         // 37: admin.v1.ListTicketsByBoothResponse
+	(*RestorePendingTicketRequest)(nil),        // 38: admin.v1.RestorePendingTicketRequest
+	(*RestorePendingTicketResponse)(nil),       // 39: admin.v1.RestorePendingTicketResponse
+	(*GetRiskExplanationRequest)(nil),          // 40: admin.v1.GetRiskExplanationRequest
+	(*GetRiskExplanationResponse)(nil),         // 41: admin.v1.GetRiskExplanationResponse
+	(*UpdateRiskExplanationRequest)(nil),       // 42: admin.v1.UpdateRiskExplanationRequest
+	(*UpdateRiskExplanationResponse)(nil),      // 43: admin.v1.UpdateRiskExplanationResponse
+	(*ForceStartMatchRequest)(nil),             // 44: admin.v1.ForceStartMatchRequest
+	(*ForceStartMatchResponse)(nil),            // 45: admin.v1.ForceStartMatchResponse
+	(*CallPrivateMatchRequest)(nil),            // 46: admin.v1.CallPrivateMatchRequest
+	(*CallPrivateMatchResponse)(nil),           // 47: admin.v1.CallPrivateMatchResponse
+	(*CompleteMatchSessionRequest)(nil),        // 48: admin.v1.CompleteMatchSessionRequest
+	(*CompleteMatchSessionResponse)(nil),       // 49: admin.v1.CompleteMatchSessionResponse
+	(*PublicWaitingGroup)(nil),                 // 50: admin.v1.PublicWaitingGroup
+	(*PrivateWaitingGroup)(nil),                // 51: admin.v1.PrivateWaitingGroup
+	(*MatchQueueSession)(nil),                  // 52: admin.v1.MatchQueueSession
+	(*GetMatchQueueStatusRequest)(nil),         // 53: admin.v1.GetMatchQueueStatusRequest
+	(*GetMatchQueueStatusResponse)(nil),        // 54: admin.v1.GetMatchQueueStatusResponse
+	(*NotificationTemplate)(nil),               // 55: admin.v1.NotificationTemplate
+	(*ListNotificationTemplatesRequest)(nil),   // 56: admin.v1.ListNotificationTemplatesRequest
+	(*ListNotificationTemplatesResponse)(nil),  // 57: admin.v1.ListNotificationTemplatesResponse
+	(*UpdateNotificationTemplateRequest)(nil),  // 58: admin.v1.UpdateNotificationTemplateRequest
+	(*UpdateNotificationTemplateResponse)(nil), // 59: admin.v1.UpdateNotificationTemplateResponse
 }
 var file_admin_v1_admin_proto_depIdxs = []int32{
 	1,  // 0: admin.v1.GetDashboardResponse.booths:type_name -> admin.v1.BoothStats
-	0,  // 1: admin.v1.AdmitByQRResponse.outcome:type_name -> admin.v1.AdmitOutcome
-	0,  // 2: admin.v1.AdmitManuallyResponse.outcome:type_name -> admin.v1.AdmitOutcome
-	22, // 3: admin.v1.ListTicketsByBoothResponse.tickets:type_name -> admin.v1.StaffTicket
-	2,  // 4: admin.v1.AdminService.LoginAsGlobalAdmin:input_type -> admin.v1.LoginAsGlobalAdminRequest
-	4,  // 5: admin.v1.AdminService.GetDashboard:input_type -> admin.v1.GetDashboardRequest
-	6,  // 6: admin.v1.AdminService.UpdateBooth:input_type -> admin.v1.UpdateBoothRequest
-	8,  // 7: admin.v1.StaffService.LoginAsStaff:input_type -> admin.v1.LoginAsStaffRequest
-	10, // 8: admin.v1.StaffService.CallTicket:input_type -> admin.v1.CallTicketRequest
-	12, // 9: admin.v1.StaffService.CallNextTickets:input_type -> admin.v1.CallNextTicketsRequest
-	14, // 10: admin.v1.StaffService.AdmitByQR:input_type -> admin.v1.AdmitByQRRequest
-	16, // 11: admin.v1.StaffService.AdmitManually:input_type -> admin.v1.AdmitManuallyRequest
-	18, // 12: admin.v1.StaffService.CancelTicketByStaff:input_type -> admin.v1.CancelTicketByStaffRequest
-	20, // 13: admin.v1.StaffService.GetStaffSession:input_type -> admin.v1.GetStaffSessionRequest
-	23, // 14: admin.v1.StaffService.ListTicketsByBooth:input_type -> admin.v1.ListTicketsByBoothRequest
-	3,  // 15: admin.v1.AdminService.LoginAsGlobalAdmin:output_type -> admin.v1.LoginAsGlobalAdminResponse
-	5,  // 16: admin.v1.AdminService.GetDashboard:output_type -> admin.v1.GetDashboardResponse
-	7,  // 17: admin.v1.AdminService.UpdateBooth:output_type -> admin.v1.UpdateBoothResponse
-	9,  // 18: admin.v1.StaffService.LoginAsStaff:output_type -> admin.v1.LoginAsStaffResponse
-	11, // 19: admin.v1.StaffService.CallTicket:output_type -> admin.v1.CallTicketResponse
-	13, // 20: admin.v1.StaffService.CallNextTickets:output_type -> admin.v1.CallNextTicketsResponse
-	15, // 21: admin.v1.StaffService.AdmitByQR:output_type -> admin.v1.AdmitByQRResponse
-	17, // 22: admin.v1.StaffService.AdmitManually:output_type -> admin.v1.AdmitManuallyResponse
-	19, // 23: admin.v1.StaffService.CancelTicketByStaff:output_type -> admin.v1.CancelTicketByStaffResponse
-	21, // 24: admin.v1.StaffService.GetStaffSession:output_type -> admin.v1.GetStaffSessionResponse
-	24, // 25: admin.v1.StaffService.ListTicketsByBooth:output_type -> admin.v1.ListTicketsByBoothResponse
-	15, // [15:26] is the sub-list for method output_type
-	4,  // [4:15] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	8,  // 1: admin.v1.ListAdminBoothsResponse.booths:type_name -> admin.v1.AdminBooth
+	8,  // 2: admin.v1.CreateBoothResponse.booth:type_name -> admin.v1.AdminBooth
+	0,  // 3: admin.v1.AdmitByQRResponse.outcome:type_name -> admin.v1.AdmitOutcome
+	0,  // 4: admin.v1.AdmitManuallyResponse.outcome:type_name -> admin.v1.AdmitOutcome
+	35, // 5: admin.v1.ListTicketsByBoothResponse.tickets:type_name -> admin.v1.StaffTicket
+	50, // 6: admin.v1.GetMatchQueueStatusResponse.public_waiting:type_name -> admin.v1.PublicWaitingGroup
+	51, // 7: admin.v1.GetMatchQueueStatusResponse.private_waiting:type_name -> admin.v1.PrivateWaitingGroup
+	52, // 8: admin.v1.GetMatchQueueStatusResponse.active_sessions:type_name -> admin.v1.MatchQueueSession
+	55, // 9: admin.v1.ListNotificationTemplatesResponse.templates:type_name -> admin.v1.NotificationTemplate
+	55, // 10: admin.v1.UpdateNotificationTemplateResponse.template:type_name -> admin.v1.NotificationTemplate
+	2,  // 11: admin.v1.AdminService.LoginAsGlobalAdmin:input_type -> admin.v1.LoginAsGlobalAdminRequest
+	4,  // 12: admin.v1.AdminService.GetDashboard:input_type -> admin.v1.GetDashboardRequest
+	6,  // 13: admin.v1.AdminService.UpdateBooth:input_type -> admin.v1.UpdateBoothRequest
+	9,  // 14: admin.v1.AdminService.ListAdminBooths:input_type -> admin.v1.ListAdminBoothsRequest
+	11, // 15: admin.v1.AdminService.CreateBooth:input_type -> admin.v1.CreateBoothRequest
+	13, // 16: admin.v1.AdminService.ArchiveBooth:input_type -> admin.v1.ArchiveBoothRequest
+	15, // 17: admin.v1.AdminService.UnarchiveBooth:input_type -> admin.v1.UnarchiveBoothRequest
+	17, // 18: admin.v1.AdminService.DeleteBooth:input_type -> admin.v1.DeleteBoothRequest
+	19, // 19: admin.v1.AdminService.UpdateBoothPassword:input_type -> admin.v1.UpdateBoothPasswordRequest
+	40, // 20: admin.v1.AdminService.GetRiskExplanation:input_type -> admin.v1.GetRiskExplanationRequest
+	42, // 21: admin.v1.AdminService.UpdateRiskExplanation:input_type -> admin.v1.UpdateRiskExplanationRequest
+	56, // 22: admin.v1.AdminService.ListNotificationTemplates:input_type -> admin.v1.ListNotificationTemplatesRequest
+	58, // 23: admin.v1.AdminService.UpdateNotificationTemplate:input_type -> admin.v1.UpdateNotificationTemplateRequest
+	21, // 24: admin.v1.StaffService.LoginAsStaff:input_type -> admin.v1.LoginAsStaffRequest
+	23, // 25: admin.v1.StaffService.CallTicket:input_type -> admin.v1.CallTicketRequest
+	25, // 26: admin.v1.StaffService.CallNextTickets:input_type -> admin.v1.CallNextTicketsRequest
+	27, // 27: admin.v1.StaffService.AdmitByQR:input_type -> admin.v1.AdmitByQRRequest
+	29, // 28: admin.v1.StaffService.AdmitManually:input_type -> admin.v1.AdmitManuallyRequest
+	31, // 29: admin.v1.StaffService.CancelTicketByStaff:input_type -> admin.v1.CancelTicketByStaffRequest
+	33, // 30: admin.v1.StaffService.GetStaffSession:input_type -> admin.v1.GetStaffSessionRequest
+	36, // 31: admin.v1.StaffService.ListTicketsByBooth:input_type -> admin.v1.ListTicketsByBoothRequest
+	38, // 32: admin.v1.StaffService.RestorePendingTicket:input_type -> admin.v1.RestorePendingTicketRequest
+	44, // 33: admin.v1.StaffService.ForceStartMatch:input_type -> admin.v1.ForceStartMatchRequest
+	46, // 34: admin.v1.StaffService.CallPrivateMatch:input_type -> admin.v1.CallPrivateMatchRequest
+	48, // 35: admin.v1.StaffService.CompleteMatchSession:input_type -> admin.v1.CompleteMatchSessionRequest
+	53, // 36: admin.v1.StaffService.GetMatchQueueStatus:input_type -> admin.v1.GetMatchQueueStatusRequest
+	3,  // 37: admin.v1.AdminService.LoginAsGlobalAdmin:output_type -> admin.v1.LoginAsGlobalAdminResponse
+	5,  // 38: admin.v1.AdminService.GetDashboard:output_type -> admin.v1.GetDashboardResponse
+	7,  // 39: admin.v1.AdminService.UpdateBooth:output_type -> admin.v1.UpdateBoothResponse
+	10, // 40: admin.v1.AdminService.ListAdminBooths:output_type -> admin.v1.ListAdminBoothsResponse
+	12, // 41: admin.v1.AdminService.CreateBooth:output_type -> admin.v1.CreateBoothResponse
+	14, // 42: admin.v1.AdminService.ArchiveBooth:output_type -> admin.v1.ArchiveBoothResponse
+	16, // 43: admin.v1.AdminService.UnarchiveBooth:output_type -> admin.v1.UnarchiveBoothResponse
+	18, // 44: admin.v1.AdminService.DeleteBooth:output_type -> admin.v1.DeleteBoothResponse
+	20, // 45: admin.v1.AdminService.UpdateBoothPassword:output_type -> admin.v1.UpdateBoothPasswordResponse
+	41, // 46: admin.v1.AdminService.GetRiskExplanation:output_type -> admin.v1.GetRiskExplanationResponse
+	43, // 47: admin.v1.AdminService.UpdateRiskExplanation:output_type -> admin.v1.UpdateRiskExplanationResponse
+	57, // 48: admin.v1.AdminService.ListNotificationTemplates:output_type -> admin.v1.ListNotificationTemplatesResponse
+	59, // 49: admin.v1.AdminService.UpdateNotificationTemplate:output_type -> admin.v1.UpdateNotificationTemplateResponse
+	22, // 50: admin.v1.StaffService.LoginAsStaff:output_type -> admin.v1.LoginAsStaffResponse
+	24, // 51: admin.v1.StaffService.CallTicket:output_type -> admin.v1.CallTicketResponse
+	26, // 52: admin.v1.StaffService.CallNextTickets:output_type -> admin.v1.CallNextTicketsResponse
+	28, // 53: admin.v1.StaffService.AdmitByQR:output_type -> admin.v1.AdmitByQRResponse
+	30, // 54: admin.v1.StaffService.AdmitManually:output_type -> admin.v1.AdmitManuallyResponse
+	32, // 55: admin.v1.StaffService.CancelTicketByStaff:output_type -> admin.v1.CancelTicketByStaffResponse
+	34, // 56: admin.v1.StaffService.GetStaffSession:output_type -> admin.v1.GetStaffSessionResponse
+	37, // 57: admin.v1.StaffService.ListTicketsByBooth:output_type -> admin.v1.ListTicketsByBoothResponse
+	39, // 58: admin.v1.StaffService.RestorePendingTicket:output_type -> admin.v1.RestorePendingTicketResponse
+	45, // 59: admin.v1.StaffService.ForceStartMatch:output_type -> admin.v1.ForceStartMatchResponse
+	47, // 60: admin.v1.StaffService.CallPrivateMatch:output_type -> admin.v1.CallPrivateMatchResponse
+	49, // 61: admin.v1.StaffService.CompleteMatchSession:output_type -> admin.v1.CompleteMatchSessionResponse
+	54, // 62: admin.v1.StaffService.GetMatchQueueStatus:output_type -> admin.v1.GetMatchQueueStatusResponse
+	37, // [37:63] is the sub-list for method output_type
+	11, // [11:37] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_admin_v1_admin_proto_init() }
@@ -1593,7 +3793,7 @@ func file_admin_v1_admin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_admin_v1_admin_proto_rawDesc), len(file_admin_v1_admin_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   24,
+			NumMessages:   59,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

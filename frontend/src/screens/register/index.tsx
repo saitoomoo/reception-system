@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { generatePinHash } from '@/lib/pin-hash';
-import { visitorClient, ticketClient } from '@/lib/connect/client';
+import { visitorClient, ticketClient, boothClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
 import InputStep from './_components/input-step';
 import AgeInputStep from './_components/age-input-step';
 import ConsentStep from './_components/consent-step';
 import StaffRedirectStep from './_components/staff-redirect-step';
+import MatchModeStep from './_components/match-mode-step';
 
-type Step = 'input' | 'age-input' | 'consent' | 'staff-redirect';
+type Step = 'input' | 'match-mode' | 'age-input' | 'consent' | 'staff-redirect';
 
 const STEP_TITLES: Record<Step, string> = {
   'input': '情報入力',
+  'match-mode': '参加方法を選択',
   'age-input': '年齢入力',
   'consent': '保護者同意書',
   'staff-redirect': 'スタッフへご相談ください',
@@ -39,6 +41,16 @@ export default function RegisterScreen() {
   const { boothId } = useParams();
   const { login } = useAuth();
 
+  const { data: boothData } = useQuery({
+    queryKey: ['booth', boothId],
+    queryFn: () => boothClient.getBooth({ boothId: boothId! }),
+    enabled: !!boothId,
+  });
+
+  const booth = boothData?.booth;
+  const isMatchmaking = booth?.experienceType === 'matchmaking';
+  const maxPartySize = booth?.maxParticipantsPerTicket ?? undefined;
+
   const createVisitor = useMutation({
     mutationFn: ({ nickname, pin }: { nickname: string; pin: string }) =>
       visitorClient.createVisitor({ nickname, pin }) as Promise<{ receptionNumber: string; visitorId: string }>,
@@ -55,15 +67,19 @@ export default function RegisterScreen() {
   const [guardianName, setGuardianName] = useState('');
   const [guardianConsent, setGuardianConsent] = useState(false);
   const [hasScrolledConsent, setHasScrolledConsent] = useState(false);
+  const [matchMode, setMatchMode] = useState<'public' | 'private' | ''>('');
   const [registerError, setRegisterError] = useState<string | null>(null);
 
   const handleBack = () => {
     if (step === 'input') {
       navigate(`/booths/${boothId}/reserve`);
+    } else if (step === 'match-mode') {
+      setMatchMode('');
+      setStep('input');
     } else if (step === 'age-input') {
       setAges([]);
       setAgeError(null);
-      setStep('input');
+      setStep(isMatchmaking ? 'match-mode' : 'input');
     } else if (step === 'consent') {
       setGuardianName('');
       setGuardianConsent(false);
@@ -83,6 +99,15 @@ export default function RegisterScreen() {
     setPinError(null);
     const count = parseInt(partySize) || 0;
     setAges(new Array(count).fill(''));
+    if (isMatchmaking) {
+      setStep('match-mode');
+    } else {
+      setStep('age-input');
+    }
+  };
+
+  const handleMatchModeSelect = (mode: 'public' | 'private') => {
+    setMatchMode(mode);
     setStep('age-input');
   };
 
@@ -134,7 +159,7 @@ export default function RegisterScreen() {
         boothId: boothId!,
         pin,
         participants,
-        matchMode: '',
+        matchMode: matchMode,
         parentalConsent,
       });
 
@@ -183,12 +208,19 @@ export default function RegisterScreen() {
             pin={pin}
             pinConfirm={pinConfirm}
             pinError={pinError}
+            maxPartySize={maxPartySize}
             onNicknameChange={setNickname}
             onPartySizeChange={setPartySize}
             onPinChange={setPin}
             onPinConfirmChange={setPinConfirm}
             onSubmit={handleInputSubmit}
             onBack={handleBack}
+          />
+        )}
+        {step === 'match-mode' && (
+          <MatchModeStep
+            allowPrivateMatch={booth?.allowPrivateMatch ?? false}
+            onSelect={handleMatchModeSelect}
           />
         )}
         {step === 'age-input' && (

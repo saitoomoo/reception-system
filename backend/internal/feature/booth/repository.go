@@ -125,9 +125,15 @@ func (r *Repository) AuthenticateStaff(ctx context.Context, boothID int64, passw
 	return b, nil
 }
 
+// CalledTicket holds ticket and visitor IDs returned from call operations.
+type CalledTicket struct {
+	TicketID  int64
+	VisitorID int64
+}
+
 // CallNextTickets transitions up to count waiting tickets (by sequence) to called.
-// Returns the IDs of the tickets that were updated.
-func (r *Repository) CallNextTickets(ctx context.Context, boothID int64, count int32) ([]int64, error) {
+// Returns ticket and visitor IDs for notification enqueueing.
+func (r *Repository) CallNextTickets(ctx context.Context, boothID int64, count int32) ([]CalledTicket, error) {
 	if count <= 0 {
 		return nil, nil
 	}
@@ -138,35 +144,37 @@ func (r *Repository) CallNextTickets(ctx context.Context, boothID int64, count i
 	if err != nil {
 		return nil, fmt.Errorf("booth repository: call next tickets: %w", err)
 	}
-	ids := make([]int64, len(tickets))
+	result := make([]CalledTicket, len(tickets))
 	for i, t := range tickets {
-		ids[i] = t.ID
+		result[i] = CalledTicket{TicketID: t.ID, VisitorID: t.VisitorID}
 	}
-	return ids, nil
+	return result, nil
 }
 
 // CallTicket transitions a single waiting ticket to called (booth_id guard included in SQL).
-func (r *Repository) CallTicket(ctx context.Context, ticketID, boothID int64) error {
+// Returns the visitor_id of the called ticket for notification enqueueing.
+func (r *Repository) CallTicket(ctx context.Context, ticketID, boothID int64) (int64, error) {
 	err := r.queries.CallTicket(ctx, db.CallTicketParams{
 		ID:      ticketID,
 		BoothID: boothID,
 	})
 	if err != nil {
-		return fmt.Errorf("booth repository: call ticket: %w", err)
+		return 0, fmt.Errorf("booth repository: call ticket: %w", err)
 	}
-	// Verify that the row was actually updated (wrong booth_id or wrong status = no-op).
+	// Verify the row was updated and retrieve visitor_id in one query.
 	var status string
-	err = r.pool.QueryRow(ctx, `SELECT status FROM tickets WHERE id = $1`, ticketID).Scan(&status)
+	var visitorID int64
+	err = r.pool.QueryRow(ctx, `SELECT status, visitor_id FROM tickets WHERE id = $1`, ticketID).Scan(&status, &visitorID)
 	if errors.Is(err, pgx.ErrNoRows) {
-		return connecterr.ErrNotFound
+		return 0, connecterr.ErrNotFound
 	}
 	if err != nil {
-		return fmt.Errorf("booth repository: verify call ticket: %w", err)
+		return 0, fmt.Errorf("booth repository: verify call ticket: %w", err)
 	}
 	if status != "called" {
-		return connecterr.ErrNotFound
+		return 0, connecterr.ErrNotFound
 	}
-	return nil
+	return visitorID, nil
 }
 
 // ListTicketsForStaff returns all non-cancelled tickets for a booth with visitor and group info.

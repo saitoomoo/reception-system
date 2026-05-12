@@ -8,7 +8,7 @@ import { enumDesc, fileDesc, messageDesc, serviceDesc, tsEnum } from "@bufbuild/
  * Describes the file admin/v1/admin.proto.
  */
 export const file_admin_v1_admin = /*@__PURE__*/
-  fileDesc("ChRhZG1pbi92MS9hZG1pbi5wcm90bxIIYWRtaW4udjEieAoKQm9vdGhTdGF0cxIQCghib290aF9pZBgBIAEoCRISCgpib290aF9uYW1lGAIgASgJEhUKDXdhaXRpbmdfY291bnQYAyABKAUSFQoNcGVuZGluZ19jb3VudBgEIAEoBRIWCg5hZG1pdHRlZF90b2RheRgFIAEoBSI7ChlMb2dpbkFzR2xvYmFsQWRtaW5SZXF1ZXN0EgwKBG5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkiHAoaTG9naW5Bc0dsb2JhbEFkbWluUmVzcG9uc2UiFQoTR2V0RGFzaGJvYXJkUmVxdWVzdCI8ChRHZXREYXNoYm9hcmRSZXNwb25zZRIkCgZib290aHMYASADKAsyFC5hZG1pbi52MS5Cb290aFN0YXRzIqEEChJVcGRhdGVCb290aFJlcXVlc3QSEAoIYm9vdGhfaWQYASABKAkSDAoEbmFtZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIQCghsb2NhdGlvbhgEIAEoCRIPCgdvcGVuX2F0GAUgASgJEhAKCGNsb3NlX2F0GAYgASgJEhcKD2V4cGVyaWVuY2VfdHlwZRgHIAEoCRIjChttYXhfcGFydGljaXBhbnRzX3Blcl90aWNrZXQYCCABKAUSGwoTY29uY3VycmVudF9jYXBhY2l0eRgJIAEoBRIZChF0YXJnZXRfcGFydHlfc2l6ZRgKIAEoBRIWCg5taW5fcGFydHlfc2l6ZRgLIAEoBRIbChNhbGxvd19wcml2YXRlX21hdGNoGAwgASgIEiQKHGVzdGltYXRlZF9taW51dGVzX3Blcl9wZXJzb24YDSABKAUSJQodZXN0aW1hdGVkX21pbnV0ZXNfcGVyX3Nlc3Npb24YDiABKAUSFgoOY2FsbF90aHJlc2hvbGQYDyABKAUSGwoTY2FsbF9yZXNlbmRfbWludXRlcxgQIAEoBRIYChBjb29sZG93bl9taW51dGVzGBEgASgFEhQKDGlzX2FjY2VwdGluZxgSIAEoCBIXCg9jb3Zlcl9pbWFnZV91cmwYEyABKAkSFwoPaW50cm9fdmlkZW9fdXJsGBQgASgJEhIKCnN1cnZleV91cmwYFSABKAkiFQoTVXBkYXRlQm9vdGhSZXNwb25zZSI5ChNMb2dpbkFzU3RhZmZSZXF1ZXN0EhAKCGJvb3RoX2lkGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIjwKFExvZ2luQXNTdGFmZlJlc3BvbnNlEhAKCGJvb3RoX2lkGAEgASgJEhIKCmJvb3RoX25hbWUYAiABKAkiJgoRQ2FsbFRpY2tldFJlcXVlc3QSEQoJdGlja2V0X2lkGAEgASgJIhQKEkNhbGxUaWNrZXRSZXNwb25zZSInChZDYWxsTmV4dFRpY2tldHNSZXF1ZXN0Eg0KBWNvdW50GAEgASgFIi0KF0NhbGxOZXh0VGlja2V0c1Jlc3BvbnNlEhIKCnRpY2tldF9pZHMYASADKAkiLAoQQWRtaXRCeVFSUmVxdWVzdBIYChByZWNlcHRpb25fbnVtYmVyGAEgASgJIk8KEUFkbWl0QnlRUlJlc3BvbnNlEicKB291dGNvbWUYASABKA4yFi5hZG1pbi52MS5BZG1pdE91dGNvbWUSEQoJdGlja2V0X2lkGAIgASgJIj8KFEFkbWl0TWFudWFsbHlSZXF1ZXN0EhgKEHJlY2VwdGlvbl9udW1iZXIYASABKAkSDQoFZm9yY2UYAiABKAgiUwoVQWRtaXRNYW51YWxseVJlc3BvbnNlEicKB291dGNvbWUYASABKA4yFi5hZG1pbi52MS5BZG1pdE91dGNvbWUSEQoJdGlja2V0X2lkGAIgASgJIi8KGkNhbmNlbFRpY2tldEJ5U3RhZmZSZXF1ZXN0EhEKCXRpY2tldF9pZBgBIAEoCSIdChtDYW5jZWxUaWNrZXRCeVN0YWZmUmVzcG9uc2UiGAoWR2V0U3RhZmZTZXNzaW9uUmVxdWVzdCI/ChdHZXRTdGFmZlNlc3Npb25SZXNwb25zZRIQCghib290aF9pZBgBIAEoCRISCgpib290aF9uYW1lGAIgASgJIsABCgtTdGFmZlRpY2tldBIRCgl0aWNrZXRfaWQYASABKAkSGQoRc2VxdWVuY2VfaW5fYm9vdGgYAiABKAUSGAoQcmVjZXB0aW9uX251bWJlchgDIAEoCRIQCghuaWNrbmFtZRgEIAEoCRIZChFwYXJ0aWNpcGFudF9jb3VudBgFIAEoBRIOCgZzdGF0dXMYBiABKAkSGAoQaXNfcHJpb3JpdHlfY2FsbBgHIAEoCBISCgpjcmVhdGVkX2F0GAggASgJIhsKGUxpc3RUaWNrZXRzQnlCb290aFJlcXVlc3QiRAoaTGlzdFRpY2tldHNCeUJvb3RoUmVzcG9uc2USJgoHdGlja2V0cxgBIAMoCzIVLmFkbWluLnYxLlN0YWZmVGlja2V0KuYBCgxBZG1pdE91dGNvbWUSHQoZQURNSVRfT1VUQ09NRV9VTlNQRUNJRklFRBAAEhoKFkFETUlUX09VVENPTUVfQURNSVRURUQQARIrCidBRE1JVF9PVVRDT01FX1JFU1RPUkVEX1RPX1BSSU9SSVRZX0NBTEwQAhItCilBRE1JVF9PVVRDT01FX1dBSVRJTkdfQ09ORklSTUFUSU9OX05FRURFRBADEiIKHkFETUlUX09VVENPTUVfQUxSRUFEWV9BRE1JVFRFRBAEEhsKF0FETUlUX09VVENPTUVfTk9UX0ZPVU5EEAUyigIKDEFkbWluU2VydmljZRJfChJMb2dpbkFzR2xvYmFsQWRtaW4SIy5hZG1pbi52MS5Mb2dpbkFzR2xvYmFsQWRtaW5SZXF1ZXN0GiQuYWRtaW4udjEuTG9naW5Bc0dsb2JhbEFkbWluUmVzcG9uc2USTQoMR2V0RGFzaGJvYXJkEh0uYWRtaW4udjEuR2V0RGFzaGJvYXJkUmVxdWVzdBoeLmFkbWluLnYxLkdldERhc2hib2FyZFJlc3BvbnNlEkoKC1VwZGF0ZUJvb3RoEhwuYWRtaW4udjEuVXBkYXRlQm9vdGhSZXF1ZXN0Gh0uYWRtaW4udjEuVXBkYXRlQm9vdGhSZXNwb25zZTKzBQoMU3RhZmZTZXJ2aWNlEk0KDExvZ2luQXNTdGFmZhIdLmFkbWluLnYxLkxvZ2luQXNTdGFmZlJlcXVlc3QaHi5hZG1pbi52MS5Mb2dpbkFzU3RhZmZSZXNwb25zZRJHCgpDYWxsVGlja2V0EhsuYWRtaW4udjEuQ2FsbFRpY2tldFJlcXVlc3QaHC5hZG1pbi52MS5DYWxsVGlja2V0UmVzcG9uc2USVgoPQ2FsbE5leHRUaWNrZXRzEiAuYWRtaW4udjEuQ2FsbE5leHRUaWNrZXRzUmVxdWVzdBohLmFkbWluLnYxLkNhbGxOZXh0VGlja2V0c1Jlc3BvbnNlEkQKCUFkbWl0QnlRUhIaLmFkbWluLnYxLkFkbWl0QnlRUlJlcXVlc3QaGy5hZG1pbi52MS5BZG1pdEJ5UVJSZXNwb25zZRJQCg1BZG1pdE1hbnVhbGx5Eh4uYWRtaW4udjEuQWRtaXRNYW51YWxseVJlcXVlc3QaHy5hZG1pbi52MS5BZG1pdE1hbnVhbGx5UmVzcG9uc2USYgoTQ2FuY2VsVGlja2V0QnlTdGFmZhIkLmFkbWluLnYxLkNhbmNlbFRpY2tldEJ5U3RhZmZSZXF1ZXN0GiUuYWRtaW4udjEuQ2FuY2VsVGlja2V0QnlTdGFmZlJlc3BvbnNlElYKD0dldFN0YWZmU2Vzc2lvbhIgLmFkbWluLnYxLkdldFN0YWZmU2Vzc2lvblJlcXVlc3QaIS5hZG1pbi52MS5HZXRTdGFmZlNlc3Npb25SZXNwb25zZRJfChJMaXN0VGlja2V0c0J5Qm9vdGgSIy5hZG1pbi52MS5MaXN0VGlja2V0c0J5Qm9vdGhSZXF1ZXN0GiQuYWRtaW4udjEuTGlzdFRpY2tldHNCeUJvb3RoUmVzcG9uc2VCKloocmVjZXB0aW9uLXN5c3RlbS9nZW4vZ28vYWRtaW4vdjE7YWRtaW52MWIGcHJvdG8z");
+  fileDesc("ChRhZG1pbi92MS9hZG1pbi5wcm90bxIIYWRtaW4udjEieAoKQm9vdGhTdGF0cxIQCghib290aF9pZBgBIAEoCRISCgpib290aF9uYW1lGAIgASgJEhUKDXdhaXRpbmdfY291bnQYAyABKAUSFQoNcGVuZGluZ19jb3VudBgEIAEoBRIWCg5hZG1pdHRlZF90b2RheRgFIAEoBSI7ChlMb2dpbkFzR2xvYmFsQWRtaW5SZXF1ZXN0EgwKBG5hbWUYASABKAkSEAoIcGFzc3dvcmQYAiABKAkiHAoaTG9naW5Bc0dsb2JhbEFkbWluUmVzcG9uc2UiFQoTR2V0RGFzaGJvYXJkUmVxdWVzdCI8ChRHZXREYXNoYm9hcmRSZXNwb25zZRIkCgZib290aHMYASADKAsyFC5hZG1pbi52MS5Cb290aFN0YXRzIqEEChJVcGRhdGVCb290aFJlcXVlc3QSEAoIYm9vdGhfaWQYASABKAkSDAoEbmFtZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIQCghsb2NhdGlvbhgEIAEoCRIPCgdvcGVuX2F0GAUgASgJEhAKCGNsb3NlX2F0GAYgASgJEhcKD2V4cGVyaWVuY2VfdHlwZRgHIAEoCRIjChttYXhfcGFydGljaXBhbnRzX3Blcl90aWNrZXQYCCABKAUSGwoTY29uY3VycmVudF9jYXBhY2l0eRgJIAEoBRIZChF0YXJnZXRfcGFydHlfc2l6ZRgKIAEoBRIWCg5taW5fcGFydHlfc2l6ZRgLIAEoBRIbChNhbGxvd19wcml2YXRlX21hdGNoGAwgASgIEiQKHGVzdGltYXRlZF9taW51dGVzX3Blcl9wZXJzb24YDSABKAUSJQodZXN0aW1hdGVkX21pbnV0ZXNfcGVyX3Nlc3Npb24YDiABKAUSFgoOY2FsbF90aHJlc2hvbGQYDyABKAUSGwoTY2FsbF9yZXNlbmRfbWludXRlcxgQIAEoBRIYChBjb29sZG93bl9taW51dGVzGBEgASgFEhQKDGlzX2FjY2VwdGluZxgSIAEoCBIXCg9jb3Zlcl9pbWFnZV91cmwYEyABKAkSFwoPaW50cm9fdmlkZW9fdXJsGBQgASgJEhIKCnN1cnZleV91cmwYFSABKAkiFQoTVXBkYXRlQm9vdGhSZXNwb25zZSLRBAoKQWRtaW5Cb290aBIQCghib290aF9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhAKCGxvY2F0aW9uGAQgASgJEg8KB29wZW5fYXQYBSABKAkSEAoIY2xvc2VfYXQYBiABKAkSFwoPZXhwZXJpZW5jZV90eXBlGAcgASgJEiMKG21heF9wYXJ0aWNpcGFudHNfcGVyX3RpY2tldBgIIAEoBRIbChNjb25jdXJyZW50X2NhcGFjaXR5GAkgASgFEhkKEXRhcmdldF9wYXJ0eV9zaXplGAogASgFEhYKDm1pbl9wYXJ0eV9zaXplGAsgASgFEhsKE2FsbG93X3ByaXZhdGVfbWF0Y2gYDCABKAgSJAocZXN0aW1hdGVkX21pbnV0ZXNfcGVyX3BlcnNvbhgNIAEoBRIlCh1lc3RpbWF0ZWRfbWludXRlc19wZXJfc2Vzc2lvbhgOIAEoBRIWCg5jYWxsX3RocmVzaG9sZBgPIAEoBRIbChNjYWxsX3Jlc2VuZF9taW51dGVzGBAgASgFEhgKEGNvb2xkb3duX21pbnV0ZXMYESABKAUSFAoMaXNfYWNjZXB0aW5nGBIgASgIEhcKD2NvdmVyX2ltYWdlX3VybBgTIAEoCRIXCg9pbnRyb192aWRlb191cmwYFCABKAkSEgoKc3VydmV5X3VybBgVIAEoCRITCgtpc19hcmNoaXZlZBgWIAEoCBIhChlzdGFmZl9wYXNzd29yZF91cGRhdGVkX2F0GBcgASgJIhgKFkxpc3RBZG1pbkJvb3Roc1JlcXVlc3QiPwoXTGlzdEFkbWluQm9vdGhzUmVzcG9uc2USJAoGYm9vdGhzGAEgAygLMhQuYWRtaW4udjEuQWRtaW5Cb290aCKnBAoSQ3JlYXRlQm9vdGhSZXF1ZXN0EgwKBG5hbWUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSEAoIbG9jYXRpb24YAyABKAkSDwoHb3Blbl9hdBgEIAEoCRIQCghjbG9zZV9hdBgFIAEoCRIXCg9leHBlcmllbmNlX3R5cGUYBiABKAkSIwobbWF4X3BhcnRpY2lwYW50c19wZXJfdGlja2V0GAcgASgFEhsKE2NvbmN1cnJlbnRfY2FwYWNpdHkYCCABKAUSGQoRdGFyZ2V0X3BhcnR5X3NpemUYCSABKAUSFgoObWluX3BhcnR5X3NpemUYCiABKAUSGwoTYWxsb3dfcHJpdmF0ZV9tYXRjaBgLIAEoCBIkChxlc3RpbWF0ZWRfbWludXRlc19wZXJfcGVyc29uGAwgASgFEiUKHWVzdGltYXRlZF9taW51dGVzX3Blcl9zZXNzaW9uGA0gASgFEhYKDmNhbGxfdGhyZXNob2xkGA4gASgFEhsKE2NhbGxfcmVzZW5kX21pbnV0ZXMYDyABKAUSGAoQY29vbGRvd25fbWludXRlcxgQIAEoBRIUCgxpc19hY2NlcHRpbmcYESABKAgSFwoPY292ZXJfaW1hZ2VfdXJsGBIgASgJEhcKD2ludHJvX3ZpZGVvX3VybBgTIAEoCRISCgpzdXJ2ZXlfdXJsGBQgASgJEhYKDnN0YWZmX3Bhc3N3b3JkGBUgASgJIjoKE0NyZWF0ZUJvb3RoUmVzcG9uc2USIwoFYm9vdGgYASABKAsyFC5hZG1pbi52MS5BZG1pbkJvb3RoIicKE0FyY2hpdmVCb290aFJlcXVlc3QSEAoIYm9vdGhfaWQYASABKAkiFgoUQXJjaGl2ZUJvb3RoUmVzcG9uc2UiKQoVVW5hcmNoaXZlQm9vdGhSZXF1ZXN0EhAKCGJvb3RoX2lkGAEgASgJIhgKFlVuYXJjaGl2ZUJvb3RoUmVzcG9uc2UiJgoSRGVsZXRlQm9vdGhSZXF1ZXN0EhAKCGJvb3RoX2lkGAEgASgJIhUKE0RlbGV0ZUJvb3RoUmVzcG9uc2UiRAoaVXBkYXRlQm9vdGhQYXNzd29yZFJlcXVlc3QSEAoIYm9vdGhfaWQYASABKAkSFAoMbmV3X3Bhc3N3b3JkGAIgASgJIh0KG1VwZGF0ZUJvb3RoUGFzc3dvcmRSZXNwb25zZSI5ChNMb2dpbkFzU3RhZmZSZXF1ZXN0EhAKCGJvb3RoX2lkGAEgASgJEhAKCHBhc3N3b3JkGAIgASgJIjwKFExvZ2luQXNTdGFmZlJlc3BvbnNlEhAKCGJvb3RoX2lkGAEgASgJEhIKCmJvb3RoX25hbWUYAiABKAkiJgoRQ2FsbFRpY2tldFJlcXVlc3QSEQoJdGlja2V0X2lkGAEgASgJIhQKEkNhbGxUaWNrZXRSZXNwb25zZSInChZDYWxsTmV4dFRpY2tldHNSZXF1ZXN0Eg0KBWNvdW50GAEgASgFIi0KF0NhbGxOZXh0VGlja2V0c1Jlc3BvbnNlEhIKCnRpY2tldF9pZHMYASADKAkiLAoQQWRtaXRCeVFSUmVxdWVzdBIYChByZWNlcHRpb25fbnVtYmVyGAEgASgJIk8KEUFkbWl0QnlRUlJlc3BvbnNlEicKB291dGNvbWUYASABKA4yFi5hZG1pbi52MS5BZG1pdE91dGNvbWUSEQoJdGlja2V0X2lkGAIgASgJIj8KFEFkbWl0TWFudWFsbHlSZXF1ZXN0EhgKEHJlY2VwdGlvbl9udW1iZXIYASABKAkSDQoFZm9yY2UYAiABKAgiUwoVQWRtaXRNYW51YWxseVJlc3BvbnNlEicKB291dGNvbWUYASABKA4yFi5hZG1pbi52MS5BZG1pdE91dGNvbWUSEQoJdGlja2V0X2lkGAIgASgJIi8KGkNhbmNlbFRpY2tldEJ5U3RhZmZSZXF1ZXN0EhEKCXRpY2tldF9pZBgBIAEoCSIdChtDYW5jZWxUaWNrZXRCeVN0YWZmUmVzcG9uc2UiGAoWR2V0U3RhZmZTZXNzaW9uUmVxdWVzdCI/ChdHZXRTdGFmZlNlc3Npb25SZXNwb25zZRIQCghib290aF9pZBgBIAEoCRISCgpib290aF9uYW1lGAIgASgJItQBCgtTdGFmZlRpY2tldBIRCgl0aWNrZXRfaWQYASABKAkSGQoRc2VxdWVuY2VfaW5fYm9vdGgYAiABKAUSGAoQcmVjZXB0aW9uX251bWJlchgDIAEoCRIQCghuaWNrbmFtZRgEIAEoCRIZChFwYXJ0aWNpcGFudF9jb3VudBgFIAEoBRIOCgZzdGF0dXMYBiABKAkSGAoQaXNfcHJpb3JpdHlfY2FsbBgHIAEoCBISCgpjcmVhdGVkX2F0GAggASgJEhIKCnBlbmRpbmdfYXQYCSABKAkiGwoZTGlzdFRpY2tldHNCeUJvb3RoUmVxdWVzdCJEChpMaXN0VGlja2V0c0J5Qm9vdGhSZXNwb25zZRImCgd0aWNrZXRzGAEgAygLMhUuYWRtaW4udjEuU3RhZmZUaWNrZXQiMAobUmVzdG9yZVBlbmRpbmdUaWNrZXRSZXF1ZXN0EhEKCXRpY2tldF9pZBgBIAEoCSIeChxSZXN0b3JlUGVuZGluZ1RpY2tldFJlc3BvbnNlIhsKGUdldFJpc2tFeHBsYW5hdGlvblJlcXVlc3QiPgoaR2V0Umlza0V4cGxhbmF0aW9uUmVzcG9uc2USDAoEYm9keRgBIAEoCRISCgp1cGRhdGVkX2F0GAIgASgJIiwKHFVwZGF0ZVJpc2tFeHBsYW5hdGlvblJlcXVlc3QSDAoEYm9keRgBIAEoCSIzCh1VcGRhdGVSaXNrRXhwbGFuYXRpb25SZXNwb25zZRISCgp1cGRhdGVkX2F0GAEgASgJIhgKFkZvcmNlU3RhcnRNYXRjaFJlcXVlc3QiLQoXRm9yY2VTdGFydE1hdGNoUmVzcG9uc2USEgoKc2Vzc2lvbl9pZBgBIAEoCSIsChdDYWxsUHJpdmF0ZU1hdGNoUmVxdWVzdBIRCgl0aWNrZXRfaWQYASABKAkiGgoYQ2FsbFByaXZhdGVNYXRjaFJlc3BvbnNlIjEKG0NvbXBsZXRlTWF0Y2hTZXNzaW9uUmVxdWVzdBISCgpzZXNzaW9uX2lkGAEgASgJIh4KHENvbXBsZXRlTWF0Y2hTZXNzaW9uUmVzcG9uc2UiXQoSUHVibGljV2FpdGluZ0dyb3VwEhEKCXRpY2tldF9pZBgBIAEoCRIZChFzZXF1ZW5jZV9pbl9ib290aBgCIAEoBRIZChFwYXJ0aWNpcGFudF9jb3VudBgDIAEoBSKKAQoTUHJpdmF0ZVdhaXRpbmdHcm91cBIRCgl0aWNrZXRfaWQYASABKAkSGQoRc2VxdWVuY2VfaW5fYm9vdGgYAiABKAUSGQoRcGFydGljaXBhbnRfY291bnQYAyABKAUSGAoQcmVjZXB0aW9uX251bWJlchgEIAEoCRIQCghuaWNrbmFtZRgFIAEoCSJ0ChFNYXRjaFF1ZXVlU2Vzc2lvbhISCgpzZXNzaW9uX2lkGAEgASgJEgwKBG1vZGUYAiABKAkSDgoGc3RhdHVzGAMgASgJEhkKEXBhcnRpY2lwYW50X2NvdW50GAQgASgFEhIKCmNyZWF0ZWRfYXQYBSABKAkiHAoaR2V0TWF0Y2hRdWV1ZVN0YXR1c1JlcXVlc3QikgIKG0dldE1hdGNoUXVldWVTdGF0dXNSZXNwb25zZRI0Cg5wdWJsaWNfd2FpdGluZxgBIAMoCzIcLmFkbWluLnYxLlB1YmxpY1dhaXRpbmdHcm91cBIcChRwdWJsaWNfd2FpdGluZ190b3RhbBgCIAEoBRIZChF0YXJnZXRfcGFydHlfc2l6ZRgDIAEoBRIWCg5taW5fcGFydHlfc2l6ZRgEIAEoBRI2Cg9wcml2YXRlX3dhaXRpbmcYBSADKAsyHS5hZG1pbi52MS5Qcml2YXRlV2FpdGluZ0dyb3VwEjQKD2FjdGl2ZV9zZXNzaW9ucxgGIAMoCzIbLmFkbWluLnYxLk1hdGNoUXVldWVTZXNzaW9uIlIKFE5vdGlmaWNhdGlvblRlbXBsYXRlEgsKA2tleRgBIAEoCRINCgV0aXRsZRgCIAEoCRIMCgRib2R5GAMgASgJEhAKCGljb25fdXJsGAQgASgJIiIKIExpc3ROb3RpZmljYXRpb25UZW1wbGF0ZXNSZXF1ZXN0IlYKIUxpc3ROb3RpZmljYXRpb25UZW1wbGF0ZXNSZXNwb25zZRIxCgl0ZW1wbGF0ZXMYASADKAsyHi5hZG1pbi52MS5Ob3RpZmljYXRpb25UZW1wbGF0ZSJfCiFVcGRhdGVOb3RpZmljYXRpb25UZW1wbGF0ZVJlcXVlc3QSCwoDa2V5GAEgASgJEg0KBXRpdGxlGAIgASgJEgwKBGJvZHkYAyABKAkSEAoIaWNvbl91cmwYBCABKAkiVgoiVXBkYXRlTm90aWZpY2F0aW9uVGVtcGxhdGVSZXNwb25zZRIwCgh0ZW1wbGF0ZRgBIAEoCzIeLmFkbWluLnYxLk5vdGlmaWNhdGlvblRlbXBsYXRlKuYBCgxBZG1pdE91dGNvbWUSHQoZQURNSVRfT1VUQ09NRV9VTlNQRUNJRklFRBAAEhoKFkFETUlUX09VVENPTUVfQURNSVRURUQQARIrCidBRE1JVF9PVVRDT01FX1JFU1RPUkVEX1RPX1BSSU9SSVRZX0NBTEwQAhItCilBRE1JVF9PVVRDT01FX1dBSVRJTkdfQ09ORklSTUFUSU9OX05FRURFRBADEiIKHkFETUlUX09VVENPTUVfQUxSRUFEWV9BRE1JVFRFRBAEEhsKF0FETUlUX09VVENPTUVfTk9UX0ZPVU5EEAUyvAkKDEFkbWluU2VydmljZRJfChJMb2dpbkFzR2xvYmFsQWRtaW4SIy5hZG1pbi52MS5Mb2dpbkFzR2xvYmFsQWRtaW5SZXF1ZXN0GiQuYWRtaW4udjEuTG9naW5Bc0dsb2JhbEFkbWluUmVzcG9uc2USTQoMR2V0RGFzaGJvYXJkEh0uYWRtaW4udjEuR2V0RGFzaGJvYXJkUmVxdWVzdBoeLmFkbWluLnYxLkdldERhc2hib2FyZFJlc3BvbnNlEkoKC1VwZGF0ZUJvb3RoEhwuYWRtaW4udjEuVXBkYXRlQm9vdGhSZXF1ZXN0Gh0uYWRtaW4udjEuVXBkYXRlQm9vdGhSZXNwb25zZRJWCg9MaXN0QWRtaW5Cb290aHMSIC5hZG1pbi52MS5MaXN0QWRtaW5Cb290aHNSZXF1ZXN0GiEuYWRtaW4udjEuTGlzdEFkbWluQm9vdGhzUmVzcG9uc2USSgoLQ3JlYXRlQm9vdGgSHC5hZG1pbi52MS5DcmVhdGVCb290aFJlcXVlc3QaHS5hZG1pbi52MS5DcmVhdGVCb290aFJlc3BvbnNlEk0KDEFyY2hpdmVCb290aBIdLmFkbWluLnYxLkFyY2hpdmVCb290aFJlcXVlc3QaHi5hZG1pbi52MS5BcmNoaXZlQm9vdGhSZXNwb25zZRJTCg5VbmFyY2hpdmVCb290aBIfLmFkbWluLnYxLlVuYXJjaGl2ZUJvb3RoUmVxdWVzdBogLmFkbWluLnYxLlVuYXJjaGl2ZUJvb3RoUmVzcG9uc2USSgoLRGVsZXRlQm9vdGgSHC5hZG1pbi52MS5EZWxldGVCb290aFJlcXVlc3QaHS5hZG1pbi52MS5EZWxldGVCb290aFJlc3BvbnNlEmIKE1VwZGF0ZUJvb3RoUGFzc3dvcmQSJC5hZG1pbi52MS5VcGRhdGVCb290aFBhc3N3b3JkUmVxdWVzdBolLmFkbWluLnYxLlVwZGF0ZUJvb3RoUGFzc3dvcmRSZXNwb25zZRJfChJHZXRSaXNrRXhwbGFuYXRpb24SIy5hZG1pbi52MS5HZXRSaXNrRXhwbGFuYXRpb25SZXF1ZXN0GiQuYWRtaW4udjEuR2V0Umlza0V4cGxhbmF0aW9uUmVzcG9uc2USaAoVVXBkYXRlUmlza0V4cGxhbmF0aW9uEiYuYWRtaW4udjEuVXBkYXRlUmlza0V4cGxhbmF0aW9uUmVxdWVzdBonLmFkbWluLnYxLlVwZGF0ZVJpc2tFeHBsYW5hdGlvblJlc3BvbnNlEnQKGUxpc3ROb3RpZmljYXRpb25UZW1wbGF0ZXMSKi5hZG1pbi52MS5MaXN0Tm90aWZpY2F0aW9uVGVtcGxhdGVzUmVxdWVzdBorLmFkbWluLnYxLkxpc3ROb3RpZmljYXRpb25UZW1wbGF0ZXNSZXNwb25zZRJ3ChpVcGRhdGVOb3RpZmljYXRpb25UZW1wbGF0ZRIrLmFkbWluLnYxLlVwZGF0ZU5vdGlmaWNhdGlvblRlbXBsYXRlUmVxdWVzdBosLmFkbWluLnYxLlVwZGF0ZU5vdGlmaWNhdGlvblRlbXBsYXRlUmVzcG9uc2UymAkKDFN0YWZmU2VydmljZRJNCgxMb2dpbkFzU3RhZmYSHS5hZG1pbi52MS5Mb2dpbkFzU3RhZmZSZXF1ZXN0Gh4uYWRtaW4udjEuTG9naW5Bc1N0YWZmUmVzcG9uc2USRwoKQ2FsbFRpY2tldBIbLmFkbWluLnYxLkNhbGxUaWNrZXRSZXF1ZXN0GhwuYWRtaW4udjEuQ2FsbFRpY2tldFJlc3BvbnNlElYKD0NhbGxOZXh0VGlja2V0cxIgLmFkbWluLnYxLkNhbGxOZXh0VGlja2V0c1JlcXVlc3QaIS5hZG1pbi52MS5DYWxsTmV4dFRpY2tldHNSZXNwb25zZRJECglBZG1pdEJ5UVISGi5hZG1pbi52MS5BZG1pdEJ5UVJSZXF1ZXN0GhsuYWRtaW4udjEuQWRtaXRCeVFSUmVzcG9uc2USUAoNQWRtaXRNYW51YWxseRIeLmFkbWluLnYxLkFkbWl0TWFudWFsbHlSZXF1ZXN0Gh8uYWRtaW4udjEuQWRtaXRNYW51YWxseVJlc3BvbnNlEmIKE0NhbmNlbFRpY2tldEJ5U3RhZmYSJC5hZG1pbi52MS5DYW5jZWxUaWNrZXRCeVN0YWZmUmVxdWVzdBolLmFkbWluLnYxLkNhbmNlbFRpY2tldEJ5U3RhZmZSZXNwb25zZRJWCg9HZXRTdGFmZlNlc3Npb24SIC5hZG1pbi52MS5HZXRTdGFmZlNlc3Npb25SZXF1ZXN0GiEuYWRtaW4udjEuR2V0U3RhZmZTZXNzaW9uUmVzcG9uc2USXwoSTGlzdFRpY2tldHNCeUJvb3RoEiMuYWRtaW4udjEuTGlzdFRpY2tldHNCeUJvb3RoUmVxdWVzdBokLmFkbWluLnYxLkxpc3RUaWNrZXRzQnlCb290aFJlc3BvbnNlEmUKFFJlc3RvcmVQZW5kaW5nVGlja2V0EiUuYWRtaW4udjEuUmVzdG9yZVBlbmRpbmdUaWNrZXRSZXF1ZXN0GiYuYWRtaW4udjEuUmVzdG9yZVBlbmRpbmdUaWNrZXRSZXNwb25zZRJWCg9Gb3JjZVN0YXJ0TWF0Y2gSIC5hZG1pbi52MS5Gb3JjZVN0YXJ0TWF0Y2hSZXF1ZXN0GiEuYWRtaW4udjEuRm9yY2VTdGFydE1hdGNoUmVzcG9uc2USWQoQQ2FsbFByaXZhdGVNYXRjaBIhLmFkbWluLnYxLkNhbGxQcml2YXRlTWF0Y2hSZXF1ZXN0GiIuYWRtaW4udjEuQ2FsbFByaXZhdGVNYXRjaFJlc3BvbnNlEmUKFENvbXBsZXRlTWF0Y2hTZXNzaW9uEiUuYWRtaW4udjEuQ29tcGxldGVNYXRjaFNlc3Npb25SZXF1ZXN0GiYuYWRtaW4udjEuQ29tcGxldGVNYXRjaFNlc3Npb25SZXNwb25zZRJiChNHZXRNYXRjaFF1ZXVlU3RhdHVzEiQuYWRtaW4udjEuR2V0TWF0Y2hRdWV1ZVN0YXR1c1JlcXVlc3QaJS5hZG1pbi52MS5HZXRNYXRjaFF1ZXVlU3RhdHVzUmVzcG9uc2VCKloocmVjZXB0aW9uLXN5c3RlbS9nZW4vZ28vYWRtaW4vdjE7YWRtaW52MWIGcHJvdG8z");
 
 /**
  * Describes the message admin.v1.BoothStats.
@@ -60,123 +60,368 @@ export const UpdateBoothResponseSchema = /*@__PURE__*/
   messageDesc(file_admin_v1_admin, 6);
 
 /**
+ * Describes the message admin.v1.AdminBooth.
+ * Use `create(AdminBoothSchema)` to create a new message.
+ */
+export const AdminBoothSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 7);
+
+/**
+ * Describes the message admin.v1.ListAdminBoothsRequest.
+ * Use `create(ListAdminBoothsRequestSchema)` to create a new message.
+ */
+export const ListAdminBoothsRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 8);
+
+/**
+ * Describes the message admin.v1.ListAdminBoothsResponse.
+ * Use `create(ListAdminBoothsResponseSchema)` to create a new message.
+ */
+export const ListAdminBoothsResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 9);
+
+/**
+ * Describes the message admin.v1.CreateBoothRequest.
+ * Use `create(CreateBoothRequestSchema)` to create a new message.
+ */
+export const CreateBoothRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 10);
+
+/**
+ * Describes the message admin.v1.CreateBoothResponse.
+ * Use `create(CreateBoothResponseSchema)` to create a new message.
+ */
+export const CreateBoothResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 11);
+
+/**
+ * Describes the message admin.v1.ArchiveBoothRequest.
+ * Use `create(ArchiveBoothRequestSchema)` to create a new message.
+ */
+export const ArchiveBoothRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 12);
+
+/**
+ * Describes the message admin.v1.ArchiveBoothResponse.
+ * Use `create(ArchiveBoothResponseSchema)` to create a new message.
+ */
+export const ArchiveBoothResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 13);
+
+/**
+ * Describes the message admin.v1.UnarchiveBoothRequest.
+ * Use `create(UnarchiveBoothRequestSchema)` to create a new message.
+ */
+export const UnarchiveBoothRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 14);
+
+/**
+ * Describes the message admin.v1.UnarchiveBoothResponse.
+ * Use `create(UnarchiveBoothResponseSchema)` to create a new message.
+ */
+export const UnarchiveBoothResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 15);
+
+/**
+ * Describes the message admin.v1.DeleteBoothRequest.
+ * Use `create(DeleteBoothRequestSchema)` to create a new message.
+ */
+export const DeleteBoothRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 16);
+
+/**
+ * Describes the message admin.v1.DeleteBoothResponse.
+ * Use `create(DeleteBoothResponseSchema)` to create a new message.
+ */
+export const DeleteBoothResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 17);
+
+/**
+ * Describes the message admin.v1.UpdateBoothPasswordRequest.
+ * Use `create(UpdateBoothPasswordRequestSchema)` to create a new message.
+ */
+export const UpdateBoothPasswordRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 18);
+
+/**
+ * Describes the message admin.v1.UpdateBoothPasswordResponse.
+ * Use `create(UpdateBoothPasswordResponseSchema)` to create a new message.
+ */
+export const UpdateBoothPasswordResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 19);
+
+/**
  * Describes the message admin.v1.LoginAsStaffRequest.
  * Use `create(LoginAsStaffRequestSchema)` to create a new message.
  */
 export const LoginAsStaffRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 7);
+  messageDesc(file_admin_v1_admin, 20);
 
 /**
  * Describes the message admin.v1.LoginAsStaffResponse.
  * Use `create(LoginAsStaffResponseSchema)` to create a new message.
  */
 export const LoginAsStaffResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 8);
+  messageDesc(file_admin_v1_admin, 21);
 
 /**
  * Describes the message admin.v1.CallTicketRequest.
  * Use `create(CallTicketRequestSchema)` to create a new message.
  */
 export const CallTicketRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 9);
+  messageDesc(file_admin_v1_admin, 22);
 
 /**
  * Describes the message admin.v1.CallTicketResponse.
  * Use `create(CallTicketResponseSchema)` to create a new message.
  */
 export const CallTicketResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 10);
+  messageDesc(file_admin_v1_admin, 23);
 
 /**
  * Describes the message admin.v1.CallNextTicketsRequest.
  * Use `create(CallNextTicketsRequestSchema)` to create a new message.
  */
 export const CallNextTicketsRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 11);
+  messageDesc(file_admin_v1_admin, 24);
 
 /**
  * Describes the message admin.v1.CallNextTicketsResponse.
  * Use `create(CallNextTicketsResponseSchema)` to create a new message.
  */
 export const CallNextTicketsResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 12);
+  messageDesc(file_admin_v1_admin, 25);
 
 /**
  * Describes the message admin.v1.AdmitByQRRequest.
  * Use `create(AdmitByQRRequestSchema)` to create a new message.
  */
 export const AdmitByQRRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 13);
+  messageDesc(file_admin_v1_admin, 26);
 
 /**
  * Describes the message admin.v1.AdmitByQRResponse.
  * Use `create(AdmitByQRResponseSchema)` to create a new message.
  */
 export const AdmitByQRResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 14);
+  messageDesc(file_admin_v1_admin, 27);
 
 /**
  * Describes the message admin.v1.AdmitManuallyRequest.
  * Use `create(AdmitManuallyRequestSchema)` to create a new message.
  */
 export const AdmitManuallyRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 15);
+  messageDesc(file_admin_v1_admin, 28);
 
 /**
  * Describes the message admin.v1.AdmitManuallyResponse.
  * Use `create(AdmitManuallyResponseSchema)` to create a new message.
  */
 export const AdmitManuallyResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 16);
+  messageDesc(file_admin_v1_admin, 29);
 
 /**
  * Describes the message admin.v1.CancelTicketByStaffRequest.
  * Use `create(CancelTicketByStaffRequestSchema)` to create a new message.
  */
 export const CancelTicketByStaffRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 17);
+  messageDesc(file_admin_v1_admin, 30);
 
 /**
  * Describes the message admin.v1.CancelTicketByStaffResponse.
  * Use `create(CancelTicketByStaffResponseSchema)` to create a new message.
  */
 export const CancelTicketByStaffResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 18);
+  messageDesc(file_admin_v1_admin, 31);
 
 /**
  * Describes the message admin.v1.GetStaffSessionRequest.
  * Use `create(GetStaffSessionRequestSchema)` to create a new message.
  */
 export const GetStaffSessionRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 19);
+  messageDesc(file_admin_v1_admin, 32);
 
 /**
  * Describes the message admin.v1.GetStaffSessionResponse.
  * Use `create(GetStaffSessionResponseSchema)` to create a new message.
  */
 export const GetStaffSessionResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 20);
+  messageDesc(file_admin_v1_admin, 33);
 
 /**
  * Describes the message admin.v1.StaffTicket.
  * Use `create(StaffTicketSchema)` to create a new message.
  */
 export const StaffTicketSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 21);
+  messageDesc(file_admin_v1_admin, 34);
 
 /**
  * Describes the message admin.v1.ListTicketsByBoothRequest.
  * Use `create(ListTicketsByBoothRequestSchema)` to create a new message.
  */
 export const ListTicketsByBoothRequestSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 22);
+  messageDesc(file_admin_v1_admin, 35);
 
 /**
  * Describes the message admin.v1.ListTicketsByBoothResponse.
  * Use `create(ListTicketsByBoothResponseSchema)` to create a new message.
  */
 export const ListTicketsByBoothResponseSchema = /*@__PURE__*/
-  messageDesc(file_admin_v1_admin, 23);
+  messageDesc(file_admin_v1_admin, 36);
+
+/**
+ * Describes the message admin.v1.RestorePendingTicketRequest.
+ * Use `create(RestorePendingTicketRequestSchema)` to create a new message.
+ */
+export const RestorePendingTicketRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 37);
+
+/**
+ * Describes the message admin.v1.RestorePendingTicketResponse.
+ * Use `create(RestorePendingTicketResponseSchema)` to create a new message.
+ */
+export const RestorePendingTicketResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 38);
+
+/**
+ * Describes the message admin.v1.GetRiskExplanationRequest.
+ * Use `create(GetRiskExplanationRequestSchema)` to create a new message.
+ */
+export const GetRiskExplanationRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 39);
+
+/**
+ * Describes the message admin.v1.GetRiskExplanationResponse.
+ * Use `create(GetRiskExplanationResponseSchema)` to create a new message.
+ */
+export const GetRiskExplanationResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 40);
+
+/**
+ * Describes the message admin.v1.UpdateRiskExplanationRequest.
+ * Use `create(UpdateRiskExplanationRequestSchema)` to create a new message.
+ */
+export const UpdateRiskExplanationRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 41);
+
+/**
+ * Describes the message admin.v1.UpdateRiskExplanationResponse.
+ * Use `create(UpdateRiskExplanationResponseSchema)` to create a new message.
+ */
+export const UpdateRiskExplanationResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 42);
+
+/**
+ * Describes the message admin.v1.ForceStartMatchRequest.
+ * Use `create(ForceStartMatchRequestSchema)` to create a new message.
+ */
+export const ForceStartMatchRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 43);
+
+/**
+ * Describes the message admin.v1.ForceStartMatchResponse.
+ * Use `create(ForceStartMatchResponseSchema)` to create a new message.
+ */
+export const ForceStartMatchResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 44);
+
+/**
+ * Describes the message admin.v1.CallPrivateMatchRequest.
+ * Use `create(CallPrivateMatchRequestSchema)` to create a new message.
+ */
+export const CallPrivateMatchRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 45);
+
+/**
+ * Describes the message admin.v1.CallPrivateMatchResponse.
+ * Use `create(CallPrivateMatchResponseSchema)` to create a new message.
+ */
+export const CallPrivateMatchResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 46);
+
+/**
+ * Describes the message admin.v1.CompleteMatchSessionRequest.
+ * Use `create(CompleteMatchSessionRequestSchema)` to create a new message.
+ */
+export const CompleteMatchSessionRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 47);
+
+/**
+ * Describes the message admin.v1.CompleteMatchSessionResponse.
+ * Use `create(CompleteMatchSessionResponseSchema)` to create a new message.
+ */
+export const CompleteMatchSessionResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 48);
+
+/**
+ * Describes the message admin.v1.PublicWaitingGroup.
+ * Use `create(PublicWaitingGroupSchema)` to create a new message.
+ */
+export const PublicWaitingGroupSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 49);
+
+/**
+ * Describes the message admin.v1.PrivateWaitingGroup.
+ * Use `create(PrivateWaitingGroupSchema)` to create a new message.
+ */
+export const PrivateWaitingGroupSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 50);
+
+/**
+ * Describes the message admin.v1.MatchQueueSession.
+ * Use `create(MatchQueueSessionSchema)` to create a new message.
+ */
+export const MatchQueueSessionSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 51);
+
+/**
+ * Describes the message admin.v1.GetMatchQueueStatusRequest.
+ * Use `create(GetMatchQueueStatusRequestSchema)` to create a new message.
+ */
+export const GetMatchQueueStatusRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 52);
+
+/**
+ * Describes the message admin.v1.GetMatchQueueStatusResponse.
+ * Use `create(GetMatchQueueStatusResponseSchema)` to create a new message.
+ */
+export const GetMatchQueueStatusResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 53);
+
+/**
+ * Describes the message admin.v1.NotificationTemplate.
+ * Use `create(NotificationTemplateSchema)` to create a new message.
+ */
+export const NotificationTemplateSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 54);
+
+/**
+ * Describes the message admin.v1.ListNotificationTemplatesRequest.
+ * Use `create(ListNotificationTemplatesRequestSchema)` to create a new message.
+ */
+export const ListNotificationTemplatesRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 55);
+
+/**
+ * Describes the message admin.v1.ListNotificationTemplatesResponse.
+ * Use `create(ListNotificationTemplatesResponseSchema)` to create a new message.
+ */
+export const ListNotificationTemplatesResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 56);
+
+/**
+ * Describes the message admin.v1.UpdateNotificationTemplateRequest.
+ * Use `create(UpdateNotificationTemplateRequestSchema)` to create a new message.
+ */
+export const UpdateNotificationTemplateRequestSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 57);
+
+/**
+ * Describes the message admin.v1.UpdateNotificationTemplateResponse.
+ * Use `create(UpdateNotificationTemplateResponseSchema)` to create a new message.
+ */
+export const UpdateNotificationTemplateResponseSchema = /*@__PURE__*/
+  messageDesc(file_admin_v1_admin, 58);
 
 /**
  * Describes the enum admin.v1.AdmitOutcome.

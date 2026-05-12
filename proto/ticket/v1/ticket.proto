@@ -90,6 +90,15 @@ message GetTicketStatusRequest {
   string ticket_id = 1;
 }
 
+// MatchmakingInfo is included for matchmaking booths to show queue context.
+message MatchmakingInfo {
+  // "public" or "private"
+  string match_mode           = 1;
+  // Number of public-waiting participants ahead (public mode only).
+  int32  public_waiting_count = 2;
+  int32  target_party_size    = 3;
+}
+
 message GetTicketStatusResponse {
   string ticket_id         = 1;
   string booth_id          = 2;
@@ -99,6 +108,8 @@ message GetTicketStatusResponse {
   int32  position          = 6;
   int32  sequence_in_booth = 7;
   string created_at        = 8;
+  // Set only for matchmaking booths.
+  MatchmakingInfo matchmaking_info = 9;
 }
 
 // -----------------------------------------------------------------------------

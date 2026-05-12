@@ -22,6 +22,7 @@ var (
 	ErrBoothClosed          = errors.New("booth is not accepting tickets")
 	ErrBoothOutOfHours      = errors.New("booth is outside operating hours")
 	ErrCancelNotAllowed     = errors.New("ticket cannot be cancelled in its current state")
+	ErrInsufficientParticipants = errors.New("insufficient participants for private match")
 )
 
 // Convert maps domain errors to Connect error codes.
@@ -48,7 +49,8 @@ func Convert(err error) error {
 	case errors.Is(err, ErrCooldownActive),
 		errors.Is(err, ErrBoothClosed),
 		errors.Is(err, ErrBoothOutOfHours),
-		errors.Is(err, ErrCancelNotAllowed):
+		errors.Is(err, ErrCancelNotAllowed),
+		errors.Is(err, ErrInsufficientParticipants):
 		return connect.NewError(connect.CodeFailedPrecondition, err)
 	case errors.Is(err, context.DeadlineExceeded):
 		return connect.NewError(connect.CodeDeadlineExceeded, err)

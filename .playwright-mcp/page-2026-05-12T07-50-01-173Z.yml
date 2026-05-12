@@ -1,0 +1,14 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e6]: 🔐
+    - heading "全体管理者ログイン" [level=1] [ref=e7]
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e10]: 管理者名
+      - textbox "admin" [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e13]: パスワード
+      - textbox "パスワードを入力" [ref=e14]
+    - button "ログイン" [ref=e15]
+  - link "スタッフログインに戻る" [ref=e17] [cursor=pointer]:
+    - /url: /admin

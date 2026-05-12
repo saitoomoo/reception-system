@@ -9,17 +9,32 @@ import (
 	"connectrpc.com/connect"
 	ticketv1 "reception-system/gen/go/ticket/v1"
 	"reception-system/gen/go/ticket/v1/ticketv1connect"
+	"reception-system/internal/feature/notification"
 	"reception-system/internal/pkg/connecterr"
 )
 
-type Handler struct {
-	ticketv1connect.UnimplementedTicketServiceHandler
-	repo   *Repository
-	logger *slog.Logger
+// MatchService is the interface the ticket handler uses to trigger post-create matchmaking hooks.
+type MatchService interface {
+	CheckAndExecuteMatch(ctx context.Context, boothID int64) error
+	CreatePrivateMatchSession(ctx context.Context, ticketID, boothID int64, participantCount int32) error
 }
 
-func NewHandler(repo *Repository, logger *slog.Logger) *Handler {
-	return &Handler{repo: repo, logger: logger}
+type Handler struct {
+	ticketv1connect.UnimplementedTicketServiceHandler
+	repo      *Repository
+	notifRepo *notification.Repository
+	matchSvc  MatchService
+	logger    *slog.Logger
+}
+
+func NewHandler(repo *Repository, notifRepo *notification.Repository, logger *slog.Logger) *Handler {
+	return &Handler{repo: repo, notifRepo: notifRepo, logger: logger}
+}
+
+// SetMatchService injects the match service for post-create hooks.
+// Called during server initialization after both ticket and match packages are wired.
+func (h *Handler) SetMatchService(svc MatchService) {
+	h.matchSvc = svc
 }
 
 func (h *Handler) CreateTicket(
@@ -67,6 +82,31 @@ func (h *Handler) CreateTicket(
 			slog.Any("error", err),
 		)
 		return nil, connecterr.Convert(err)
+	}
+
+	// Best-effort notification enqueue — does not fail the ticket creation.
+	if err := h.notifRepo.EnqueueForVisitor(ctx, &result.TicketID, visitorID, "application_completed"); err != nil {
+		h.logger.Error("enqueue application_completed notification", slog.Any("error", err))
+	}
+
+	// Post-create matchmaking hooks (best-effort; do not fail the ticket creation).
+	if h.matchSvc != nil && result.MatchMode != "" {
+		switch result.MatchMode {
+		case "private":
+			if err := h.matchSvc.CreatePrivateMatchSession(ctx, result.TicketID, boothID, result.ParticipantCount); err != nil {
+				h.logger.Error("create private match session",
+					slog.Int64("ticket_id", result.TicketID),
+					slog.Any("error", err),
+				)
+			}
+		case "public":
+			if err := h.matchSvc.CheckAndExecuteMatch(ctx, boothID); err != nil {
+				h.logger.Error("check and execute match",
+					slog.Int64("booth_id", boothID),
+					slog.Any("error", err),
+				)
+			}
+		}
 	}
 
 	return connect.NewResponse(&ticketv1.CreateTicketResponse{

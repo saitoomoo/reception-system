@@ -11,8 +11,17 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const archiveBooth = `-- name: ArchiveBooth :exec
+UPDATE booths SET is_archived = true WHERE id = $1
+`
+
+func (q *Queries) ArchiveBooth(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, archiveBooth, id)
+	return err
+}
+
 const authenticateStaff = `-- name: AuthenticateStaff :one
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at FROM booths WHERE id = $1
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths WHERE id = $1
 `
 
 // Returns the full booth row so the caller can compare staff_password_hash
@@ -44,12 +53,135 @@ func (q *Queries) AuthenticateStaff(ctx context.Context, id int64) (Booth, error
 		&i.SurveyUrl,
 		&i.StaffPasswordHash,
 		&i.StaffPasswordUpdatedAt,
+		&i.IsArchived,
 	)
 	return i, err
 }
 
+const createBooth = `-- name: CreateBooth :one
+INSERT INTO booths (
+    name, description, location, open_at, close_at,
+    experience_type, max_participants_per_ticket, concurrent_capacity,
+    target_party_size, min_party_size, allow_private_match,
+    estimated_minutes_per_person, estimated_minutes_per_session,
+    call_threshold, call_resend_minutes, cooldown_minutes,
+    is_accepting, cover_image_url, intro_video_url, survey_url,
+    staff_password_hash, staff_password_updated_at
+) VALUES (
+    $1, $2, $3, $4, $5,
+    $6, $7, $8,
+    $9, $10, $11,
+    $12, $13,
+    $14, $15, $16,
+    $17, $18, $19, $20,
+    $21, now()
+)
+RETURNING id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived
+`
+
+type CreateBoothParams struct {
+	Name                       string
+	Description                string
+	Location                   string
+	OpenAt                     pgtype.Timestamptz
+	CloseAt                    pgtype.Timestamptz
+	ExperienceType             string
+	MaxParticipantsPerTicket   int32
+	ConcurrentCapacity         int32
+	TargetPartySize            *int32
+	MinPartySize               *int32
+	AllowPrivateMatch          bool
+	EstimatedMinutesPerPerson  *int32
+	EstimatedMinutesPerSession *int32
+	CallThreshold              int32
+	CallResendMinutes          int32
+	CooldownMinutes            int32
+	IsAccepting                bool
+	CoverImageUrl              *string
+	IntroVideoUrl              *string
+	SurveyUrl                  *string
+	StaffPasswordHash          string
+}
+
+func (q *Queries) CreateBooth(ctx context.Context, arg CreateBoothParams) (Booth, error) {
+	row := q.db.QueryRow(ctx, createBooth,
+		arg.Name,
+		arg.Description,
+		arg.Location,
+		arg.OpenAt,
+		arg.CloseAt,
+		arg.ExperienceType,
+		arg.MaxParticipantsPerTicket,
+		arg.ConcurrentCapacity,
+		arg.TargetPartySize,
+		arg.MinPartySize,
+		arg.AllowPrivateMatch,
+		arg.EstimatedMinutesPerPerson,
+		arg.EstimatedMinutesPerSession,
+		arg.CallThreshold,
+		arg.CallResendMinutes,
+		arg.CooldownMinutes,
+		arg.IsAccepting,
+		arg.CoverImageUrl,
+		arg.IntroVideoUrl,
+		arg.SurveyUrl,
+		arg.StaffPasswordHash,
+	)
+	var i Booth
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Description,
+		&i.Location,
+		&i.OpenAt,
+		&i.CloseAt,
+		&i.ExperienceType,
+		&i.MaxParticipantsPerTicket,
+		&i.ConcurrentCapacity,
+		&i.TargetPartySize,
+		&i.MinPartySize,
+		&i.AllowPrivateMatch,
+		&i.EstimatedMinutesPerPerson,
+		&i.EstimatedMinutesPerSession,
+		&i.CallThreshold,
+		&i.CallResendMinutes,
+		&i.CooldownMinutes,
+		&i.IsAccepting,
+		&i.CoverImageUrl,
+		&i.IntroVideoUrl,
+		&i.SurveyUrl,
+		&i.StaffPasswordHash,
+		&i.StaffPasswordUpdatedAt,
+		&i.IsArchived,
+	)
+	return i, err
+}
+
+const deleteBooth = `-- name: DeleteBooth :exec
+DELETE FROM booths WHERE id = $1
+`
+
+func (q *Queries) DeleteBooth(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, deleteBooth, id)
+	return err
+}
+
+const getBoothActiveTicketCount = `-- name: GetBoothActiveTicketCount :one
+SELECT COUNT(*)::int AS ticket_count
+FROM tickets
+WHERE booth_id = $1
+  AND status NOT IN ('admitted', 'cancelled')
+`
+
+func (q *Queries) GetBoothActiveTicketCount(ctx context.Context, boothID int64) (int32, error) {
+	row := q.db.QueryRow(ctx, getBoothActiveTicketCount, boothID)
+	var ticket_count int32
+	err := row.Scan(&ticket_count)
+	return ticket_count, err
+}
+
 const getBoothByID = `-- name: GetBoothByID :one
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at FROM booths
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
 WHERE id = $1
 `
 
@@ -80,6 +212,7 @@ func (q *Queries) GetBoothByID(ctx context.Context, id int64) (Booth, error) {
 		&i.SurveyUrl,
 		&i.StaffPasswordHash,
 		&i.StaffPasswordUpdatedAt,
+		&i.IsArchived,
 	)
 	return i, err
 }
@@ -125,8 +258,59 @@ func (q *Queries) GetBoothWaitingCount(ctx context.Context, boothID int64) (int3
 	return waiting_count, err
 }
 
+const listAllBooths = `-- name: ListAllBooths :many
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
+ORDER BY id
+`
+
+func (q *Queries) ListAllBooths(ctx context.Context) ([]Booth, error) {
+	rows, err := q.db.Query(ctx, listAllBooths)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Booth{}
+	for rows.Next() {
+		var i Booth
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Description,
+			&i.Location,
+			&i.OpenAt,
+			&i.CloseAt,
+			&i.ExperienceType,
+			&i.MaxParticipantsPerTicket,
+			&i.ConcurrentCapacity,
+			&i.TargetPartySize,
+			&i.MinPartySize,
+			&i.AllowPrivateMatch,
+			&i.EstimatedMinutesPerPerson,
+			&i.EstimatedMinutesPerSession,
+			&i.CallThreshold,
+			&i.CallResendMinutes,
+			&i.CooldownMinutes,
+			&i.IsAccepting,
+			&i.CoverImageUrl,
+			&i.IntroVideoUrl,
+			&i.SurveyUrl,
+			&i.StaffPasswordHash,
+			&i.StaffPasswordUpdatedAt,
+			&i.IsArchived,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const listBooths = `-- name: ListBooths :many
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at FROM booths
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
+WHERE is_archived = false
 ORDER BY id
 `
 
@@ -163,6 +347,7 @@ func (q *Queries) ListBooths(ctx context.Context) ([]Booth, error) {
 			&i.SurveyUrl,
 			&i.StaffPasswordHash,
 			&i.StaffPasswordUpdatedAt,
+			&i.IsArchived,
 		); err != nil {
 			return nil, err
 		}
@@ -172,6 +357,15 @@ func (q *Queries) ListBooths(ctx context.Context) ([]Booth, error) {
 		return nil, err
 	}
 	return items, nil
+}
+
+const unarchiveBooth = `-- name: UnarchiveBooth :exec
+UPDATE booths SET is_archived = false WHERE id = $1
+`
+
+func (q *Queries) UnarchiveBooth(ctx context.Context, id int64) error {
+	_, err := q.db.Exec(ctx, unarchiveBooth, id)
+	return err
 }
 
 const updateBooth = `-- name: UpdateBooth :exec

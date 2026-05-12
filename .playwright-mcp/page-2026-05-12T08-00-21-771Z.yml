@@ -1,0 +1,60 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - link "← ダッシュボード" [ref=e7] [cursor=pointer]:
+        - /url: /admin/global/dashboard
+      - heading "ブース管理" [level=1] [ref=e8]
+    - button "+ 新規ブース作成" [ref=e9]
+  - generic [ref=e11]:
+    - heading "アクティブなブース (3)" [level=2] [ref=e12]
+    - generic [ref=e13]:
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]:
+            - heading "VR体験ブース A" [level=3] [ref=e18]
+            - generic [ref=e19]: 順次体験型
+          - paragraph [ref=e20]: A棟 1F ホール
+          - paragraph [ref=e21]: 2026/5/12 16:15:00 〜 2026/5/13 21:17:00
+        - generic [ref=e22]:
+          - button "編集" [ref=e23]
+          - button "PW変更" [ref=e24]
+          - button "アーカイブ" [ref=e25]
+          - button "削除" [ref=e26]
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - generic [ref=e30]:
+            - heading "VR対戦ゲーム" [level=3] [ref=e31]
+            - generic [ref=e32]: マッチメイキング型
+          - paragraph [ref=e33]: B棟 2F ゲームルーム
+          - paragraph [ref=e34]: 2026/5/12 0:14:52 〜 2026/5/12 8:14:52
+        - generic [ref=e35]:
+          - button "編集" [ref=e36]
+          - button "PW変更" [ref=e37]
+          - button "アーカイブ" [ref=e38]
+          - button "削除" [ref=e39]
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - heading "個人VR体験" [level=3] [ref=e44]
+            - generic [ref=e45]: 個人体験型
+          - paragraph [ref=e46]: C棟 1F 体験コーナー
+          - paragraph [ref=e47]: 2026/5/12 0:14:52 〜 2026/5/12 8:14:52
+        - generic [ref=e48]:
+          - button "編集" [ref=e49]
+          - button "PW変更" [ref=e50]
+          - button "アーカイブ" [ref=e51]
+          - button "削除" [ref=e52]
+  - generic [ref=e54]:
+    - heading "スタッフパスワード変更" [level=2] [ref=e55]
+    - paragraph [ref=e56]: VR体験ブース A
+    - generic [ref=e67]: パスワードを入力してください
+    - generic [ref=e57]:
+      - generic [ref=e58]:
+        - generic [ref=e59]: 新しいパスワード
+        - textbox [active] [ref=e60]
+      - generic [ref=e61]:
+        - generic [ref=e62]: 確認
+        - textbox [ref=e63]
+      - generic [ref=e64]:
+        - button "キャンセル" [ref=e65]
+        - button "変更する" [ref=e66]

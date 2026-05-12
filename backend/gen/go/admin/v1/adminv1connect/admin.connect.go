@@ -44,6 +44,36 @@ const (
 	// AdminServiceUpdateBoothProcedure is the fully-qualified name of the AdminService's UpdateBooth
 	// RPC.
 	AdminServiceUpdateBoothProcedure = "/admin.v1.AdminService/UpdateBooth"
+	// AdminServiceListAdminBoothsProcedure is the fully-qualified name of the AdminService's
+	// ListAdminBooths RPC.
+	AdminServiceListAdminBoothsProcedure = "/admin.v1.AdminService/ListAdminBooths"
+	// AdminServiceCreateBoothProcedure is the fully-qualified name of the AdminService's CreateBooth
+	// RPC.
+	AdminServiceCreateBoothProcedure = "/admin.v1.AdminService/CreateBooth"
+	// AdminServiceArchiveBoothProcedure is the fully-qualified name of the AdminService's ArchiveBooth
+	// RPC.
+	AdminServiceArchiveBoothProcedure = "/admin.v1.AdminService/ArchiveBooth"
+	// AdminServiceUnarchiveBoothProcedure is the fully-qualified name of the AdminService's
+	// UnarchiveBooth RPC.
+	AdminServiceUnarchiveBoothProcedure = "/admin.v1.AdminService/UnarchiveBooth"
+	// AdminServiceDeleteBoothProcedure is the fully-qualified name of the AdminService's DeleteBooth
+	// RPC.
+	AdminServiceDeleteBoothProcedure = "/admin.v1.AdminService/DeleteBooth"
+	// AdminServiceUpdateBoothPasswordProcedure is the fully-qualified name of the AdminService's
+	// UpdateBoothPassword RPC.
+	AdminServiceUpdateBoothPasswordProcedure = "/admin.v1.AdminService/UpdateBoothPassword"
+	// AdminServiceGetRiskExplanationProcedure is the fully-qualified name of the AdminService's
+	// GetRiskExplanation RPC.
+	AdminServiceGetRiskExplanationProcedure = "/admin.v1.AdminService/GetRiskExplanation"
+	// AdminServiceUpdateRiskExplanationProcedure is the fully-qualified name of the AdminService's
+	// UpdateRiskExplanation RPC.
+	AdminServiceUpdateRiskExplanationProcedure = "/admin.v1.AdminService/UpdateRiskExplanation"
+	// AdminServiceListNotificationTemplatesProcedure is the fully-qualified name of the AdminService's
+	// ListNotificationTemplates RPC.
+	AdminServiceListNotificationTemplatesProcedure = "/admin.v1.AdminService/ListNotificationTemplates"
+	// AdminServiceUpdateNotificationTemplateProcedure is the fully-qualified name of the AdminService's
+	// UpdateNotificationTemplate RPC.
+	AdminServiceUpdateNotificationTemplateProcedure = "/admin.v1.AdminService/UpdateNotificationTemplate"
 	// StaffServiceLoginAsStaffProcedure is the fully-qualified name of the StaffService's LoginAsStaff
 	// RPC.
 	StaffServiceLoginAsStaffProcedure = "/admin.v1.StaffService/LoginAsStaff"
@@ -66,6 +96,21 @@ const (
 	// StaffServiceListTicketsByBoothProcedure is the fully-qualified name of the StaffService's
 	// ListTicketsByBooth RPC.
 	StaffServiceListTicketsByBoothProcedure = "/admin.v1.StaffService/ListTicketsByBooth"
+	// StaffServiceRestorePendingTicketProcedure is the fully-qualified name of the StaffService's
+	// RestorePendingTicket RPC.
+	StaffServiceRestorePendingTicketProcedure = "/admin.v1.StaffService/RestorePendingTicket"
+	// StaffServiceForceStartMatchProcedure is the fully-qualified name of the StaffService's
+	// ForceStartMatch RPC.
+	StaffServiceForceStartMatchProcedure = "/admin.v1.StaffService/ForceStartMatch"
+	// StaffServiceCallPrivateMatchProcedure is the fully-qualified name of the StaffService's
+	// CallPrivateMatch RPC.
+	StaffServiceCallPrivateMatchProcedure = "/admin.v1.StaffService/CallPrivateMatch"
+	// StaffServiceCompleteMatchSessionProcedure is the fully-qualified name of the StaffService's
+	// CompleteMatchSession RPC.
+	StaffServiceCompleteMatchSessionProcedure = "/admin.v1.StaffService/CompleteMatchSession"
+	// StaffServiceGetMatchQueueStatusProcedure is the fully-qualified name of the StaffService's
+	// GetMatchQueueStatus RPC.
+	StaffServiceGetMatchQueueStatusProcedure = "/admin.v1.StaffService/GetMatchQueueStatus"
 )
 
 // AdminServiceClient is a client for the admin.v1.AdminService service.
@@ -76,6 +121,26 @@ type AdminServiceClient interface {
 	GetDashboard(context.Context, *connect.Request[v1.GetDashboardRequest]) (*connect.Response[v1.GetDashboardResponse], error)
 	// UpdateBooth updates mutable booth settings.
 	UpdateBooth(context.Context, *connect.Request[v1.UpdateBoothRequest]) (*connect.Response[v1.UpdateBoothResponse], error)
+	// ListAdminBooths returns all booths (including archived) for admin management.
+	ListAdminBooths(context.Context, *connect.Request[v1.ListAdminBoothsRequest]) (*connect.Response[v1.ListAdminBoothsResponse], error)
+	// CreateBooth creates a new booth.
+	CreateBooth(context.Context, *connect.Request[v1.CreateBoothRequest]) (*connect.Response[v1.CreateBoothResponse], error)
+	// ArchiveBooth soft-deletes a booth (sets is_archived=true).
+	ArchiveBooth(context.Context, *connect.Request[v1.ArchiveBoothRequest]) (*connect.Response[v1.ArchiveBoothResponse], error)
+	// UnarchiveBooth restores an archived booth.
+	UnarchiveBooth(context.Context, *connect.Request[v1.UnarchiveBoothRequest]) (*connect.Response[v1.UnarchiveBoothResponse], error)
+	// DeleteBooth permanently deletes a booth (only allowed when no active tickets).
+	DeleteBooth(context.Context, *connect.Request[v1.DeleteBoothRequest]) (*connect.Response[v1.DeleteBoothResponse], error)
+	// UpdateBoothPassword changes the staff shared password for a booth.
+	UpdateBoothPassword(context.Context, *connect.Request[v1.UpdateBoothPasswordRequest]) (*connect.Response[v1.UpdateBoothPasswordResponse], error)
+	// GetRiskExplanation returns the current singleton risk explanation text.
+	GetRiskExplanation(context.Context, *connect.Request[v1.GetRiskExplanationRequest]) (*connect.Response[v1.GetRiskExplanationResponse], error)
+	// UpdateRiskExplanation replaces the risk explanation body.
+	UpdateRiskExplanation(context.Context, *connect.Request[v1.UpdateRiskExplanationRequest]) (*connect.Response[v1.UpdateRiskExplanationResponse], error)
+	// ListNotificationTemplates returns all notification templates for editing.
+	ListNotificationTemplates(context.Context, *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error)
+	// UpdateNotificationTemplate updates a notification template by key.
+	UpdateNotificationTemplate(context.Context, *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the admin.v1.AdminService service. By default, it
@@ -107,14 +172,84 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("UpdateBooth")),
 			connect.WithClientOptions(opts...),
 		),
+		listAdminBooths: connect.NewClient[v1.ListAdminBoothsRequest, v1.ListAdminBoothsResponse](
+			httpClient,
+			baseURL+AdminServiceListAdminBoothsProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ListAdminBooths")),
+			connect.WithClientOptions(opts...),
+		),
+		createBooth: connect.NewClient[v1.CreateBoothRequest, v1.CreateBoothResponse](
+			httpClient,
+			baseURL+AdminServiceCreateBoothProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("CreateBooth")),
+			connect.WithClientOptions(opts...),
+		),
+		archiveBooth: connect.NewClient[v1.ArchiveBoothRequest, v1.ArchiveBoothResponse](
+			httpClient,
+			baseURL+AdminServiceArchiveBoothProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ArchiveBooth")),
+			connect.WithClientOptions(opts...),
+		),
+		unarchiveBooth: connect.NewClient[v1.UnarchiveBoothRequest, v1.UnarchiveBoothResponse](
+			httpClient,
+			baseURL+AdminServiceUnarchiveBoothProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UnarchiveBooth")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteBooth: connect.NewClient[v1.DeleteBoothRequest, v1.DeleteBoothResponse](
+			httpClient,
+			baseURL+AdminServiceDeleteBoothProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("DeleteBooth")),
+			connect.WithClientOptions(opts...),
+		),
+		updateBoothPassword: connect.NewClient[v1.UpdateBoothPasswordRequest, v1.UpdateBoothPasswordResponse](
+			httpClient,
+			baseURL+AdminServiceUpdateBoothPasswordProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpdateBoothPassword")),
+			connect.WithClientOptions(opts...),
+		),
+		getRiskExplanation: connect.NewClient[v1.GetRiskExplanationRequest, v1.GetRiskExplanationResponse](
+			httpClient,
+			baseURL+AdminServiceGetRiskExplanationProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("GetRiskExplanation")),
+			connect.WithClientOptions(opts...),
+		),
+		updateRiskExplanation: connect.NewClient[v1.UpdateRiskExplanationRequest, v1.UpdateRiskExplanationResponse](
+			httpClient,
+			baseURL+AdminServiceUpdateRiskExplanationProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpdateRiskExplanation")),
+			connect.WithClientOptions(opts...),
+		),
+		listNotificationTemplates: connect.NewClient[v1.ListNotificationTemplatesRequest, v1.ListNotificationTemplatesResponse](
+			httpClient,
+			baseURL+AdminServiceListNotificationTemplatesProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ListNotificationTemplates")),
+			connect.WithClientOptions(opts...),
+		),
+		updateNotificationTemplate: connect.NewClient[v1.UpdateNotificationTemplateRequest, v1.UpdateNotificationTemplateResponse](
+			httpClient,
+			baseURL+AdminServiceUpdateNotificationTemplateProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("UpdateNotificationTemplate")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // adminServiceClient implements AdminServiceClient.
 type adminServiceClient struct {
-	loginAsGlobalAdmin *connect.Client[v1.LoginAsGlobalAdminRequest, v1.LoginAsGlobalAdminResponse]
-	getDashboard       *connect.Client[v1.GetDashboardRequest, v1.GetDashboardResponse]
-	updateBooth        *connect.Client[v1.UpdateBoothRequest, v1.UpdateBoothResponse]
+	loginAsGlobalAdmin         *connect.Client[v1.LoginAsGlobalAdminRequest, v1.LoginAsGlobalAdminResponse]
+	getDashboard               *connect.Client[v1.GetDashboardRequest, v1.GetDashboardResponse]
+	updateBooth                *connect.Client[v1.UpdateBoothRequest, v1.UpdateBoothResponse]
+	listAdminBooths            *connect.Client[v1.ListAdminBoothsRequest, v1.ListAdminBoothsResponse]
+	createBooth                *connect.Client[v1.CreateBoothRequest, v1.CreateBoothResponse]
+	archiveBooth               *connect.Client[v1.ArchiveBoothRequest, v1.ArchiveBoothResponse]
+	unarchiveBooth             *connect.Client[v1.UnarchiveBoothRequest, v1.UnarchiveBoothResponse]
+	deleteBooth                *connect.Client[v1.DeleteBoothRequest, v1.DeleteBoothResponse]
+	updateBoothPassword        *connect.Client[v1.UpdateBoothPasswordRequest, v1.UpdateBoothPasswordResponse]
+	getRiskExplanation         *connect.Client[v1.GetRiskExplanationRequest, v1.GetRiskExplanationResponse]
+	updateRiskExplanation      *connect.Client[v1.UpdateRiskExplanationRequest, v1.UpdateRiskExplanationResponse]
+	listNotificationTemplates  *connect.Client[v1.ListNotificationTemplatesRequest, v1.ListNotificationTemplatesResponse]
+	updateNotificationTemplate *connect.Client[v1.UpdateNotificationTemplateRequest, v1.UpdateNotificationTemplateResponse]
 }
 
 // LoginAsGlobalAdmin calls admin.v1.AdminService.LoginAsGlobalAdmin.
@@ -132,6 +267,56 @@ func (c *adminServiceClient) UpdateBooth(ctx context.Context, req *connect.Reque
 	return c.updateBooth.CallUnary(ctx, req)
 }
 
+// ListAdminBooths calls admin.v1.AdminService.ListAdminBooths.
+func (c *adminServiceClient) ListAdminBooths(ctx context.Context, req *connect.Request[v1.ListAdminBoothsRequest]) (*connect.Response[v1.ListAdminBoothsResponse], error) {
+	return c.listAdminBooths.CallUnary(ctx, req)
+}
+
+// CreateBooth calls admin.v1.AdminService.CreateBooth.
+func (c *adminServiceClient) CreateBooth(ctx context.Context, req *connect.Request[v1.CreateBoothRequest]) (*connect.Response[v1.CreateBoothResponse], error) {
+	return c.createBooth.CallUnary(ctx, req)
+}
+
+// ArchiveBooth calls admin.v1.AdminService.ArchiveBooth.
+func (c *adminServiceClient) ArchiveBooth(ctx context.Context, req *connect.Request[v1.ArchiveBoothRequest]) (*connect.Response[v1.ArchiveBoothResponse], error) {
+	return c.archiveBooth.CallUnary(ctx, req)
+}
+
+// UnarchiveBooth calls admin.v1.AdminService.UnarchiveBooth.
+func (c *adminServiceClient) UnarchiveBooth(ctx context.Context, req *connect.Request[v1.UnarchiveBoothRequest]) (*connect.Response[v1.UnarchiveBoothResponse], error) {
+	return c.unarchiveBooth.CallUnary(ctx, req)
+}
+
+// DeleteBooth calls admin.v1.AdminService.DeleteBooth.
+func (c *adminServiceClient) DeleteBooth(ctx context.Context, req *connect.Request[v1.DeleteBoothRequest]) (*connect.Response[v1.DeleteBoothResponse], error) {
+	return c.deleteBooth.CallUnary(ctx, req)
+}
+
+// UpdateBoothPassword calls admin.v1.AdminService.UpdateBoothPassword.
+func (c *adminServiceClient) UpdateBoothPassword(ctx context.Context, req *connect.Request[v1.UpdateBoothPasswordRequest]) (*connect.Response[v1.UpdateBoothPasswordResponse], error) {
+	return c.updateBoothPassword.CallUnary(ctx, req)
+}
+
+// GetRiskExplanation calls admin.v1.AdminService.GetRiskExplanation.
+func (c *adminServiceClient) GetRiskExplanation(ctx context.Context, req *connect.Request[v1.GetRiskExplanationRequest]) (*connect.Response[v1.GetRiskExplanationResponse], error) {
+	return c.getRiskExplanation.CallUnary(ctx, req)
+}
+
+// UpdateRiskExplanation calls admin.v1.AdminService.UpdateRiskExplanation.
+func (c *adminServiceClient) UpdateRiskExplanation(ctx context.Context, req *connect.Request[v1.UpdateRiskExplanationRequest]) (*connect.Response[v1.UpdateRiskExplanationResponse], error) {
+	return c.updateRiskExplanation.CallUnary(ctx, req)
+}
+
+// ListNotificationTemplates calls admin.v1.AdminService.ListNotificationTemplates.
+func (c *adminServiceClient) ListNotificationTemplates(ctx context.Context, req *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error) {
+	return c.listNotificationTemplates.CallUnary(ctx, req)
+}
+
+// UpdateNotificationTemplate calls admin.v1.AdminService.UpdateNotificationTemplate.
+func (c *adminServiceClient) UpdateNotificationTemplate(ctx context.Context, req *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error) {
+	return c.updateNotificationTemplate.CallUnary(ctx, req)
+}
+
 // AdminServiceHandler is an implementation of the admin.v1.AdminService service.
 type AdminServiceHandler interface {
 	// LoginAsGlobalAdmin authenticates with name + password and sets a session cookie.
@@ -140,6 +325,26 @@ type AdminServiceHandler interface {
 	GetDashboard(context.Context, *connect.Request[v1.GetDashboardRequest]) (*connect.Response[v1.GetDashboardResponse], error)
 	// UpdateBooth updates mutable booth settings.
 	UpdateBooth(context.Context, *connect.Request[v1.UpdateBoothRequest]) (*connect.Response[v1.UpdateBoothResponse], error)
+	// ListAdminBooths returns all booths (including archived) for admin management.
+	ListAdminBooths(context.Context, *connect.Request[v1.ListAdminBoothsRequest]) (*connect.Response[v1.ListAdminBoothsResponse], error)
+	// CreateBooth creates a new booth.
+	CreateBooth(context.Context, *connect.Request[v1.CreateBoothRequest]) (*connect.Response[v1.CreateBoothResponse], error)
+	// ArchiveBooth soft-deletes a booth (sets is_archived=true).
+	ArchiveBooth(context.Context, *connect.Request[v1.ArchiveBoothRequest]) (*connect.Response[v1.ArchiveBoothResponse], error)
+	// UnarchiveBooth restores an archived booth.
+	UnarchiveBooth(context.Context, *connect.Request[v1.UnarchiveBoothRequest]) (*connect.Response[v1.UnarchiveBoothResponse], error)
+	// DeleteBooth permanently deletes a booth (only allowed when no active tickets).
+	DeleteBooth(context.Context, *connect.Request[v1.DeleteBoothRequest]) (*connect.Response[v1.DeleteBoothResponse], error)
+	// UpdateBoothPassword changes the staff shared password for a booth.
+	UpdateBoothPassword(context.Context, *connect.Request[v1.UpdateBoothPasswordRequest]) (*connect.Response[v1.UpdateBoothPasswordResponse], error)
+	// GetRiskExplanation returns the current singleton risk explanation text.
+	GetRiskExplanation(context.Context, *connect.Request[v1.GetRiskExplanationRequest]) (*connect.Response[v1.GetRiskExplanationResponse], error)
+	// UpdateRiskExplanation replaces the risk explanation body.
+	UpdateRiskExplanation(context.Context, *connect.Request[v1.UpdateRiskExplanationRequest]) (*connect.Response[v1.UpdateRiskExplanationResponse], error)
+	// ListNotificationTemplates returns all notification templates for editing.
+	ListNotificationTemplates(context.Context, *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error)
+	// UpdateNotificationTemplate updates a notification template by key.
+	UpdateNotificationTemplate(context.Context, *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -167,6 +372,66 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("UpdateBooth")),
 		connect.WithHandlerOptions(opts...),
 	)
+	adminServiceListAdminBoothsHandler := connect.NewUnaryHandler(
+		AdminServiceListAdminBoothsProcedure,
+		svc.ListAdminBooths,
+		connect.WithSchema(adminServiceMethods.ByName("ListAdminBooths")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceCreateBoothHandler := connect.NewUnaryHandler(
+		AdminServiceCreateBoothProcedure,
+		svc.CreateBooth,
+		connect.WithSchema(adminServiceMethods.ByName("CreateBooth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceArchiveBoothHandler := connect.NewUnaryHandler(
+		AdminServiceArchiveBoothProcedure,
+		svc.ArchiveBooth,
+		connect.WithSchema(adminServiceMethods.ByName("ArchiveBooth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUnarchiveBoothHandler := connect.NewUnaryHandler(
+		AdminServiceUnarchiveBoothProcedure,
+		svc.UnarchiveBooth,
+		connect.WithSchema(adminServiceMethods.ByName("UnarchiveBooth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceDeleteBoothHandler := connect.NewUnaryHandler(
+		AdminServiceDeleteBoothProcedure,
+		svc.DeleteBooth,
+		connect.WithSchema(adminServiceMethods.ByName("DeleteBooth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpdateBoothPasswordHandler := connect.NewUnaryHandler(
+		AdminServiceUpdateBoothPasswordProcedure,
+		svc.UpdateBoothPassword,
+		connect.WithSchema(adminServiceMethods.ByName("UpdateBoothPassword")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceGetRiskExplanationHandler := connect.NewUnaryHandler(
+		AdminServiceGetRiskExplanationProcedure,
+		svc.GetRiskExplanation,
+		connect.WithSchema(adminServiceMethods.ByName("GetRiskExplanation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpdateRiskExplanationHandler := connect.NewUnaryHandler(
+		AdminServiceUpdateRiskExplanationProcedure,
+		svc.UpdateRiskExplanation,
+		connect.WithSchema(adminServiceMethods.ByName("UpdateRiskExplanation")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceListNotificationTemplatesHandler := connect.NewUnaryHandler(
+		AdminServiceListNotificationTemplatesProcedure,
+		svc.ListNotificationTemplates,
+		connect.WithSchema(adminServiceMethods.ByName("ListNotificationTemplates")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceUpdateNotificationTemplateHandler := connect.NewUnaryHandler(
+		AdminServiceUpdateNotificationTemplateProcedure,
+		svc.UpdateNotificationTemplate,
+		connect.WithSchema(adminServiceMethods.ByName("UpdateNotificationTemplate")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/admin.v1.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceLoginAsGlobalAdminProcedure:
@@ -175,6 +440,26 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceGetDashboardHandler.ServeHTTP(w, r)
 		case AdminServiceUpdateBoothProcedure:
 			adminServiceUpdateBoothHandler.ServeHTTP(w, r)
+		case AdminServiceListAdminBoothsProcedure:
+			adminServiceListAdminBoothsHandler.ServeHTTP(w, r)
+		case AdminServiceCreateBoothProcedure:
+			adminServiceCreateBoothHandler.ServeHTTP(w, r)
+		case AdminServiceArchiveBoothProcedure:
+			adminServiceArchiveBoothHandler.ServeHTTP(w, r)
+		case AdminServiceUnarchiveBoothProcedure:
+			adminServiceUnarchiveBoothHandler.ServeHTTP(w, r)
+		case AdminServiceDeleteBoothProcedure:
+			adminServiceDeleteBoothHandler.ServeHTTP(w, r)
+		case AdminServiceUpdateBoothPasswordProcedure:
+			adminServiceUpdateBoothPasswordHandler.ServeHTTP(w, r)
+		case AdminServiceGetRiskExplanationProcedure:
+			adminServiceGetRiskExplanationHandler.ServeHTTP(w, r)
+		case AdminServiceUpdateRiskExplanationProcedure:
+			adminServiceUpdateRiskExplanationHandler.ServeHTTP(w, r)
+		case AdminServiceListNotificationTemplatesProcedure:
+			adminServiceListNotificationTemplatesHandler.ServeHTTP(w, r)
+		case AdminServiceUpdateNotificationTemplateProcedure:
+			adminServiceUpdateNotificationTemplateHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -196,6 +481,46 @@ func (UnimplementedAdminServiceHandler) UpdateBooth(context.Context, *connect.Re
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UpdateBooth is not implemented"))
 }
 
+func (UnimplementedAdminServiceHandler) ListAdminBooths(context.Context, *connect.Request[v1.ListAdminBoothsRequest]) (*connect.Response[v1.ListAdminBoothsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.ListAdminBooths is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) CreateBooth(context.Context, *connect.Request[v1.CreateBoothRequest]) (*connect.Response[v1.CreateBoothResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.CreateBooth is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ArchiveBooth(context.Context, *connect.Request[v1.ArchiveBoothRequest]) (*connect.Response[v1.ArchiveBoothResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.ArchiveBooth is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UnarchiveBooth(context.Context, *connect.Request[v1.UnarchiveBoothRequest]) (*connect.Response[v1.UnarchiveBoothResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UnarchiveBooth is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) DeleteBooth(context.Context, *connect.Request[v1.DeleteBoothRequest]) (*connect.Response[v1.DeleteBoothResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.DeleteBooth is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpdateBoothPassword(context.Context, *connect.Request[v1.UpdateBoothPasswordRequest]) (*connect.Response[v1.UpdateBoothPasswordResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UpdateBoothPassword is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) GetRiskExplanation(context.Context, *connect.Request[v1.GetRiskExplanationRequest]) (*connect.Response[v1.GetRiskExplanationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.GetRiskExplanation is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpdateRiskExplanation(context.Context, *connect.Request[v1.UpdateRiskExplanationRequest]) (*connect.Response[v1.UpdateRiskExplanationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UpdateRiskExplanation is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ListNotificationTemplates(context.Context, *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.ListNotificationTemplates is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) UpdateNotificationTemplate(context.Context, *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UpdateNotificationTemplate is not implemented"))
+}
+
 // StaffServiceClient is a client for the admin.v1.StaffService service.
 type StaffServiceClient interface {
 	// LoginAsStaff authenticates with booth_id + password and sets a session cookie.
@@ -214,6 +539,17 @@ type StaffServiceClient interface {
 	GetStaffSession(context.Context, *connect.Request[v1.GetStaffSessionRequest]) (*connect.Response[v1.GetStaffSessionResponse], error)
 	// ListTicketsByBooth returns all tickets for the authenticated staff's booth.
 	ListTicketsByBooth(context.Context, *connect.Request[v1.ListTicketsByBoothRequest]) (*connect.Response[v1.ListTicketsByBoothResponse], error)
+	// RestorePendingTicket manually moves a pending ticket back to called with priority flag.
+	RestorePendingTicket(context.Context, *connect.Request[v1.RestorePendingTicketRequest]) (*connect.Response[v1.RestorePendingTicketResponse], error)
+	// ForceStartMatch force-starts a match session with the current public waiting tickets
+	// (requires at least min_party_size participants).
+	ForceStartMatch(context.Context, *connect.Request[v1.ForceStartMatchRequest]) (*connect.Response[v1.ForceStartMatchResponse], error)
+	// CallPrivateMatch calls all tickets in a private waiting match session (waiting → called).
+	CallPrivateMatch(context.Context, *connect.Request[v1.CallPrivateMatchRequest]) (*connect.Response[v1.CallPrivateMatchResponse], error)
+	// CompleteMatchSession marks a session as completed and admits all its tickets.
+	CompleteMatchSession(context.Context, *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error)
+	// GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
+	GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error)
 }
 
 // NewStaffServiceClient constructs a client for the admin.v1.StaffService service. By default, it
@@ -275,19 +611,54 @@ func NewStaffServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(staffServiceMethods.ByName("ListTicketsByBooth")),
 			connect.WithClientOptions(opts...),
 		),
+		restorePendingTicket: connect.NewClient[v1.RestorePendingTicketRequest, v1.RestorePendingTicketResponse](
+			httpClient,
+			baseURL+StaffServiceRestorePendingTicketProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("RestorePendingTicket")),
+			connect.WithClientOptions(opts...),
+		),
+		forceStartMatch: connect.NewClient[v1.ForceStartMatchRequest, v1.ForceStartMatchResponse](
+			httpClient,
+			baseURL+StaffServiceForceStartMatchProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("ForceStartMatch")),
+			connect.WithClientOptions(opts...),
+		),
+		callPrivateMatch: connect.NewClient[v1.CallPrivateMatchRequest, v1.CallPrivateMatchResponse](
+			httpClient,
+			baseURL+StaffServiceCallPrivateMatchProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("CallPrivateMatch")),
+			connect.WithClientOptions(opts...),
+		),
+		completeMatchSession: connect.NewClient[v1.CompleteMatchSessionRequest, v1.CompleteMatchSessionResponse](
+			httpClient,
+			baseURL+StaffServiceCompleteMatchSessionProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("CompleteMatchSession")),
+			connect.WithClientOptions(opts...),
+		),
+		getMatchQueueStatus: connect.NewClient[v1.GetMatchQueueStatusRequest, v1.GetMatchQueueStatusResponse](
+			httpClient,
+			baseURL+StaffServiceGetMatchQueueStatusProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("GetMatchQueueStatus")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // staffServiceClient implements StaffServiceClient.
 type staffServiceClient struct {
-	loginAsStaff        *connect.Client[v1.LoginAsStaffRequest, v1.LoginAsStaffResponse]
-	callTicket          *connect.Client[v1.CallTicketRequest, v1.CallTicketResponse]
-	callNextTickets     *connect.Client[v1.CallNextTicketsRequest, v1.CallNextTicketsResponse]
-	admitByQR           *connect.Client[v1.AdmitByQRRequest, v1.AdmitByQRResponse]
-	admitManually       *connect.Client[v1.AdmitManuallyRequest, v1.AdmitManuallyResponse]
-	cancelTicketByStaff *connect.Client[v1.CancelTicketByStaffRequest, v1.CancelTicketByStaffResponse]
-	getStaffSession     *connect.Client[v1.GetStaffSessionRequest, v1.GetStaffSessionResponse]
-	listTicketsByBooth  *connect.Client[v1.ListTicketsByBoothRequest, v1.ListTicketsByBoothResponse]
+	loginAsStaff         *connect.Client[v1.LoginAsStaffRequest, v1.LoginAsStaffResponse]
+	callTicket           *connect.Client[v1.CallTicketRequest, v1.CallTicketResponse]
+	callNextTickets      *connect.Client[v1.CallNextTicketsRequest, v1.CallNextTicketsResponse]
+	admitByQR            *connect.Client[v1.AdmitByQRRequest, v1.AdmitByQRResponse]
+	admitManually        *connect.Client[v1.AdmitManuallyRequest, v1.AdmitManuallyResponse]
+	cancelTicketByStaff  *connect.Client[v1.CancelTicketByStaffRequest, v1.CancelTicketByStaffResponse]
+	getStaffSession      *connect.Client[v1.GetStaffSessionRequest, v1.GetStaffSessionResponse]
+	listTicketsByBooth   *connect.Client[v1.ListTicketsByBoothRequest, v1.ListTicketsByBoothResponse]
+	restorePendingTicket *connect.Client[v1.RestorePendingTicketRequest, v1.RestorePendingTicketResponse]
+	forceStartMatch      *connect.Client[v1.ForceStartMatchRequest, v1.ForceStartMatchResponse]
+	callPrivateMatch     *connect.Client[v1.CallPrivateMatchRequest, v1.CallPrivateMatchResponse]
+	completeMatchSession *connect.Client[v1.CompleteMatchSessionRequest, v1.CompleteMatchSessionResponse]
+	getMatchQueueStatus  *connect.Client[v1.GetMatchQueueStatusRequest, v1.GetMatchQueueStatusResponse]
 }
 
 // LoginAsStaff calls admin.v1.StaffService.LoginAsStaff.
@@ -330,6 +701,31 @@ func (c *staffServiceClient) ListTicketsByBooth(ctx context.Context, req *connec
 	return c.listTicketsByBooth.CallUnary(ctx, req)
 }
 
+// RestorePendingTicket calls admin.v1.StaffService.RestorePendingTicket.
+func (c *staffServiceClient) RestorePendingTicket(ctx context.Context, req *connect.Request[v1.RestorePendingTicketRequest]) (*connect.Response[v1.RestorePendingTicketResponse], error) {
+	return c.restorePendingTicket.CallUnary(ctx, req)
+}
+
+// ForceStartMatch calls admin.v1.StaffService.ForceStartMatch.
+func (c *staffServiceClient) ForceStartMatch(ctx context.Context, req *connect.Request[v1.ForceStartMatchRequest]) (*connect.Response[v1.ForceStartMatchResponse], error) {
+	return c.forceStartMatch.CallUnary(ctx, req)
+}
+
+// CallPrivateMatch calls admin.v1.StaffService.CallPrivateMatch.
+func (c *staffServiceClient) CallPrivateMatch(ctx context.Context, req *connect.Request[v1.CallPrivateMatchRequest]) (*connect.Response[v1.CallPrivateMatchResponse], error) {
+	return c.callPrivateMatch.CallUnary(ctx, req)
+}
+
+// CompleteMatchSession calls admin.v1.StaffService.CompleteMatchSession.
+func (c *staffServiceClient) CompleteMatchSession(ctx context.Context, req *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error) {
+	return c.completeMatchSession.CallUnary(ctx, req)
+}
+
+// GetMatchQueueStatus calls admin.v1.StaffService.GetMatchQueueStatus.
+func (c *staffServiceClient) GetMatchQueueStatus(ctx context.Context, req *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error) {
+	return c.getMatchQueueStatus.CallUnary(ctx, req)
+}
+
 // StaffServiceHandler is an implementation of the admin.v1.StaffService service.
 type StaffServiceHandler interface {
 	// LoginAsStaff authenticates with booth_id + password and sets a session cookie.
@@ -348,6 +744,17 @@ type StaffServiceHandler interface {
 	GetStaffSession(context.Context, *connect.Request[v1.GetStaffSessionRequest]) (*connect.Response[v1.GetStaffSessionResponse], error)
 	// ListTicketsByBooth returns all tickets for the authenticated staff's booth.
 	ListTicketsByBooth(context.Context, *connect.Request[v1.ListTicketsByBoothRequest]) (*connect.Response[v1.ListTicketsByBoothResponse], error)
+	// RestorePendingTicket manually moves a pending ticket back to called with priority flag.
+	RestorePendingTicket(context.Context, *connect.Request[v1.RestorePendingTicketRequest]) (*connect.Response[v1.RestorePendingTicketResponse], error)
+	// ForceStartMatch force-starts a match session with the current public waiting tickets
+	// (requires at least min_party_size participants).
+	ForceStartMatch(context.Context, *connect.Request[v1.ForceStartMatchRequest]) (*connect.Response[v1.ForceStartMatchResponse], error)
+	// CallPrivateMatch calls all tickets in a private waiting match session (waiting → called).
+	CallPrivateMatch(context.Context, *connect.Request[v1.CallPrivateMatchRequest]) (*connect.Response[v1.CallPrivateMatchResponse], error)
+	// CompleteMatchSession marks a session as completed and admits all its tickets.
+	CompleteMatchSession(context.Context, *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error)
+	// GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
+	GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error)
 }
 
 // NewStaffServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -405,6 +812,36 @@ func NewStaffServiceHandler(svc StaffServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(staffServiceMethods.ByName("ListTicketsByBooth")),
 		connect.WithHandlerOptions(opts...),
 	)
+	staffServiceRestorePendingTicketHandler := connect.NewUnaryHandler(
+		StaffServiceRestorePendingTicketProcedure,
+		svc.RestorePendingTicket,
+		connect.WithSchema(staffServiceMethods.ByName("RestorePendingTicket")),
+		connect.WithHandlerOptions(opts...),
+	)
+	staffServiceForceStartMatchHandler := connect.NewUnaryHandler(
+		StaffServiceForceStartMatchProcedure,
+		svc.ForceStartMatch,
+		connect.WithSchema(staffServiceMethods.ByName("ForceStartMatch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	staffServiceCallPrivateMatchHandler := connect.NewUnaryHandler(
+		StaffServiceCallPrivateMatchProcedure,
+		svc.CallPrivateMatch,
+		connect.WithSchema(staffServiceMethods.ByName("CallPrivateMatch")),
+		connect.WithHandlerOptions(opts...),
+	)
+	staffServiceCompleteMatchSessionHandler := connect.NewUnaryHandler(
+		StaffServiceCompleteMatchSessionProcedure,
+		svc.CompleteMatchSession,
+		connect.WithSchema(staffServiceMethods.ByName("CompleteMatchSession")),
+		connect.WithHandlerOptions(opts...),
+	)
+	staffServiceGetMatchQueueStatusHandler := connect.NewUnaryHandler(
+		StaffServiceGetMatchQueueStatusProcedure,
+		svc.GetMatchQueueStatus,
+		connect.WithSchema(staffServiceMethods.ByName("GetMatchQueueStatus")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/admin.v1.StaffService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StaffServiceLoginAsStaffProcedure:
@@ -423,6 +860,16 @@ func NewStaffServiceHandler(svc StaffServiceHandler, opts ...connect.HandlerOpti
 			staffServiceGetStaffSessionHandler.ServeHTTP(w, r)
 		case StaffServiceListTicketsByBoothProcedure:
 			staffServiceListTicketsByBoothHandler.ServeHTTP(w, r)
+		case StaffServiceRestorePendingTicketProcedure:
+			staffServiceRestorePendingTicketHandler.ServeHTTP(w, r)
+		case StaffServiceForceStartMatchProcedure:
+			staffServiceForceStartMatchHandler.ServeHTTP(w, r)
+		case StaffServiceCallPrivateMatchProcedure:
+			staffServiceCallPrivateMatchHandler.ServeHTTP(w, r)
+		case StaffServiceCompleteMatchSessionProcedure:
+			staffServiceCompleteMatchSessionHandler.ServeHTTP(w, r)
+		case StaffServiceGetMatchQueueStatusProcedure:
+			staffServiceGetMatchQueueStatusHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -462,4 +909,24 @@ func (UnimplementedStaffServiceHandler) GetStaffSession(context.Context, *connec
 
 func (UnimplementedStaffServiceHandler) ListTicketsByBooth(context.Context, *connect.Request[v1.ListTicketsByBoothRequest]) (*connect.Response[v1.ListTicketsByBoothResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.ListTicketsByBooth is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) RestorePendingTicket(context.Context, *connect.Request[v1.RestorePendingTicketRequest]) (*connect.Response[v1.RestorePendingTicketResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.RestorePendingTicket is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) ForceStartMatch(context.Context, *connect.Request[v1.ForceStartMatchRequest]) (*connect.Response[v1.ForceStartMatchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.ForceStartMatch is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) CallPrivateMatch(context.Context, *connect.Request[v1.CallPrivateMatchRequest]) (*connect.Response[v1.CallPrivateMatchResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.CallPrivateMatch is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) CompleteMatchSession(context.Context, *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.CompleteMatchSession is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.GetMatchQueueStatus is not implemented"))
 }

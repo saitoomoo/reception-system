@@ -48,10 +48,12 @@ type CreateTicketRequest struct {
 
 // CreateTicketResult is returned on successful ticket creation.
 type CreateTicketResult struct {
-	TicketID        int64
-	Status          string
-	SequenceInBooth int32
-	Position        int32
+	TicketID         int64
+	Status           string
+	SequenceInBooth  int32
+	Position         int32
+	MatchMode        string // "public", "private", or "" for non-matchmaking
+	ParticipantCount int32
 }
 
 // TicketStatusResult contains status and queue position for a ticket.
@@ -104,6 +106,12 @@ func (r *Repository) CreateTicket(ctx context.Context, req CreateTicketRequest) 
 		if now.Before(booth.OpenAt.Time) || now.After(booth.CloseAt.Time) {
 			return CreateTicketResult{}, connecterr.ErrBoothOutOfHours
 		}
+	}
+
+	// Private match participant count check (R-016): reject before creating anything.
+	if req.MatchMode == "private" && booth.MinPartySize != nil && int32(len(req.Participants)) < *booth.MinPartySize {
+		return CreateTicketResult{}, fmt.Errorf("ticket repository: private match requires at least %d participants: %w",
+			*booth.MinPartySize, connecterr.ErrInsufficientParticipants)
 	}
 
 	// Cooldown check (R-007).
@@ -232,10 +240,12 @@ func (r *Repository) CreateTicket(ctx context.Context, req CreateTicketRequest) 
 	}
 
 	return CreateTicketResult{
-		TicketID:        ticket.ID,
-		Status:          ticket.Status,
-		SequenceInBooth: ticket.SequenceInBooth,
-		Position:        position,
+		TicketID:         ticket.ID,
+		Status:           ticket.Status,
+		SequenceInBooth:  ticket.SequenceInBooth,
+		Position:         position,
+		MatchMode:        req.MatchMode,
+		ParticipantCount: int32(len(req.Participants)),
 	}, nil
 }
 

@@ -4,6 +4,7 @@ interface Props {
   pin: string;
   pinConfirm: string;
   pinError: string | null;
+  maxPartySize?: number;
   onNicknameChange: (v: string) => void;
   onPartySizeChange: (v: string) => void;
   onPinChange: (v: string) => void;
@@ -13,7 +14,7 @@ interface Props {
 }
 
 export default function InputStep({
-  nickname, partySize, pin, pinConfirm, pinError,
+  nickname, partySize, pin, pinConfirm, pinError, maxPartySize,
   onNicknameChange, onPartySizeChange, onPinChange, onPinConfirmChange,
   onSubmit, onBack,
 }: Props) {
@@ -39,6 +40,7 @@ export default function InputStep({
           onChange={(e) => onPartySizeChange(e.target.value)}
           placeholder="例：2"
           min="1"
+          max={maxPartySize}
           required
           className="w-full px-4 py-4 text-[20px] border-2 border-[#D4B946] rounded-xl focus:outline-none focus:border-[#B89D3A] transition-colors"
         />

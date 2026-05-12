@@ -1,0 +1,22 @@
+- generic [ref=e27]:
+  - banner [ref=e28]:
+    - button "戻る" [ref=e29]:
+      - img [ref=e30]
+    - heading "待ち状況" [level=1] [ref=e32]
+  - main [ref=e33]:
+    - generic [ref=e43]:
+      - paragraph [ref=e44]: 保留中です
+      - paragraph [ref=e45]:
+        - text: お時間のある時にいつでも
+        - text: A棟 1F ホール へお越しください
+      - paragraph [ref=e46]: "受付終了: 21:17"
+      - generic [ref=e47]:
+        - paragraph [ref=e48]: スタッフにこの QR を見せてください
+        - img [ref=e50]
+        - paragraph [ref=e53]: A-002
+    - generic [ref=e37]:
+      - paragraph [ref=e38]: VR体験ブース A
+      - paragraph [ref=e39]: A棟 1F ホール
+    - button "整理券をキャンセル" [ref=e40]
+    - button "マイページへ" [ref=e41]
+  - contentinfo [ref=e42]: お困りの際は受付スタッフまでお声がけください

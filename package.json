@@ -1,0 +1,31 @@
+{
+  "name": "reception-system",
+  "version": "1.0.0",
+  "description": "大規模イベント(来場者 1,000 人以上想定)向けの**受付と整理券管理を Web で完結させるシステム**。来場者はスマホで整理券を取得し、運営は QR スキャンで効率的に捌く。HMD(VR ヘッドセット)体験を含むブースを運営する想定。",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:push": "playwright test e2e/tests/notification-push.spec.ts",
+    "test:e2e:polling": "playwright test e2e/tests/notification-polling.spec.ts",
+    "test:e2e:template": "playwright test e2e/tests/notification-template.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saitoomoo/reception-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/saitoomoo/reception-system/issues"
+  },
+  "homepage": "https://github.com/saitoomoo/reception-system#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
+  }
+}

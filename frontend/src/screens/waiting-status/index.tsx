@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '@/hooks/use-auth';
 import { ticketClient, boothClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
@@ -9,7 +10,7 @@ export default function WaitingStatusScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const ticketId = searchParams.get('ticketId');
-  const { visitorId } = useAuth();
+  const { visitorId, receptionNumber } = useAuth();
   const queryClient = useQueryClient();
   const prevStatusRef = useRef<string | null>(null);
 
@@ -25,7 +26,7 @@ export default function WaitingStatusScreen() {
   const { data: boothData } = useQuery({
     queryKey: ['booth', data?.boothId],
     queryFn: () => boothClient.getBooth({ boothId: data!.boothId }),
-    enabled: !!data?.boothId && status === 'admitted',
+    enabled: !!data?.boothId && (status === 'admitted' || status === 'pending'),
   });
 
   const cancelMutation = useMutation({
@@ -110,16 +111,57 @@ export default function WaitingStatusScreen() {
                 <p className="text-[18px] text-[#5A4A20] mt-1">人</p>
               </div>
             </div>
+            {data?.matchmakingInfo && (
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-[13px] font-bold text-white px-3 py-1 rounded-full bg-[#5A4A20]">
+                    {data.matchmakingInfo.matchMode === 'private' ? 'プライベート' : 'マッチメイキング'}
+                  </span>
+                </div>
+                {data.matchmakingInfo.matchMode === 'public' && data.matchmakingInfo.targetPartySize > 0 && (
+                  <div>
+                    <p className="text-[13px] text-[#5A4A20] opacity-70 mb-1">マッチング進捗（目安）</p>
+                    <div className="flex items-center gap-2">
+                      <div className="flex-1 bg-gray-100 rounded-full h-3">
+                        <div
+                          className="bg-[#D4B946] h-3 rounded-full transition-all duration-500"
+                          style={{
+                            width: `${Math.min(100, Math.round((data.matchmakingInfo.publicWaitingCount / data.matchmakingInfo.targetPartySize) * 100))}%`,
+                          }}
+                        />
+                      </div>
+                      <span className="text-[14px] font-bold text-[#5A4A20] whitespace-nowrap">
+                        {data.matchmakingInfo.publicWaitingCount} / {data.matchmakingInfo.targetPartySize}人
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 
         {status === 'pending' && (
           <div className="bg-yellow-100 rounded-2xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.15)] border-4 border-yellow-400">
-            <p className="text-[24px] font-bold text-yellow-800 text-center mb-4">保留中</p>
-            <p className="text-[15px] text-yellow-900 text-center leading-relaxed">
+            <p className="text-[24px] font-bold text-yellow-800 text-center mb-4">保留中です</p>
+            <p className="text-[15px] text-yellow-900 text-center leading-relaxed mb-6">
               お時間のある時にいつでも<br />
               {data?.boothLocation} へお越しください
             </p>
+            {boothData?.booth?.closeAt && (
+              <p className="text-[13px] text-yellow-800 text-center mb-6">
+                受付終了: {new Date(boothData.booth.closeAt).toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' })}
+              </p>
+            )}
+            <div className="flex flex-col items-center gap-3">
+              <p className="text-[13px] text-yellow-800">スタッフにこの QR を見せてください</p>
+              <div className="bg-white p-3 rounded-xl">
+                <QRCodeSVG value={receptionNumber || ''} size={160} level="H" includeMargin={false} />
+              </div>
+              {receptionNumber && (
+                <p className="text-[16px] font-bold text-yellow-900">{receptionNumber}</p>
+              )}
+            </div>
           </div>
         )}
 

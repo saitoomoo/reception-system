@@ -423,6 +423,69 @@ func (x *GetTicketStatusRequest) GetTicketId() string {
 	return ""
 }
 
+// MatchmakingInfo is included for matchmaking booths to show queue context.
+type MatchmakingInfo struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// "public" or "private"
+	MatchMode string `protobuf:"bytes,1,opt,name=match_mode,json=matchMode,proto3" json:"match_mode,omitempty"`
+	// Number of public-waiting participants ahead (public mode only).
+	PublicWaitingCount int32 `protobuf:"varint,2,opt,name=public_waiting_count,json=publicWaitingCount,proto3" json:"public_waiting_count,omitempty"`
+	TargetPartySize    int32 `protobuf:"varint,3,opt,name=target_party_size,json=targetPartySize,proto3" json:"target_party_size,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *MatchmakingInfo) Reset() {
+	*x = MatchmakingInfo{}
+	mi := &file_ticket_v1_ticket_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MatchmakingInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MatchmakingInfo) ProtoMessage() {}
+
+func (x *MatchmakingInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_ticket_v1_ticket_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MatchmakingInfo.ProtoReflect.Descriptor instead.
+func (*MatchmakingInfo) Descriptor() ([]byte, []int) {
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *MatchmakingInfo) GetMatchMode() string {
+	if x != nil {
+		return x.MatchMode
+	}
+	return ""
+}
+
+func (x *MatchmakingInfo) GetPublicWaitingCount() int32 {
+	if x != nil {
+		return x.PublicWaitingCount
+	}
+	return 0
+}
+
+func (x *MatchmakingInfo) GetTargetPartySize() int32 {
+	if x != nil {
+		return x.TargetPartySize
+	}
+	return 0
+}
+
 type GetTicketStatusResponse struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	TicketId        string                 `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
@@ -433,13 +496,15 @@ type GetTicketStatusResponse struct {
 	Position        int32                  `protobuf:"varint,6,opt,name=position,proto3" json:"position,omitempty"`
 	SequenceInBooth int32                  `protobuf:"varint,7,opt,name=sequence_in_booth,json=sequenceInBooth,proto3" json:"sequence_in_booth,omitempty"`
 	CreatedAt       string                 `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// Set only for matchmaking booths.
+	MatchmakingInfo *MatchmakingInfo `protobuf:"bytes,9,opt,name=matchmaking_info,json=matchmakingInfo,proto3" json:"matchmaking_info,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
 
 func (x *GetTicketStatusResponse) Reset() {
 	*x = GetTicketStatusResponse{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[6]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -451,7 +516,7 @@ func (x *GetTicketStatusResponse) String() string {
 func (*GetTicketStatusResponse) ProtoMessage() {}
 
 func (x *GetTicketStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[6]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -464,7 +529,7 @@ func (x *GetTicketStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTicketStatusResponse.ProtoReflect.Descriptor instead.
 func (*GetTicketStatusResponse) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{6}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetTicketStatusResponse) GetTicketId() string {
@@ -523,6 +588,13 @@ func (x *GetTicketStatusResponse) GetCreatedAt() string {
 	return ""
 }
 
+func (x *GetTicketStatusResponse) GetMatchmakingInfo() *MatchmakingInfo {
+	if x != nil {
+		return x.MatchmakingInfo
+	}
+	return nil
+}
+
 type ListMyTicketsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	VisitorId     string                 `protobuf:"bytes,1,opt,name=visitor_id,json=visitorId,proto3" json:"visitor_id,omitempty"`
@@ -532,7 +604,7 @@ type ListMyTicketsRequest struct {
 
 func (x *ListMyTicketsRequest) Reset() {
 	*x = ListMyTicketsRequest{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[7]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -544,7 +616,7 @@ func (x *ListMyTicketsRequest) String() string {
 func (*ListMyTicketsRequest) ProtoMessage() {}
 
 func (x *ListMyTicketsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[7]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -557,7 +629,7 @@ func (x *ListMyTicketsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyTicketsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyTicketsRequest) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{7}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ListMyTicketsRequest) GetVisitorId() string {
@@ -576,7 +648,7 @@ type ListMyTicketsResponse struct {
 
 func (x *ListMyTicketsResponse) Reset() {
 	*x = ListMyTicketsResponse{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[8]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -588,7 +660,7 @@ func (x *ListMyTicketsResponse) String() string {
 func (*ListMyTicketsResponse) ProtoMessage() {}
 
 func (x *ListMyTicketsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[8]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -601,7 +673,7 @@ func (x *ListMyTicketsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyTicketsResponse.ProtoReflect.Descriptor instead.
 func (*ListMyTicketsResponse) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{8}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListMyTicketsResponse) GetTickets() []*TicketSummary {
@@ -622,7 +694,7 @@ type CancelTicketRequest struct {
 
 func (x *CancelTicketRequest) Reset() {
 	*x = CancelTicketRequest{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[9]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -634,7 +706,7 @@ func (x *CancelTicketRequest) String() string {
 func (*CancelTicketRequest) ProtoMessage() {}
 
 func (x *CancelTicketRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[9]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -647,7 +719,7 @@ func (x *CancelTicketRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTicketRequest.ProtoReflect.Descriptor instead.
 func (*CancelTicketRequest) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{9}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CancelTicketRequest) GetTicketId() string {
@@ -672,7 +744,7 @@ type CancelTicketResponse struct {
 
 func (x *CancelTicketResponse) Reset() {
 	*x = CancelTicketResponse{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[10]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -684,7 +756,7 @@ func (x *CancelTicketResponse) String() string {
 func (*CancelTicketResponse) ProtoMessage() {}
 
 func (x *CancelTicketResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[10]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -697,7 +769,7 @@ func (x *CancelTicketResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTicketResponse.ProtoReflect.Descriptor instead.
 func (*CancelTicketResponse) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{10}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{11}
 }
 
 type GetTicketStatusByReceptionNumberRequest struct {
@@ -710,7 +782,7 @@ type GetTicketStatusByReceptionNumberRequest struct {
 
 func (x *GetTicketStatusByReceptionNumberRequest) Reset() {
 	*x = GetTicketStatusByReceptionNumberRequest{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[11]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -722,7 +794,7 @@ func (x *GetTicketStatusByReceptionNumberRequest) String() string {
 func (*GetTicketStatusByReceptionNumberRequest) ProtoMessage() {}
 
 func (x *GetTicketStatusByReceptionNumberRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[11]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -735,7 +807,7 @@ func (x *GetTicketStatusByReceptionNumberRequest) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GetTicketStatusByReceptionNumberRequest.ProtoReflect.Descriptor instead.
 func (*GetTicketStatusByReceptionNumberRequest) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{11}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *GetTicketStatusByReceptionNumberRequest) GetBoothId() string {
@@ -770,7 +842,7 @@ type GetTicketStatusByReceptionNumberResponse struct {
 
 func (x *GetTicketStatusByReceptionNumberResponse) Reset() {
 	*x = GetTicketStatusByReceptionNumberResponse{}
-	mi := &file_ticket_v1_ticket_proto_msgTypes[12]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -782,7 +854,7 @@ func (x *GetTicketStatusByReceptionNumberResponse) String() string {
 func (*GetTicketStatusByReceptionNumberResponse) ProtoMessage() {}
 
 func (x *GetTicketStatusByReceptionNumberResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_ticket_v1_ticket_proto_msgTypes[12]
+	mi := &file_ticket_v1_ticket_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -795,7 +867,7 @@ func (x *GetTicketStatusByReceptionNumberResponse) ProtoReflect() protoreflect.M
 
 // Deprecated: Use GetTicketStatusByReceptionNumberResponse.ProtoReflect.Descriptor instead.
 func (*GetTicketStatusByReceptionNumberResponse) Descriptor() ([]byte, []int) {
-	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{12}
+	return file_ticket_v1_ticket_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *GetTicketStatusByReceptionNumberResponse) GetTicketId() string {
@@ -884,7 +956,12 @@ const file_ticket_v1_ticket_proto_rawDesc = "" +
 	"\x11sequence_in_booth\x18\x03 \x01(\x05R\x0fsequenceInBooth\x12\x1a\n" +
 	"\bposition\x18\x04 \x01(\x05R\bposition\"5\n" +
 	"\x16GetTicketStatusRequest\x12\x1b\n" +
-	"\tticket_id\x18\x01 \x01(\tR\bticketId\"\x96\x02\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\"\x8e\x01\n" +
+	"\x0fMatchmakingInfo\x12\x1d\n" +
+	"\n" +
+	"match_mode\x18\x01 \x01(\tR\tmatchMode\x120\n" +
+	"\x14public_waiting_count\x18\x02 \x01(\x05R\x12publicWaitingCount\x12*\n" +
+	"\x11target_party_size\x18\x03 \x01(\x05R\x0ftargetPartySize\"\xdd\x02\n" +
 	"\x17GetTicketStatusResponse\x12\x1b\n" +
 	"\tticket_id\x18\x01 \x01(\tR\bticketId\x12\x19\n" +
 	"\bbooth_id\x18\x02 \x01(\tR\aboothId\x12\x1d\n" +
@@ -895,7 +972,8 @@ const file_ticket_v1_ticket_proto_rawDesc = "" +
 	"\bposition\x18\x06 \x01(\x05R\bposition\x12*\n" +
 	"\x11sequence_in_booth\x18\a \x01(\x05R\x0fsequenceInBooth\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\b \x01(\tR\tcreatedAt\"5\n" +
+	"created_at\x18\b \x01(\tR\tcreatedAt\x12E\n" +
+	"\x10matchmaking_info\x18\t \x01(\v2\x1a.ticket.v1.MatchmakingInfoR\x0fmatchmakingInfo\"5\n" +
 	"\x14ListMyTicketsRequest\x12\x1d\n" +
 	"\n" +
 	"visitor_id\x18\x01 \x01(\tR\tvisitorId\"K\n" +
@@ -937,7 +1015,7 @@ func file_ticket_v1_ticket_proto_rawDescGZIP() []byte {
 	return file_ticket_v1_ticket_proto_rawDescData
 }
 
-var file_ticket_v1_ticket_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_ticket_v1_ticket_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_ticket_v1_ticket_proto_goTypes = []any{
 	(*ParticipantInput)(nil),                         // 0: ticket.v1.ParticipantInput
 	(*ParentalConsentInput)(nil),                     // 1: ticket.v1.ParentalConsentInput
@@ -945,33 +1023,35 @@ var file_ticket_v1_ticket_proto_goTypes = []any{
 	(*CreateTicketRequest)(nil),                      // 3: ticket.v1.CreateTicketRequest
 	(*CreateTicketResponse)(nil),                     // 4: ticket.v1.CreateTicketResponse
 	(*GetTicketStatusRequest)(nil),                   // 5: ticket.v1.GetTicketStatusRequest
-	(*GetTicketStatusResponse)(nil),                  // 6: ticket.v1.GetTicketStatusResponse
-	(*ListMyTicketsRequest)(nil),                     // 7: ticket.v1.ListMyTicketsRequest
-	(*ListMyTicketsResponse)(nil),                    // 8: ticket.v1.ListMyTicketsResponse
-	(*CancelTicketRequest)(nil),                      // 9: ticket.v1.CancelTicketRequest
-	(*CancelTicketResponse)(nil),                     // 10: ticket.v1.CancelTicketResponse
-	(*GetTicketStatusByReceptionNumberRequest)(nil),  // 11: ticket.v1.GetTicketStatusByReceptionNumberRequest
-	(*GetTicketStatusByReceptionNumberResponse)(nil), // 12: ticket.v1.GetTicketStatusByReceptionNumberResponse
+	(*MatchmakingInfo)(nil),                          // 6: ticket.v1.MatchmakingInfo
+	(*GetTicketStatusResponse)(nil),                  // 7: ticket.v1.GetTicketStatusResponse
+	(*ListMyTicketsRequest)(nil),                     // 8: ticket.v1.ListMyTicketsRequest
+	(*ListMyTicketsResponse)(nil),                    // 9: ticket.v1.ListMyTicketsResponse
+	(*CancelTicketRequest)(nil),                      // 10: ticket.v1.CancelTicketRequest
+	(*CancelTicketResponse)(nil),                     // 11: ticket.v1.CancelTicketResponse
+	(*GetTicketStatusByReceptionNumberRequest)(nil),  // 12: ticket.v1.GetTicketStatusByReceptionNumberRequest
+	(*GetTicketStatusByReceptionNumberResponse)(nil), // 13: ticket.v1.GetTicketStatusByReceptionNumberResponse
 }
 var file_ticket_v1_ticket_proto_depIdxs = []int32{
 	0,  // 0: ticket.v1.CreateTicketRequest.participants:type_name -> ticket.v1.ParticipantInput
 	1,  // 1: ticket.v1.CreateTicketRequest.parental_consent:type_name -> ticket.v1.ParentalConsentInput
-	2,  // 2: ticket.v1.ListMyTicketsResponse.tickets:type_name -> ticket.v1.TicketSummary
-	3,  // 3: ticket.v1.TicketService.CreateTicket:input_type -> ticket.v1.CreateTicketRequest
-	5,  // 4: ticket.v1.TicketService.GetTicketStatus:input_type -> ticket.v1.GetTicketStatusRequest
-	7,  // 5: ticket.v1.TicketService.ListMyTickets:input_type -> ticket.v1.ListMyTicketsRequest
-	9,  // 6: ticket.v1.TicketService.CancelTicket:input_type -> ticket.v1.CancelTicketRequest
-	11, // 7: ticket.v1.TicketService.GetTicketStatusByReceptionNumber:input_type -> ticket.v1.GetTicketStatusByReceptionNumberRequest
-	4,  // 8: ticket.v1.TicketService.CreateTicket:output_type -> ticket.v1.CreateTicketResponse
-	6,  // 9: ticket.v1.TicketService.GetTicketStatus:output_type -> ticket.v1.GetTicketStatusResponse
-	8,  // 10: ticket.v1.TicketService.ListMyTickets:output_type -> ticket.v1.ListMyTicketsResponse
-	10, // 11: ticket.v1.TicketService.CancelTicket:output_type -> ticket.v1.CancelTicketResponse
-	12, // 12: ticket.v1.TicketService.GetTicketStatusByReceptionNumber:output_type -> ticket.v1.GetTicketStatusByReceptionNumberResponse
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	6,  // 2: ticket.v1.GetTicketStatusResponse.matchmaking_info:type_name -> ticket.v1.MatchmakingInfo
+	2,  // 3: ticket.v1.ListMyTicketsResponse.tickets:type_name -> ticket.v1.TicketSummary
+	3,  // 4: ticket.v1.TicketService.CreateTicket:input_type -> ticket.v1.CreateTicketRequest
+	5,  // 5: ticket.v1.TicketService.GetTicketStatus:input_type -> ticket.v1.GetTicketStatusRequest
+	8,  // 6: ticket.v1.TicketService.ListMyTickets:input_type -> ticket.v1.ListMyTicketsRequest
+	10, // 7: ticket.v1.TicketService.CancelTicket:input_type -> ticket.v1.CancelTicketRequest
+	12, // 8: ticket.v1.TicketService.GetTicketStatusByReceptionNumber:input_type -> ticket.v1.GetTicketStatusByReceptionNumberRequest
+	4,  // 9: ticket.v1.TicketService.CreateTicket:output_type -> ticket.v1.CreateTicketResponse
+	7,  // 10: ticket.v1.TicketService.GetTicketStatus:output_type -> ticket.v1.GetTicketStatusResponse
+	9,  // 11: ticket.v1.TicketService.ListMyTickets:output_type -> ticket.v1.ListMyTicketsResponse
+	11, // 12: ticket.v1.TicketService.CancelTicket:output_type -> ticket.v1.CancelTicketResponse
+	13, // 13: ticket.v1.TicketService.GetTicketStatusByReceptionNumber:output_type -> ticket.v1.GetTicketStatusByReceptionNumberResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_ticket_v1_ticket_proto_init() }
@@ -985,7 +1065,7 @@ func file_ticket_v1_ticket_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_ticket_v1_ticket_proto_rawDesc), len(file_ticket_v1_ticket_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
