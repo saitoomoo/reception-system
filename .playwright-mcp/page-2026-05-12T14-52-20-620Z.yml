@@ -1,0 +1,19 @@
+- generic [ref=e115]:
+  - generic [ref=e116]:
+    - generic [ref=e117]: 🛡️
+    - heading "スタッフログイン" [level=1] [ref=e118]
+    - paragraph [ref=e119]: 担当ブースとパスワードを入力してください
+  - generic [ref=e120]:
+    - generic [ref=e121]:
+      - generic [ref=e122]: 担当ブース
+      - combobox [ref=e123]:
+        - option "VR体験ブース A" [selected]
+        - option "VR対戦ゲーム"
+        - option "個人VR体験"
+    - generic [ref=e124]:
+      - generic [ref=e125]: 共有パスワード
+      - textbox "パスワードを入力" [ref=e126]: wrongpassword
+    - generic [ref=e130]: パスワードが違います
+    - button "ログイン" [ref=e127]
+  - link "全体管理者ログイン" [ref=e129] [cursor=pointer]:
+    - /url: /admin/global/login

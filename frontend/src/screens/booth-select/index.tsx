@@ -6,6 +6,13 @@ import { boothClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
 import type { BoothSummary } from '@/gen/ts/booth/v1/booth_pb';
 
+const EXPERIENCE_TYPE_LABEL: Record<string, string> = {
+  sequential: '順次体験',
+  parallel: '同時体験',
+  individual: '個人体験',
+  matchmaking: 'マッチング',
+};
+
 export default function BoothSelectScreen() {
   const navigate = useNavigate();
   const { isAuthenticated, isLoading } = useAuth();
@@ -52,14 +59,26 @@ export default function BoothSelectScreen() {
               key={booth.id}
               onClick={() => handleSelect(booth.id)}
               disabled={!booth.isAccepting}
-              className={`flex-1 min-h-[160px] bg-white rounded-3xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] transition-all duration-150 ${
+              className={`flex-1 bg-white rounded-3xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] overflow-hidden transition-all duration-150 ${
                 booth.isAccepting
                   ? `active:scale-[0.97] ${activeId === booth.id ? 'scale-[0.97]' : ''}`
                   : 'opacity-60'
               }`}
             >
-              <div className="flex flex-col items-center justify-center gap-2 p-6">
+              {booth.coverImageUrl && (
+                <img
+                  src={booth.coverImageUrl}
+                  alt={booth.name}
+                  className="w-full h-32 object-cover"
+                />
+              )}
+              <div className={`flex flex-col items-center justify-center gap-2 p-6 ${!booth.coverImageUrl ? 'min-h-[160px]' : ''}`}>
                 <span className="text-[32px] font-bold text-[#5A4A20]">{booth.name}</span>
+                {booth.experienceType && (
+                  <span className="text-[12px] font-bold text-[#5A4A20] bg-[#D4B946] bg-opacity-40 px-3 py-1 rounded-full">
+                    {EXPERIENCE_TYPE_LABEL[booth.experienceType] ?? booth.experienceType}
+                  </span>
+                )}
                 <span className="text-[15px] text-[#5A4A20] opacity-70">{booth.location}</span>
                 {booth.isAccepting ? (
                   <span className="text-[16px] text-[#5A4A20] opacity-80">

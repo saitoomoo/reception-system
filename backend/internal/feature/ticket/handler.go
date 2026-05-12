@@ -143,6 +143,13 @@ func (h *Handler) GetTicketStatus(
 	if result.Ticket.CreatedAt.Valid {
 		resp.CreatedAt = result.Ticket.CreatedAt.Time.UTC().Format("2006-01-02T15:04:05Z")
 	}
+	if result.MatchmakingInfo != nil {
+		resp.MatchmakingInfo = &ticketv1.MatchmakingInfo{
+			MatchMode:          result.MatchmakingInfo.MatchMode,
+			PublicWaitingCount: result.MatchmakingInfo.PublicWaitingCount,
+			TargetPartySize:    result.MatchmakingInfo.TargetPartySize,
+		}
+	}
 	return connect.NewResponse(resp), nil
 }
 

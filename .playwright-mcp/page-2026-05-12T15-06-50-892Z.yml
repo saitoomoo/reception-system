@@ -1,0 +1,71 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "← 戻る" [ref=e52]
+    - heading "ブース新規作成" [level=1] [ref=e53]
+  - generic [ref=e54]:
+    - generic [ref=e55]:
+      - heading "基本情報" [level=2] [ref=e56]
+      - generic [ref=e57]:
+        - generic [ref=e58]: ブース名 *
+        - textbox [ref=e59]
+      - generic [ref=e60]:
+        - generic [ref=e61]: 説明
+        - textbox [ref=e62]
+      - generic [ref=e63]:
+        - generic [ref=e64]: 開催場所
+        - textbox [ref=e65]
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - generic [ref=e68]: 受付開始
+          - textbox [ref=e69]
+        - generic [ref=e70]:
+          - generic [ref=e71]: 受付終了
+          - textbox [ref=e72]
+      - generic [ref=e73]:
+        - generic [ref=e74]: 体験タイプ
+        - combobox [ref=e75]:
+          - option "順次体験型 (sequential)" [selected]
+          - option "同時並行型 (parallel)"
+          - option "個人体験型 (individual)"
+          - option "マッチメイキング型 (matchmaking)"
+    - generic [ref=e76]:
+      - heading "体験設定" [level=2] [ref=e77]
+      - generic [ref=e78]:
+        - generic [ref=e79]: 1整理券あたりの最大人数
+        - spinbutton [ref=e80]: "1"
+      - generic [ref=e81]:
+        - generic [ref=e82]: 1人あたりの体験時間 (分)
+        - spinbutton [ref=e83]: "0"
+    - generic [ref=e84]:
+      - heading "呼び出し・クールダウン設定" [level=2] [ref=e85]
+      - generic [ref=e86]:
+        - generic [ref=e87]: 呼び出しタイミング目安 (call_threshold)
+        - spinbutton [ref=e88]: "3"
+      - generic [ref=e89]:
+        - generic [ref=e90]: 呼び出し後pending遷移まで (分)
+        - spinbutton [ref=e91]: "10"
+      - generic [ref=e92]:
+        - generic [ref=e93]: クールダウン時間 (分, 0=なし)
+        - spinbutton [ref=e94]: "0"
+      - generic [ref=e96] [cursor=pointer]:
+        - checkbox "整理券発行を受け付ける" [checked] [ref=e97]
+        - generic [ref=e98]: 整理券発行を受け付ける
+    - generic [ref=e99]:
+      - heading "メディア・リンク" [level=2] [ref=e100]
+      - generic [ref=e101]:
+        - generic [ref=e102]: カバー画像 URL
+        - textbox "https://..." [ref=e103]
+      - generic [ref=e104]:
+        - generic [ref=e105]: 紹介動画 URL (YouTube)
+        - textbox "https://youtu.be/..." [ref=e106]
+      - generic [ref=e107]:
+        - generic [ref=e108]: アンケート URL
+        - textbox "https://forms.gle/..." [ref=e109]
+    - generic [ref=e110]:
+      - heading "スタッフパスワード" [level=2] [ref=e111]
+      - generic [ref=e112]:
+        - generic [ref=e113]: スタッフ共有パスワード *
+        - textbox [ref=e114]
+    - generic [ref=e115]:
+      - button "キャンセル" [ref=e116]
+      - button "ブースを作成" [ref=e117]

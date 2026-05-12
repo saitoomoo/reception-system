@@ -74,6 +74,11 @@ const (
 	// AdminServiceUpdateNotificationTemplateProcedure is the fully-qualified name of the AdminService's
 	// UpdateNotificationTemplate RPC.
 	AdminServiceUpdateNotificationTemplateProcedure = "/admin.v1.AdminService/UpdateNotificationTemplate"
+	// AdminServiceExportCSVProcedure is the fully-qualified name of the AdminService's ExportCSV RPC.
+	AdminServiceExportCSVProcedure = "/admin.v1.AdminService/ExportCSV"
+	// AdminServiceResetEventDataProcedure is the fully-qualified name of the AdminService's
+	// ResetEventData RPC.
+	AdminServiceResetEventDataProcedure = "/admin.v1.AdminService/ResetEventData"
 	// StaffServiceLoginAsStaffProcedure is the fully-qualified name of the StaffService's LoginAsStaff
 	// RPC.
 	StaffServiceLoginAsStaffProcedure = "/admin.v1.StaffService/LoginAsStaff"
@@ -111,6 +116,9 @@ const (
 	// StaffServiceGetMatchQueueStatusProcedure is the fully-qualified name of the StaffService's
 	// GetMatchQueueStatus RPC.
 	StaffServiceGetMatchQueueStatusProcedure = "/admin.v1.StaffService/GetMatchQueueStatus"
+	// StaffServiceCreateTicketManualProcedure is the fully-qualified name of the StaffService's
+	// CreateTicketManual RPC.
+	StaffServiceCreateTicketManualProcedure = "/admin.v1.StaffService/CreateTicketManual"
 )
 
 // AdminServiceClient is a client for the admin.v1.AdminService service.
@@ -141,6 +149,11 @@ type AdminServiceClient interface {
 	ListNotificationTemplates(context.Context, *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error)
 	// UpdateNotificationTemplate updates a notification template by key.
 	UpdateNotificationTemplate(context.Context, *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error)
+	// ExportCSV exports event data as a UTF-8 BOM CSV file.
+	ExportCSV(context.Context, *connect.Request[v1.ExportCSVRequest]) (*connect.Response[v1.ExportCSVResponse], error)
+	// ResetEventData deletes all event data (visitors, tickets, etc.) while preserving
+	// booth/admin/template configuration. Only available when APP_ENV != "production".
+	ResetEventData(context.Context, *connect.Request[v1.ResetEventDataRequest]) (*connect.Response[v1.ResetEventDataResponse], error)
 }
 
 // NewAdminServiceClient constructs a client for the admin.v1.AdminService service. By default, it
@@ -232,6 +245,18 @@ func NewAdminServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(adminServiceMethods.ByName("UpdateNotificationTemplate")),
 			connect.WithClientOptions(opts...),
 		),
+		exportCSV: connect.NewClient[v1.ExportCSVRequest, v1.ExportCSVResponse](
+			httpClient,
+			baseURL+AdminServiceExportCSVProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ExportCSV")),
+			connect.WithClientOptions(opts...),
+		),
+		resetEventData: connect.NewClient[v1.ResetEventDataRequest, v1.ResetEventDataResponse](
+			httpClient,
+			baseURL+AdminServiceResetEventDataProcedure,
+			connect.WithSchema(adminServiceMethods.ByName("ResetEventData")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -250,6 +275,8 @@ type adminServiceClient struct {
 	updateRiskExplanation      *connect.Client[v1.UpdateRiskExplanationRequest, v1.UpdateRiskExplanationResponse]
 	listNotificationTemplates  *connect.Client[v1.ListNotificationTemplatesRequest, v1.ListNotificationTemplatesResponse]
 	updateNotificationTemplate *connect.Client[v1.UpdateNotificationTemplateRequest, v1.UpdateNotificationTemplateResponse]
+	exportCSV                  *connect.Client[v1.ExportCSVRequest, v1.ExportCSVResponse]
+	resetEventData             *connect.Client[v1.ResetEventDataRequest, v1.ResetEventDataResponse]
 }
 
 // LoginAsGlobalAdmin calls admin.v1.AdminService.LoginAsGlobalAdmin.
@@ -317,6 +344,16 @@ func (c *adminServiceClient) UpdateNotificationTemplate(ctx context.Context, req
 	return c.updateNotificationTemplate.CallUnary(ctx, req)
 }
 
+// ExportCSV calls admin.v1.AdminService.ExportCSV.
+func (c *adminServiceClient) ExportCSV(ctx context.Context, req *connect.Request[v1.ExportCSVRequest]) (*connect.Response[v1.ExportCSVResponse], error) {
+	return c.exportCSV.CallUnary(ctx, req)
+}
+
+// ResetEventData calls admin.v1.AdminService.ResetEventData.
+func (c *adminServiceClient) ResetEventData(ctx context.Context, req *connect.Request[v1.ResetEventDataRequest]) (*connect.Response[v1.ResetEventDataResponse], error) {
+	return c.resetEventData.CallUnary(ctx, req)
+}
+
 // AdminServiceHandler is an implementation of the admin.v1.AdminService service.
 type AdminServiceHandler interface {
 	// LoginAsGlobalAdmin authenticates with name + password and sets a session cookie.
@@ -345,6 +382,11 @@ type AdminServiceHandler interface {
 	ListNotificationTemplates(context.Context, *connect.Request[v1.ListNotificationTemplatesRequest]) (*connect.Response[v1.ListNotificationTemplatesResponse], error)
 	// UpdateNotificationTemplate updates a notification template by key.
 	UpdateNotificationTemplate(context.Context, *connect.Request[v1.UpdateNotificationTemplateRequest]) (*connect.Response[v1.UpdateNotificationTemplateResponse], error)
+	// ExportCSV exports event data as a UTF-8 BOM CSV file.
+	ExportCSV(context.Context, *connect.Request[v1.ExportCSVRequest]) (*connect.Response[v1.ExportCSVResponse], error)
+	// ResetEventData deletes all event data (visitors, tickets, etc.) while preserving
+	// booth/admin/template configuration. Only available when APP_ENV != "production".
+	ResetEventData(context.Context, *connect.Request[v1.ResetEventDataRequest]) (*connect.Response[v1.ResetEventDataResponse], error)
 }
 
 // NewAdminServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -432,6 +474,18 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(adminServiceMethods.ByName("UpdateNotificationTemplate")),
 		connect.WithHandlerOptions(opts...),
 	)
+	adminServiceExportCSVHandler := connect.NewUnaryHandler(
+		AdminServiceExportCSVProcedure,
+		svc.ExportCSV,
+		connect.WithSchema(adminServiceMethods.ByName("ExportCSV")),
+		connect.WithHandlerOptions(opts...),
+	)
+	adminServiceResetEventDataHandler := connect.NewUnaryHandler(
+		AdminServiceResetEventDataProcedure,
+		svc.ResetEventData,
+		connect.WithSchema(adminServiceMethods.ByName("ResetEventData")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/admin.v1.AdminService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AdminServiceLoginAsGlobalAdminProcedure:
@@ -460,6 +514,10 @@ func NewAdminServiceHandler(svc AdminServiceHandler, opts ...connect.HandlerOpti
 			adminServiceListNotificationTemplatesHandler.ServeHTTP(w, r)
 		case AdminServiceUpdateNotificationTemplateProcedure:
 			adminServiceUpdateNotificationTemplateHandler.ServeHTTP(w, r)
+		case AdminServiceExportCSVProcedure:
+			adminServiceExportCSVHandler.ServeHTTP(w, r)
+		case AdminServiceResetEventDataProcedure:
+			adminServiceResetEventDataHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -521,6 +579,14 @@ func (UnimplementedAdminServiceHandler) UpdateNotificationTemplate(context.Conte
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.UpdateNotificationTemplate is not implemented"))
 }
 
+func (UnimplementedAdminServiceHandler) ExportCSV(context.Context, *connect.Request[v1.ExportCSVRequest]) (*connect.Response[v1.ExportCSVResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.ExportCSV is not implemented"))
+}
+
+func (UnimplementedAdminServiceHandler) ResetEventData(context.Context, *connect.Request[v1.ResetEventDataRequest]) (*connect.Response[v1.ResetEventDataResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.AdminService.ResetEventData is not implemented"))
+}
+
 // StaffServiceClient is a client for the admin.v1.StaffService service.
 type StaffServiceClient interface {
 	// LoginAsStaff authenticates with booth_id + password and sets a session cookie.
@@ -550,6 +616,9 @@ type StaffServiceClient interface {
 	CompleteMatchSession(context.Context, *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error)
 	// GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
 	GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error)
+	// CreateTicketManual issues a ticket on behalf of a visitor via the special in-person
+	// staff flow for participants aged 7-9 (paper_and_digital consent, R-005).
+	CreateTicketManual(context.Context, *connect.Request[v1.CreateTicketManualRequest]) (*connect.Response[v1.CreateTicketManualResponse], error)
 }
 
 // NewStaffServiceClient constructs a client for the admin.v1.StaffService service. By default, it
@@ -641,6 +710,12 @@ func NewStaffServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(staffServiceMethods.ByName("GetMatchQueueStatus")),
 			connect.WithClientOptions(opts...),
 		),
+		createTicketManual: connect.NewClient[v1.CreateTicketManualRequest, v1.CreateTicketManualResponse](
+			httpClient,
+			baseURL+StaffServiceCreateTicketManualProcedure,
+			connect.WithSchema(staffServiceMethods.ByName("CreateTicketManual")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -659,6 +734,7 @@ type staffServiceClient struct {
 	callPrivateMatch     *connect.Client[v1.CallPrivateMatchRequest, v1.CallPrivateMatchResponse]
 	completeMatchSession *connect.Client[v1.CompleteMatchSessionRequest, v1.CompleteMatchSessionResponse]
 	getMatchQueueStatus  *connect.Client[v1.GetMatchQueueStatusRequest, v1.GetMatchQueueStatusResponse]
+	createTicketManual   *connect.Client[v1.CreateTicketManualRequest, v1.CreateTicketManualResponse]
 }
 
 // LoginAsStaff calls admin.v1.StaffService.LoginAsStaff.
@@ -726,6 +802,11 @@ func (c *staffServiceClient) GetMatchQueueStatus(ctx context.Context, req *conne
 	return c.getMatchQueueStatus.CallUnary(ctx, req)
 }
 
+// CreateTicketManual calls admin.v1.StaffService.CreateTicketManual.
+func (c *staffServiceClient) CreateTicketManual(ctx context.Context, req *connect.Request[v1.CreateTicketManualRequest]) (*connect.Response[v1.CreateTicketManualResponse], error) {
+	return c.createTicketManual.CallUnary(ctx, req)
+}
+
 // StaffServiceHandler is an implementation of the admin.v1.StaffService service.
 type StaffServiceHandler interface {
 	// LoginAsStaff authenticates with booth_id + password and sets a session cookie.
@@ -755,6 +836,9 @@ type StaffServiceHandler interface {
 	CompleteMatchSession(context.Context, *connect.Request[v1.CompleteMatchSessionRequest]) (*connect.Response[v1.CompleteMatchSessionResponse], error)
 	// GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
 	GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error)
+	// CreateTicketManual issues a ticket on behalf of a visitor via the special in-person
+	// staff flow for participants aged 7-9 (paper_and_digital consent, R-005).
+	CreateTicketManual(context.Context, *connect.Request[v1.CreateTicketManualRequest]) (*connect.Response[v1.CreateTicketManualResponse], error)
 }
 
 // NewStaffServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -842,6 +926,12 @@ func NewStaffServiceHandler(svc StaffServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(staffServiceMethods.ByName("GetMatchQueueStatus")),
 		connect.WithHandlerOptions(opts...),
 	)
+	staffServiceCreateTicketManualHandler := connect.NewUnaryHandler(
+		StaffServiceCreateTicketManualProcedure,
+		svc.CreateTicketManual,
+		connect.WithSchema(staffServiceMethods.ByName("CreateTicketManual")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/admin.v1.StaffService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case StaffServiceLoginAsStaffProcedure:
@@ -870,6 +960,8 @@ func NewStaffServiceHandler(svc StaffServiceHandler, opts ...connect.HandlerOpti
 			staffServiceCompleteMatchSessionHandler.ServeHTTP(w, r)
 		case StaffServiceGetMatchQueueStatusProcedure:
 			staffServiceGetMatchQueueStatusHandler.ServeHTTP(w, r)
+		case StaffServiceCreateTicketManualProcedure:
+			staffServiceCreateTicketManualHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -929,4 +1021,8 @@ func (UnimplementedStaffServiceHandler) CompleteMatchSession(context.Context, *c
 
 func (UnimplementedStaffServiceHandler) GetMatchQueueStatus(context.Context, *connect.Request[v1.GetMatchQueueStatusRequest]) (*connect.Response[v1.GetMatchQueueStatusResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.GetMatchQueueStatus is not implemented"))
+}
+
+func (UnimplementedStaffServiceHandler) CreateTicketManual(context.Context, *connect.Request[v1.CreateTicketManualRequest]) (*connect.Response[v1.CreateTicketManualResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("admin.v1.StaffService.CreateTicketManual is not implemented"))
 }

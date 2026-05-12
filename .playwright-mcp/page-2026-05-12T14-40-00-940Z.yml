@@ -1,0 +1,24 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "保護者同意書" [level=1] [ref=e26]
+  - main [ref=e9]:
+    - generic [ref=e27]:
+      - generic [ref=e28]:
+        - generic [ref=e29]:
+          - img [ref=e30]
+          - paragraph [ref=e32]: 13歳未満の参加者がいます
+        - paragraph [ref=e33]: 13歳未満のお子様が参加される場合、保護者の方の同意が必要です。下記の同意書をご確認いただき、必要事項をご記入ください。
+      - generic [ref=e34]:
+        - heading "保護者同意書" [level=2] [ref=e35]
+        - paragraph [ref=e37]: 本体験はVR（仮想現実）ヘッドセットを使用します。以下のリスクについてご理解ください： 1. VR酔い（吐き気・めまい）が発生する場合があります 2. 体験中は周囲が見えなくなります 3. 激しい動作は周囲との接触事故の原因になります 4. 目の疲労が生じる場合があります 保護者の方は上記リスクを理解した上で、お子様の参加に同意してください。
+        - paragraph [ref=e38]: 同意書を最後までスクロールすると同意できます
+        - generic [ref=e39]:
+          - generic [ref=e40]: 保護者氏名
+          - textbox "例：山田太郎" [ref=e41]
+        - generic [ref=e43]:
+          - checkbox "上記の内容に同意し、保護者として署名します" [disabled] [ref=e44]
+          - generic [ref=e45]: 上記の内容に同意し、保護者として署名します
+      - button "次へ" [disabled] [ref=e46]
+  - contentinfo [ref=e17]: お困りの際は受付スタッフまでお声がけください

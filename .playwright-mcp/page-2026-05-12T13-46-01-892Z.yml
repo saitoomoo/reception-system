@@ -1,0 +1,14 @@
+- generic [ref=e27]:
+  - banner [ref=e28]:
+    - heading "マイページ" [level=1] [ref=e29]
+  - main [ref=e30]:
+    - generic [ref=e31]:
+      - paragraph [ref=e32]: あなたの受付番号
+      - paragraph [ref=e33]: A-003
+    - generic [ref=e34]:
+      - paragraph [ref=e35]: QRコード
+      - img [ref=e38]
+      - paragraph [ref=e41]: スタッフにこのQRコードをご提示ください
+    - button "ブース選択へ" [ref=e42]
+    - button "ログアウト（受付情報を削除）" [ref=e43]
+  - contentinfo [ref=e44]: お困りの際は受付スタッフまでお声がけください

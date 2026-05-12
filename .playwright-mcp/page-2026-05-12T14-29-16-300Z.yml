@@ -1,0 +1,15 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "参加方法を選択" [level=1] [ref=e18]
+  - main [ref=e9]:
+    - generic [ref=e19]:
+      - paragraph [ref=e21]: 参加方法を選んでください。
+      - button "マッチメイキング 他のグループと合わせて体験します" [ref=e22]:
+        - paragraph [ref=e23]: マッチメイキング
+        - paragraph [ref=e24]: 他のグループと合わせて体験します
+      - button "プライベートマッチ 自分たちのグループだけで体験します" [ref=e25]:
+        - paragraph [ref=e26]: プライベートマッチ
+        - paragraph [ref=e27]: 自分たちのグループだけで体験します
+  - contentinfo [ref=e17]: お困りの際は受付スタッフまでお声がけください

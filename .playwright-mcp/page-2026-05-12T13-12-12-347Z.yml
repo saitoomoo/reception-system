@@ -1,0 +1,19 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "データリセット" [level=1] [ref=e5]
+    - link "← ダッシュボードへ" [ref=e6] [cursor=pointer]:
+      - /url: /admin/global/dashboard
+  - generic [ref=e8]:
+    - heading "⚠ 危険な操作" [level=2] [ref=e9]
+    - paragraph [ref=e10]:
+      - text: この操作を実行すると、以下のデータが
+      - strong [ref=e11]: 完全に削除
+      - text: されます。
+      - strong [ref=e12]: 元に戻すことはできません。
+    - list [ref=e13]:
+      - listitem [ref=e14]: 全来場者データ（受付番号・PIN・ニックネーム）
+      - listitem [ref=e15]: 全整理券・参加者・保護者同意データ
+      - listitem [ref=e16]: 全入場処理・通知ログ・マッチセッション
+      - listitem [ref=e17]: 全Push購読情報
+    - paragraph [ref=e18]: ブース設定・管理者アカウント・通知テンプレートは保持されます。
+    - button "イベントデータをリセットする" [ref=e19]

@@ -1,0 +1,23 @@
+- generic [ref=e67]:
+  - banner [ref=e68]:
+    - button "戻る" [ref=e69]:
+      - img [ref=e70]
+    - heading "待ち状況" [level=1] [ref=e72]
+  - main [ref=e73]:
+    - generic [ref=e74]:
+      - paragraph [ref=e75]: 順番待ち中
+      - generic [ref=e76]:
+        - generic [ref=e77]:
+          - paragraph [ref=e78]: 整理券番号
+          - paragraph [ref=e79]: "1"
+          - paragraph [ref=e80]: 番
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: あなたの前
+          - paragraph [ref=e83]: "0"
+          - paragraph [ref=e84]: 人
+    - generic [ref=e85]:
+      - paragraph [ref=e86]: 個人VR体験
+      - paragraph [ref=e87]: C棟 1F 体験コーナー
+    - button "整理券をキャンセル" [ref=e88]
+    - button "マイページへ" [ref=e89]
+  - contentinfo [ref=e90]: お困りの際は受付スタッフまでお声がけください

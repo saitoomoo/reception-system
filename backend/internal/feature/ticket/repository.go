@@ -56,11 +56,19 @@ type CreateTicketResult struct {
 	ParticipantCount int32
 }
 
+// MatchmakingInfo holds queue context for matchmaking booth tickets.
+type MatchmakingInfo struct {
+	MatchMode          string
+	PublicWaitingCount int32
+	TargetPartySize    int32
+}
+
 // TicketStatusResult contains status and queue position for a ticket.
 type TicketStatusResult struct {
-	Ticket   db.Ticket
-	Booth    db.Booth
-	Position int32
+	Ticket          db.Ticket
+	Booth           db.Booth
+	Position        int32
+	MatchmakingInfo *MatchmakingInfo
 }
 
 func (r *Repository) CreateTicket(ctx context.Context, req CreateTicketRequest) (CreateTicketResult, error) {
@@ -268,7 +276,29 @@ func (r *Repository) GetTicketStatus(ctx context.Context, ticketID int64) (Ticke
 		return TicketStatusResult{}, fmt.Errorf("ticket repository: get position: %w", err)
 	}
 
-	return TicketStatusResult{Ticket: ticket, Booth: booth, Position: position}, nil
+	result := TicketStatusResult{Ticket: ticket, Booth: booth, Position: position}
+
+	if booth.ExperienceType == "matchmaking" && ticket.MatchMode != nil {
+		publicRows, err := r.queries.ListWaitingPublicTicketsByBooth(ctx, booth.ID)
+		if err != nil {
+			return TicketStatusResult{}, fmt.Errorf("ticket repository: list public waiting: %w", err)
+		}
+		var publicCount int32
+		for _, row := range publicRows {
+			publicCount += row.ParticipantCount
+		}
+		targetSize := int32(0)
+		if booth.TargetPartySize != nil {
+			targetSize = *booth.TargetPartySize
+		}
+		result.MatchmakingInfo = &MatchmakingInfo{
+			MatchMode:          *ticket.MatchMode,
+			PublicWaitingCount: publicCount,
+			TargetPartySize:    targetSize,
+		}
+	}
+
+	return result, nil
 }
 
 func (r *Repository) ListByVisitorID(ctx context.Context, visitorID int64) ([]TicketStatusResult, error) {

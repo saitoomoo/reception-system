@@ -95,7 +95,7 @@ func (w *Worker) deliverRow(ctx context.Context, row PendingRow) {
 		payload.Icon = *row.IconURL
 	}
 	if row.TicketID != nil {
-		payload.URL = "/tickets/" + strconv.FormatInt(*row.TicketID, 10)
+		payload.URL = "/mypage/waiting?ticketId=" + strconv.FormatInt(*row.TicketID, 10)
 	}
 
 	msg, err := json.Marshal(payload)

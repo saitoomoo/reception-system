@@ -104,10 +104,12 @@ func main() {
 	admissionRepo := admission.NewRepository(pool)
 	admissionStaffH := admission.NewStaffHandler(admissionRepo, notifRepo, sessionSecret, logger)
 	matchStaffH := match.NewStaffHandler(matchSvc, sessionSecret, logger)
+	manualTicketH := admin.NewManualTicketHandler(adminRepo, notifRepo, sessionSecret, logger)
 	staffHandler := &combinedStaffHandler{
-		boothH:     boothStaffH,
-		admissionH: admissionStaffH,
-		matchH:     matchStaffH,
+		boothH:        boothStaffH,
+		admissionH:    admissionStaffH,
+		matchH:        matchStaffH,
+		manualTicketH: manualTicketH,
 	}
 	path, handler = adminv1connect.NewStaffServiceHandler(staffHandler)
 	mux.Handle(path, handler)
@@ -131,9 +133,10 @@ func main() {
 // match RPCs: ForceStartMatch, CallPrivateMatch, CompleteMatchSession, GetMatchQueueStatus
 type combinedStaffHandler struct {
 	adminv1connect.UnimplementedStaffServiceHandler
-	boothH     *booth.StaffHandler
-	admissionH *admission.StaffHandler
-	matchH     *match.StaffHandler
+	boothH        *booth.StaffHandler
+	admissionH    *admission.StaffHandler
+	matchH        *match.StaffHandler
+	manualTicketH *admin.ManualTicketHandler
 }
 
 func (h *combinedStaffHandler) LoginAsStaff(ctx context.Context, req *connect.Request[adminv1.LoginAsStaffRequest]) (*connect.Response[adminv1.LoginAsStaffResponse], error) {
@@ -174,6 +177,9 @@ func (h *combinedStaffHandler) CompleteMatchSession(ctx context.Context, req *co
 }
 func (h *combinedStaffHandler) GetMatchQueueStatus(ctx context.Context, req *connect.Request[adminv1.GetMatchQueueStatusRequest]) (*connect.Response[adminv1.GetMatchQueueStatusResponse], error) {
 	return h.matchH.GetMatchQueueStatus(ctx, req)
+}
+func (h *combinedStaffHandler) CreateTicketManual(ctx context.Context, req *connect.Request[adminv1.CreateTicketManualRequest]) (*connect.Response[adminv1.CreateTicketManualResponse], error) {
+	return h.manualTicketH.CreateTicketManual(ctx, req)
 }
 
 func corsMiddleware(next http.Handler) http.Handler {

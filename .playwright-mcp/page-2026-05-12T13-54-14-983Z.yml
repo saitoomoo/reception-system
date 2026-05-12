@@ -1,0 +1,20 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "再ログイン" [level=1] [ref=e8]
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - paragraph [ref=e12]: 受付番号とPINを入力してください
+        - generic [ref=e13]:
+          - generic [ref=e14]:
+            - generic [ref=e15]: 受付番号
+            - textbox "例：A-105" [ref=e16]
+          - generic [ref=e17]:
+            - generic [ref=e18]: 4桁のPIN
+            - textbox "0000" [ref=e19]
+      - button "ログイン" [ref=e20]:
+        - generic [ref=e21]: ログイン
+        - img [ref=e22]
+  - contentinfo [ref=e24]: お困りの際は受付スタッフまでお声がけください

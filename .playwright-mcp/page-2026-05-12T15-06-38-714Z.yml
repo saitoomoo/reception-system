@@ -1,0 +1,46 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "← ダッシュボード" [ref=e6] [cursor=pointer]:
+        - /url: /admin/global/dashboard
+      - heading "ブース管理" [level=1] [ref=e7]
+    - button "+ 新規ブース作成" [ref=e8]
+  - generic [ref=e10]:
+    - heading "アクティブなブース (3)" [level=2] [ref=e11]
+    - generic [ref=e12]:
+      - generic [ref=e14]:
+        - generic [ref=e15]:
+          - generic [ref=e16]:
+            - heading "VR体験ブース A" [level=3] [ref=e17]
+            - generic [ref=e18]: 順次体験型
+          - paragraph [ref=e19]: A棟 1F ホール
+          - paragraph [ref=e20]: 2026/5/12 16:15:00 〜 2026/5/13 21:17:00
+        - generic [ref=e21]:
+          - button "編集" [ref=e22]
+          - button "PW変更" [ref=e23]
+          - button "アーカイブ" [ref=e24]
+          - button "削除" [ref=e25]
+      - generic [ref=e27]:
+        - generic [ref=e28]:
+          - generic [ref=e29]:
+            - heading "VR対戦ゲーム" [level=3] [ref=e30]
+            - generic [ref=e31]: マッチメイキング型
+          - paragraph [ref=e32]: B棟 2F ゲームルーム
+          - paragraph [ref=e33]: 2026/5/12 16:50:53 〜 2026/5/13 1:50:53
+        - generic [ref=e34]:
+          - button "編集" [ref=e35]
+          - button "PW変更" [ref=e36]
+          - button "アーカイブ" [ref=e37]
+          - button "削除" [ref=e38]
+      - generic [ref=e40]:
+        - generic [ref=e41]:
+          - generic [ref=e42]:
+            - heading "個人VR体験" [level=3] [ref=e43]
+            - generic [ref=e44]: 個人体験型
+          - paragraph [ref=e45]: C棟 1F 体験コーナー
+          - paragraph [ref=e46]: 2026/5/12 20:58:56 〜 2026/5/13 10:58:56
+        - generic [ref=e47]:
+          - button "編集" [ref=e48]
+          - button "PW変更" [ref=e49]
+          - button "アーカイブ" [ref=e50]
+          - button "削除" [ref=e51]

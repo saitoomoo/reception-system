@@ -1,0 +1,15 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "戻る" [ref=e5]:
+      - img [ref=e6]
+    - heading "ご用件を選択してください" [level=1] [ref=e8]
+  - main [ref=e9]:
+    - button "すでに受付をお済みの方" [ref=e10]:
+      - generic [ref=e11]:
+        - img [ref=e12]
+        - generic [ref=e14]: すでに受付をお済みの方
+    - button "はじめての方" [ref=e15]:
+      - generic [ref=e16]:
+        - img [ref=e17]
+        - generic [ref=e19]: はじめての方
+  - contentinfo [ref=e20]: お困りの際は受付スタッフまでお声がけください

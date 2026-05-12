@@ -85,6 +85,67 @@ func (AdmitOutcome) EnumDescriptor() ([]byte, []int) {
 	return file_admin_v1_admin_proto_rawDescGZIP(), []int{0}
 }
 
+type ExportType int32
+
+const (
+	ExportType_EXPORT_TYPE_UNSPECIFIED    ExportType = 0
+	ExportType_EXPORT_TYPE_VISITORS       ExportType = 1
+	ExportType_EXPORT_TYPE_TICKETS        ExportType = 2
+	ExportType_EXPORT_TYPE_ADMISSIONS     ExportType = 3
+	ExportType_EXPORT_TYPE_BOOTH_SUMMARY  ExportType = 4
+	ExportType_EXPORT_TYPE_HOURLY_STATS   ExportType = 5
+	ExportType_EXPORT_TYPE_MATCH_SESSIONS ExportType = 6
+)
+
+// Enum value maps for ExportType.
+var (
+	ExportType_name = map[int32]string{
+		0: "EXPORT_TYPE_UNSPECIFIED",
+		1: "EXPORT_TYPE_VISITORS",
+		2: "EXPORT_TYPE_TICKETS",
+		3: "EXPORT_TYPE_ADMISSIONS",
+		4: "EXPORT_TYPE_BOOTH_SUMMARY",
+		5: "EXPORT_TYPE_HOURLY_STATS",
+		6: "EXPORT_TYPE_MATCH_SESSIONS",
+	}
+	ExportType_value = map[string]int32{
+		"EXPORT_TYPE_UNSPECIFIED":    0,
+		"EXPORT_TYPE_VISITORS":       1,
+		"EXPORT_TYPE_TICKETS":        2,
+		"EXPORT_TYPE_ADMISSIONS":     3,
+		"EXPORT_TYPE_BOOTH_SUMMARY":  4,
+		"EXPORT_TYPE_HOURLY_STATS":   5,
+		"EXPORT_TYPE_MATCH_SESSIONS": 6,
+	}
+)
+
+func (x ExportType) Enum() *ExportType {
+	p := new(ExportType)
+	*p = x
+	return p
+}
+
+func (x ExportType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ExportType) Descriptor() protoreflect.EnumDescriptor {
+	return file_admin_v1_admin_proto_enumTypes[1].Descriptor()
+}
+
+func (ExportType) Type() protoreflect.EnumType {
+	return &file_admin_v1_admin_proto_enumTypes[1]
+}
+
+func (x ExportType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ExportType.Descriptor instead.
+func (ExportType) EnumDescriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{1}
+}
+
 type BoothStats struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	BoothId       string                 `protobuf:"bytes,1,opt,name=booth_id,json=boothId,proto3" json:"booth_id,omitempty"`
@@ -3369,6 +3430,376 @@ func (x *UpdateNotificationTemplateResponse) GetTemplate() *NotificationTemplate
 	return nil
 }
 
+type ExportCSVRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ExportType    ExportType             `protobuf:"varint,1,opt,name=export_type,json=exportType,proto3,enum=admin.v1.ExportType" json:"export_type,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportCSVRequest) Reset() {
+	*x = ExportCSVRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportCSVRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportCSVRequest) ProtoMessage() {}
+
+func (x *ExportCSVRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportCSVRequest.ProtoReflect.Descriptor instead.
+func (*ExportCSVRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *ExportCSVRequest) GetExportType() ExportType {
+	if x != nil {
+		return x.ExportType
+	}
+	return ExportType_EXPORT_TYPE_UNSPECIFIED
+}
+
+type ExportCSVResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UTF-8 BOM prefixed CSV bytes, ready for direct download.
+	CsvData       []byte `protobuf:"bytes,1,opt,name=csv_data,json=csvData,proto3" json:"csv_data,omitempty"`
+	Filename      string `protobuf:"bytes,2,opt,name=filename,proto3" json:"filename,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExportCSVResponse) Reset() {
+	*x = ExportCSVResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExportCSVResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExportCSVResponse) ProtoMessage() {}
+
+func (x *ExportCSVResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExportCSVResponse.ProtoReflect.Descriptor instead.
+func (*ExportCSVResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *ExportCSVResponse) GetCsvData() []byte {
+	if x != nil {
+		return x.CsvData
+	}
+	return nil
+}
+
+func (x *ExportCSVResponse) GetFilename() string {
+	if x != nil {
+		return x.Filename
+	}
+	return ""
+}
+
+type ResetEventDataRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Must equal "RESET" to confirm the destructive operation.
+	ConfirmationToken string `protobuf:"bytes,1,opt,name=confirmation_token,json=confirmationToken,proto3" json:"confirmation_token,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ResetEventDataRequest) Reset() {
+	*x = ResetEventDataRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResetEventDataRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResetEventDataRequest) ProtoMessage() {}
+
+func (x *ResetEventDataRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResetEventDataRequest.ProtoReflect.Descriptor instead.
+func (*ResetEventDataRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *ResetEventDataRequest) GetConfirmationToken() string {
+	if x != nil {
+		return x.ConfirmationToken
+	}
+	return ""
+}
+
+type ResetEventDataResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ResetEventDataResponse) Reset() {
+	*x = ResetEventDataResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ResetEventDataResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ResetEventDataResponse) ProtoMessage() {}
+
+func (x *ResetEventDataResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ResetEventDataResponse.ProtoReflect.Descriptor instead.
+func (*ResetEventDataResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *ResetEventDataResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type ManualParticipantInput struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Age           int32                  `protobuf:"varint,1,opt,name=age,proto3" json:"age,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"` // required for participants aged < 13
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ManualParticipantInput) Reset() {
+	*x = ManualParticipantInput{}
+	mi := &file_admin_v1_admin_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ManualParticipantInput) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ManualParticipantInput) ProtoMessage() {}
+
+func (x *ManualParticipantInput) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ManualParticipantInput.ProtoReflect.Descriptor instead.
+func (*ManualParticipantInput) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *ManualParticipantInput) GetAge() int32 {
+	if x != nil {
+		return x.Age
+	}
+	return 0
+}
+
+func (x *ManualParticipantInput) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type CreateTicketManualRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Visitor identified by reception number (staff scans the QR).
+	ReceptionNumber string                    `protobuf:"bytes,1,opt,name=reception_number,json=receptionNumber,proto3" json:"reception_number,omitempty"`
+	Participants    []*ManualParticipantInput `protobuf:"bytes,2,rep,name=participants,proto3" json:"participants,omitempty"`
+	// Required when any participant is aged 7-12 (paper_and_digital consent, R-005).
+	GuardianName string `protobuf:"bytes,3,opt,name=guardian_name,json=guardianName,proto3" json:"guardian_name,omitempty"`
+	// Physical paper form reference ID (required for ages 7-9).
+	PaperFormId string `protobuf:"bytes,4,opt,name=paper_form_id,json=paperFormId,proto3" json:"paper_form_id,omitempty"`
+	// Full text of risk explanation shown to the guardian at the time of consent.
+	ConsentTextSnapshot string `protobuf:"bytes,5,opt,name=consent_text_snapshot,json=consentTextSnapshot,proto3" json:"consent_text_snapshot,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *CreateTicketManualRequest) Reset() {
+	*x = CreateTicketManualRequest{}
+	mi := &file_admin_v1_admin_proto_msgTypes[64]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTicketManualRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTicketManualRequest) ProtoMessage() {}
+
+func (x *CreateTicketManualRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[64]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTicketManualRequest.ProtoReflect.Descriptor instead.
+func (*CreateTicketManualRequest) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{64}
+}
+
+func (x *CreateTicketManualRequest) GetReceptionNumber() string {
+	if x != nil {
+		return x.ReceptionNumber
+	}
+	return ""
+}
+
+func (x *CreateTicketManualRequest) GetParticipants() []*ManualParticipantInput {
+	if x != nil {
+		return x.Participants
+	}
+	return nil
+}
+
+func (x *CreateTicketManualRequest) GetGuardianName() string {
+	if x != nil {
+		return x.GuardianName
+	}
+	return ""
+}
+
+func (x *CreateTicketManualRequest) GetPaperFormId() string {
+	if x != nil {
+		return x.PaperFormId
+	}
+	return ""
+}
+
+func (x *CreateTicketManualRequest) GetConsentTextSnapshot() string {
+	if x != nil {
+		return x.ConsentTextSnapshot
+	}
+	return ""
+}
+
+type CreateTicketManualResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	TicketId        string                 `protobuf:"bytes,1,opt,name=ticket_id,json=ticketId,proto3" json:"ticket_id,omitempty"`
+	SequenceInBooth int32                  `protobuf:"varint,2,opt,name=sequence_in_booth,json=sequenceInBooth,proto3" json:"sequence_in_booth,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *CreateTicketManualResponse) Reset() {
+	*x = CreateTicketManualResponse{}
+	mi := &file_admin_v1_admin_proto_msgTypes[65]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTicketManualResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTicketManualResponse) ProtoMessage() {}
+
+func (x *CreateTicketManualResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_admin_v1_admin_proto_msgTypes[65]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTicketManualResponse.ProtoReflect.Descriptor instead.
+func (*CreateTicketManualResponse) Descriptor() ([]byte, []int) {
+	return file_admin_v1_admin_proto_rawDescGZIP(), []int{65}
+}
+
+func (x *CreateTicketManualResponse) GetTicketId() string {
+	if x != nil {
+		return x.TicketId
+	}
+	return ""
+}
+
+func (x *CreateTicketManualResponse) GetSequenceInBooth() int32 {
+	if x != nil {
+		return x.SequenceInBooth
+	}
+	return 0
+}
+
 var File_admin_v1_admin_proto protoreflect.FileDescriptor
 
 const file_admin_v1_admin_proto_rawDesc = "" +
@@ -3597,14 +4028,46 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x04body\x18\x03 \x01(\tR\x04body\x12\x19\n" +
 	"\bicon_url\x18\x04 \x01(\tR\aiconUrl\"`\n" +
 	"\"UpdateNotificationTemplateResponse\x12:\n" +
-	"\btemplate\x18\x01 \x01(\v2\x1e.admin.v1.NotificationTemplateR\btemplate*\xe6\x01\n" +
+	"\btemplate\x18\x01 \x01(\v2\x1e.admin.v1.NotificationTemplateR\btemplate\"I\n" +
+	"\x10ExportCSVRequest\x125\n" +
+	"\vexport_type\x18\x01 \x01(\x0e2\x14.admin.v1.ExportTypeR\n" +
+	"exportType\"J\n" +
+	"\x11ExportCSVResponse\x12\x19\n" +
+	"\bcsv_data\x18\x01 \x01(\fR\acsvData\x12\x1a\n" +
+	"\bfilename\x18\x02 \x01(\tR\bfilename\"F\n" +
+	"\x15ResetEventDataRequest\x12-\n" +
+	"\x12confirmation_token\x18\x01 \x01(\tR\x11confirmationToken\"2\n" +
+	"\x16ResetEventDataResponse\x12\x18\n" +
+	"\amessage\x18\x01 \x01(\tR\amessage\">\n" +
+	"\x16ManualParticipantInput\x12\x10\n" +
+	"\x03age\x18\x01 \x01(\x05R\x03age\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"\x89\x02\n" +
+	"\x19CreateTicketManualRequest\x12)\n" +
+	"\x10reception_number\x18\x01 \x01(\tR\x0freceptionNumber\x12D\n" +
+	"\fparticipants\x18\x02 \x03(\v2 .admin.v1.ManualParticipantInputR\fparticipants\x12#\n" +
+	"\rguardian_name\x18\x03 \x01(\tR\fguardianName\x12\"\n" +
+	"\rpaper_form_id\x18\x04 \x01(\tR\vpaperFormId\x122\n" +
+	"\x15consent_text_snapshot\x18\x05 \x01(\tR\x13consentTextSnapshot\"e\n" +
+	"\x1aCreateTicketManualResponse\x12\x1b\n" +
+	"\tticket_id\x18\x01 \x01(\tR\bticketId\x12*\n" +
+	"\x11sequence_in_booth\x18\x02 \x01(\x05R\x0fsequenceInBooth*\xe6\x01\n" +
 	"\fAdmitOutcome\x12\x1d\n" +
 	"\x19ADMIT_OUTCOME_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16ADMIT_OUTCOME_ADMITTED\x10\x01\x12+\n" +
 	"'ADMIT_OUTCOME_RESTORED_TO_PRIORITY_CALL\x10\x02\x12-\n" +
 	")ADMIT_OUTCOME_WAITING_CONFIRMATION_NEEDED\x10\x03\x12\"\n" +
 	"\x1eADMIT_OUTCOME_ALREADY_ADMITTED\x10\x04\x12\x1b\n" +
-	"\x17ADMIT_OUTCOME_NOT_FOUND\x10\x052\xbc\t\n" +
+	"\x17ADMIT_OUTCOME_NOT_FOUND\x10\x05*\xd5\x01\n" +
+	"\n" +
+	"ExportType\x12\x1b\n" +
+	"\x17EXPORT_TYPE_UNSPECIFIED\x10\x00\x12\x18\n" +
+	"\x14EXPORT_TYPE_VISITORS\x10\x01\x12\x17\n" +
+	"\x13EXPORT_TYPE_TICKETS\x10\x02\x12\x1a\n" +
+	"\x16EXPORT_TYPE_ADMISSIONS\x10\x03\x12\x1d\n" +
+	"\x19EXPORT_TYPE_BOOTH_SUMMARY\x10\x04\x12\x1c\n" +
+	"\x18EXPORT_TYPE_HOURLY_STATS\x10\x05\x12\x1e\n" +
+	"\x1aEXPORT_TYPE_MATCH_SESSIONS\x10\x062\xd7\n" +
+	"\n" +
 	"\fAdminService\x12_\n" +
 	"\x12LoginAsGlobalAdmin\x12#.admin.v1.LoginAsGlobalAdminRequest\x1a$.admin.v1.LoginAsGlobalAdminResponse\x12M\n" +
 	"\fGetDashboard\x12\x1d.admin.v1.GetDashboardRequest\x1a\x1e.admin.v1.GetDashboardResponse\x12J\n" +
@@ -3618,7 +4081,9 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x12GetRiskExplanation\x12#.admin.v1.GetRiskExplanationRequest\x1a$.admin.v1.GetRiskExplanationResponse\x12h\n" +
 	"\x15UpdateRiskExplanation\x12&.admin.v1.UpdateRiskExplanationRequest\x1a'.admin.v1.UpdateRiskExplanationResponse\x12t\n" +
 	"\x19ListNotificationTemplates\x12*.admin.v1.ListNotificationTemplatesRequest\x1a+.admin.v1.ListNotificationTemplatesResponse\x12w\n" +
-	"\x1aUpdateNotificationTemplate\x12+.admin.v1.UpdateNotificationTemplateRequest\x1a,.admin.v1.UpdateNotificationTemplateResponse2\x98\t\n" +
+	"\x1aUpdateNotificationTemplate\x12+.admin.v1.UpdateNotificationTemplateRequest\x1a,.admin.v1.UpdateNotificationTemplateResponse\x12D\n" +
+	"\tExportCSV\x12\x1a.admin.v1.ExportCSVRequest\x1a\x1b.admin.v1.ExportCSVResponse\x12S\n" +
+	"\x0eResetEventData\x12\x1f.admin.v1.ResetEventDataRequest\x1a .admin.v1.ResetEventDataResponse2\xf9\t\n" +
 	"\fStaffService\x12M\n" +
 	"\fLoginAsStaff\x12\x1d.admin.v1.LoginAsStaffRequest\x1a\x1e.admin.v1.LoginAsStaffResponse\x12G\n" +
 	"\n" +
@@ -3633,7 +4098,8 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x0fForceStartMatch\x12 .admin.v1.ForceStartMatchRequest\x1a!.admin.v1.ForceStartMatchResponse\x12Y\n" +
 	"\x10CallPrivateMatch\x12!.admin.v1.CallPrivateMatchRequest\x1a\".admin.v1.CallPrivateMatchResponse\x12e\n" +
 	"\x14CompleteMatchSession\x12%.admin.v1.CompleteMatchSessionRequest\x1a&.admin.v1.CompleteMatchSessionResponse\x12b\n" +
-	"\x13GetMatchQueueStatus\x12$.admin.v1.GetMatchQueueStatusRequest\x1a%.admin.v1.GetMatchQueueStatusResponseB*Z(reception-system/gen/go/admin/v1;adminv1b\x06proto3"
+	"\x13GetMatchQueueStatus\x12$.admin.v1.GetMatchQueueStatusRequest\x1a%.admin.v1.GetMatchQueueStatusResponse\x12_\n" +
+	"\x12CreateTicketManual\x12#.admin.v1.CreateTicketManualRequest\x1a$.admin.v1.CreateTicketManualResponseB*Z(reception-system/gen/go/admin/v1;adminv1b\x06proto3"
 
 var (
 	file_admin_v1_admin_proto_rawDescOnce sync.Once
@@ -3647,139 +4113,155 @@ func file_admin_v1_admin_proto_rawDescGZIP() []byte {
 	return file_admin_v1_admin_proto_rawDescData
 }
 
-var file_admin_v1_admin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 59)
+var file_admin_v1_admin_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_admin_v1_admin_proto_msgTypes = make([]protoimpl.MessageInfo, 66)
 var file_admin_v1_admin_proto_goTypes = []any{
 	(AdmitOutcome)(0),                          // 0: admin.v1.AdmitOutcome
-	(*BoothStats)(nil),                         // 1: admin.v1.BoothStats
-	(*LoginAsGlobalAdminRequest)(nil),          // 2: admin.v1.LoginAsGlobalAdminRequest
-	(*LoginAsGlobalAdminResponse)(nil),         // 3: admin.v1.LoginAsGlobalAdminResponse
-	(*GetDashboardRequest)(nil),                // 4: admin.v1.GetDashboardRequest
-	(*GetDashboardResponse)(nil),               // 5: admin.v1.GetDashboardResponse
-	(*UpdateBoothRequest)(nil),                 // 6: admin.v1.UpdateBoothRequest
-	(*UpdateBoothResponse)(nil),                // 7: admin.v1.UpdateBoothResponse
-	(*AdminBooth)(nil),                         // 8: admin.v1.AdminBooth
-	(*ListAdminBoothsRequest)(nil),             // 9: admin.v1.ListAdminBoothsRequest
-	(*ListAdminBoothsResponse)(nil),            // 10: admin.v1.ListAdminBoothsResponse
-	(*CreateBoothRequest)(nil),                 // 11: admin.v1.CreateBoothRequest
-	(*CreateBoothResponse)(nil),                // 12: admin.v1.CreateBoothResponse
-	(*ArchiveBoothRequest)(nil),                // 13: admin.v1.ArchiveBoothRequest
-	(*ArchiveBoothResponse)(nil),               // 14: admin.v1.ArchiveBoothResponse
-	(*UnarchiveBoothRequest)(nil),              // 15: admin.v1.UnarchiveBoothRequest
-	(*UnarchiveBoothResponse)(nil),             // 16: admin.v1.UnarchiveBoothResponse
-	(*DeleteBoothRequest)(nil),                 // 17: admin.v1.DeleteBoothRequest
-	(*DeleteBoothResponse)(nil),                // 18: admin.v1.DeleteBoothResponse
-	(*UpdateBoothPasswordRequest)(nil),         // 19: admin.v1.UpdateBoothPasswordRequest
-	(*UpdateBoothPasswordResponse)(nil),        // 20: admin.v1.UpdateBoothPasswordResponse
-	(*LoginAsStaffRequest)(nil),                // 21: admin.v1.LoginAsStaffRequest
-	(*LoginAsStaffResponse)(nil),               // 22: admin.v1.LoginAsStaffResponse
-	(*CallTicketRequest)(nil),                  // 23: admin.v1.CallTicketRequest
-	(*CallTicketResponse)(nil),                 // 24: admin.v1.CallTicketResponse
-	(*CallNextTicketsRequest)(nil),             // 25: admin.v1.CallNextTicketsRequest
-	(*CallNextTicketsResponse)(nil),            // 26: admin.v1.CallNextTicketsResponse
-	(*AdmitByQRRequest)(nil),                   // 27: admin.v1.AdmitByQRRequest
-	(*AdmitByQRResponse)(nil),                  // 28: admin.v1.AdmitByQRResponse
-	(*AdmitManuallyRequest)(nil),               // 29: admin.v1.AdmitManuallyRequest
-	(*AdmitManuallyResponse)(nil),              // 30: admin.v1.AdmitManuallyResponse
-	(*CancelTicketByStaffRequest)(nil),         // 31: admin.v1.CancelTicketByStaffRequest
-	(*CancelTicketByStaffResponse)(nil),        // 32: admin.v1.CancelTicketByStaffResponse
-	(*GetStaffSessionRequest)(nil),             // 33: admin.v1.GetStaffSessionRequest
-	(*GetStaffSessionResponse)(nil),            // 34: admin.v1.GetStaffSessionResponse
-	(*StaffTicket)(nil),                        // 35: admin.v1.StaffTicket
-	(*ListTicketsByBoothRequest)(nil),          // 36: admin.v1.ListTicketsByBoothRequest
-	(*ListTicketsByBoothResponse)(nil),         // 37: admin.v1.ListTicketsByBoothResponse
-	(*RestorePendingTicketRequest)(nil),        // 38: admin.v1.RestorePendingTicketRequest
-	(*RestorePendingTicketResponse)(nil),       // 39: admin.v1.RestorePendingTicketResponse
-	(*GetRiskExplanationRequest)(nil),          // 40: admin.v1.GetRiskExplanationRequest
-	(*GetRiskExplanationResponse)(nil),         // 41: admin.v1.GetRiskExplanationResponse
-	(*UpdateRiskExplanationRequest)(nil),       // 42: admin.v1.UpdateRiskExplanationRequest
-	(*UpdateRiskExplanationResponse)(nil),      // 43: admin.v1.UpdateRiskExplanationResponse
-	(*ForceStartMatchRequest)(nil),             // 44: admin.v1.ForceStartMatchRequest
-	(*ForceStartMatchResponse)(nil),            // 45: admin.v1.ForceStartMatchResponse
-	(*CallPrivateMatchRequest)(nil),            // 46: admin.v1.CallPrivateMatchRequest
-	(*CallPrivateMatchResponse)(nil),           // 47: admin.v1.CallPrivateMatchResponse
-	(*CompleteMatchSessionRequest)(nil),        // 48: admin.v1.CompleteMatchSessionRequest
-	(*CompleteMatchSessionResponse)(nil),       // 49: admin.v1.CompleteMatchSessionResponse
-	(*PublicWaitingGroup)(nil),                 // 50: admin.v1.PublicWaitingGroup
-	(*PrivateWaitingGroup)(nil),                // 51: admin.v1.PrivateWaitingGroup
-	(*MatchQueueSession)(nil),                  // 52: admin.v1.MatchQueueSession
-	(*GetMatchQueueStatusRequest)(nil),         // 53: admin.v1.GetMatchQueueStatusRequest
-	(*GetMatchQueueStatusResponse)(nil),        // 54: admin.v1.GetMatchQueueStatusResponse
-	(*NotificationTemplate)(nil),               // 55: admin.v1.NotificationTemplate
-	(*ListNotificationTemplatesRequest)(nil),   // 56: admin.v1.ListNotificationTemplatesRequest
-	(*ListNotificationTemplatesResponse)(nil),  // 57: admin.v1.ListNotificationTemplatesResponse
-	(*UpdateNotificationTemplateRequest)(nil),  // 58: admin.v1.UpdateNotificationTemplateRequest
-	(*UpdateNotificationTemplateResponse)(nil), // 59: admin.v1.UpdateNotificationTemplateResponse
+	(ExportType)(0),                            // 1: admin.v1.ExportType
+	(*BoothStats)(nil),                         // 2: admin.v1.BoothStats
+	(*LoginAsGlobalAdminRequest)(nil),          // 3: admin.v1.LoginAsGlobalAdminRequest
+	(*LoginAsGlobalAdminResponse)(nil),         // 4: admin.v1.LoginAsGlobalAdminResponse
+	(*GetDashboardRequest)(nil),                // 5: admin.v1.GetDashboardRequest
+	(*GetDashboardResponse)(nil),               // 6: admin.v1.GetDashboardResponse
+	(*UpdateBoothRequest)(nil),                 // 7: admin.v1.UpdateBoothRequest
+	(*UpdateBoothResponse)(nil),                // 8: admin.v1.UpdateBoothResponse
+	(*AdminBooth)(nil),                         // 9: admin.v1.AdminBooth
+	(*ListAdminBoothsRequest)(nil),             // 10: admin.v1.ListAdminBoothsRequest
+	(*ListAdminBoothsResponse)(nil),            // 11: admin.v1.ListAdminBoothsResponse
+	(*CreateBoothRequest)(nil),                 // 12: admin.v1.CreateBoothRequest
+	(*CreateBoothResponse)(nil),                // 13: admin.v1.CreateBoothResponse
+	(*ArchiveBoothRequest)(nil),                // 14: admin.v1.ArchiveBoothRequest
+	(*ArchiveBoothResponse)(nil),               // 15: admin.v1.ArchiveBoothResponse
+	(*UnarchiveBoothRequest)(nil),              // 16: admin.v1.UnarchiveBoothRequest
+	(*UnarchiveBoothResponse)(nil),             // 17: admin.v1.UnarchiveBoothResponse
+	(*DeleteBoothRequest)(nil),                 // 18: admin.v1.DeleteBoothRequest
+	(*DeleteBoothResponse)(nil),                // 19: admin.v1.DeleteBoothResponse
+	(*UpdateBoothPasswordRequest)(nil),         // 20: admin.v1.UpdateBoothPasswordRequest
+	(*UpdateBoothPasswordResponse)(nil),        // 21: admin.v1.UpdateBoothPasswordResponse
+	(*LoginAsStaffRequest)(nil),                // 22: admin.v1.LoginAsStaffRequest
+	(*LoginAsStaffResponse)(nil),               // 23: admin.v1.LoginAsStaffResponse
+	(*CallTicketRequest)(nil),                  // 24: admin.v1.CallTicketRequest
+	(*CallTicketResponse)(nil),                 // 25: admin.v1.CallTicketResponse
+	(*CallNextTicketsRequest)(nil),             // 26: admin.v1.CallNextTicketsRequest
+	(*CallNextTicketsResponse)(nil),            // 27: admin.v1.CallNextTicketsResponse
+	(*AdmitByQRRequest)(nil),                   // 28: admin.v1.AdmitByQRRequest
+	(*AdmitByQRResponse)(nil),                  // 29: admin.v1.AdmitByQRResponse
+	(*AdmitManuallyRequest)(nil),               // 30: admin.v1.AdmitManuallyRequest
+	(*AdmitManuallyResponse)(nil),              // 31: admin.v1.AdmitManuallyResponse
+	(*CancelTicketByStaffRequest)(nil),         // 32: admin.v1.CancelTicketByStaffRequest
+	(*CancelTicketByStaffResponse)(nil),        // 33: admin.v1.CancelTicketByStaffResponse
+	(*GetStaffSessionRequest)(nil),             // 34: admin.v1.GetStaffSessionRequest
+	(*GetStaffSessionResponse)(nil),            // 35: admin.v1.GetStaffSessionResponse
+	(*StaffTicket)(nil),                        // 36: admin.v1.StaffTicket
+	(*ListTicketsByBoothRequest)(nil),          // 37: admin.v1.ListTicketsByBoothRequest
+	(*ListTicketsByBoothResponse)(nil),         // 38: admin.v1.ListTicketsByBoothResponse
+	(*RestorePendingTicketRequest)(nil),        // 39: admin.v1.RestorePendingTicketRequest
+	(*RestorePendingTicketResponse)(nil),       // 40: admin.v1.RestorePendingTicketResponse
+	(*GetRiskExplanationRequest)(nil),          // 41: admin.v1.GetRiskExplanationRequest
+	(*GetRiskExplanationResponse)(nil),         // 42: admin.v1.GetRiskExplanationResponse
+	(*UpdateRiskExplanationRequest)(nil),       // 43: admin.v1.UpdateRiskExplanationRequest
+	(*UpdateRiskExplanationResponse)(nil),      // 44: admin.v1.UpdateRiskExplanationResponse
+	(*ForceStartMatchRequest)(nil),             // 45: admin.v1.ForceStartMatchRequest
+	(*ForceStartMatchResponse)(nil),            // 46: admin.v1.ForceStartMatchResponse
+	(*CallPrivateMatchRequest)(nil),            // 47: admin.v1.CallPrivateMatchRequest
+	(*CallPrivateMatchResponse)(nil),           // 48: admin.v1.CallPrivateMatchResponse
+	(*CompleteMatchSessionRequest)(nil),        // 49: admin.v1.CompleteMatchSessionRequest
+	(*CompleteMatchSessionResponse)(nil),       // 50: admin.v1.CompleteMatchSessionResponse
+	(*PublicWaitingGroup)(nil),                 // 51: admin.v1.PublicWaitingGroup
+	(*PrivateWaitingGroup)(nil),                // 52: admin.v1.PrivateWaitingGroup
+	(*MatchQueueSession)(nil),                  // 53: admin.v1.MatchQueueSession
+	(*GetMatchQueueStatusRequest)(nil),         // 54: admin.v1.GetMatchQueueStatusRequest
+	(*GetMatchQueueStatusResponse)(nil),        // 55: admin.v1.GetMatchQueueStatusResponse
+	(*NotificationTemplate)(nil),               // 56: admin.v1.NotificationTemplate
+	(*ListNotificationTemplatesRequest)(nil),   // 57: admin.v1.ListNotificationTemplatesRequest
+	(*ListNotificationTemplatesResponse)(nil),  // 58: admin.v1.ListNotificationTemplatesResponse
+	(*UpdateNotificationTemplateRequest)(nil),  // 59: admin.v1.UpdateNotificationTemplateRequest
+	(*UpdateNotificationTemplateResponse)(nil), // 60: admin.v1.UpdateNotificationTemplateResponse
+	(*ExportCSVRequest)(nil),                   // 61: admin.v1.ExportCSVRequest
+	(*ExportCSVResponse)(nil),                  // 62: admin.v1.ExportCSVResponse
+	(*ResetEventDataRequest)(nil),              // 63: admin.v1.ResetEventDataRequest
+	(*ResetEventDataResponse)(nil),             // 64: admin.v1.ResetEventDataResponse
+	(*ManualParticipantInput)(nil),             // 65: admin.v1.ManualParticipantInput
+	(*CreateTicketManualRequest)(nil),          // 66: admin.v1.CreateTicketManualRequest
+	(*CreateTicketManualResponse)(nil),         // 67: admin.v1.CreateTicketManualResponse
 }
 var file_admin_v1_admin_proto_depIdxs = []int32{
-	1,  // 0: admin.v1.GetDashboardResponse.booths:type_name -> admin.v1.BoothStats
-	8,  // 1: admin.v1.ListAdminBoothsResponse.booths:type_name -> admin.v1.AdminBooth
-	8,  // 2: admin.v1.CreateBoothResponse.booth:type_name -> admin.v1.AdminBooth
+	2,  // 0: admin.v1.GetDashboardResponse.booths:type_name -> admin.v1.BoothStats
+	9,  // 1: admin.v1.ListAdminBoothsResponse.booths:type_name -> admin.v1.AdminBooth
+	9,  // 2: admin.v1.CreateBoothResponse.booth:type_name -> admin.v1.AdminBooth
 	0,  // 3: admin.v1.AdmitByQRResponse.outcome:type_name -> admin.v1.AdmitOutcome
 	0,  // 4: admin.v1.AdmitManuallyResponse.outcome:type_name -> admin.v1.AdmitOutcome
-	35, // 5: admin.v1.ListTicketsByBoothResponse.tickets:type_name -> admin.v1.StaffTicket
-	50, // 6: admin.v1.GetMatchQueueStatusResponse.public_waiting:type_name -> admin.v1.PublicWaitingGroup
-	51, // 7: admin.v1.GetMatchQueueStatusResponse.private_waiting:type_name -> admin.v1.PrivateWaitingGroup
-	52, // 8: admin.v1.GetMatchQueueStatusResponse.active_sessions:type_name -> admin.v1.MatchQueueSession
-	55, // 9: admin.v1.ListNotificationTemplatesResponse.templates:type_name -> admin.v1.NotificationTemplate
-	55, // 10: admin.v1.UpdateNotificationTemplateResponse.template:type_name -> admin.v1.NotificationTemplate
-	2,  // 11: admin.v1.AdminService.LoginAsGlobalAdmin:input_type -> admin.v1.LoginAsGlobalAdminRequest
-	4,  // 12: admin.v1.AdminService.GetDashboard:input_type -> admin.v1.GetDashboardRequest
-	6,  // 13: admin.v1.AdminService.UpdateBooth:input_type -> admin.v1.UpdateBoothRequest
-	9,  // 14: admin.v1.AdminService.ListAdminBooths:input_type -> admin.v1.ListAdminBoothsRequest
-	11, // 15: admin.v1.AdminService.CreateBooth:input_type -> admin.v1.CreateBoothRequest
-	13, // 16: admin.v1.AdminService.ArchiveBooth:input_type -> admin.v1.ArchiveBoothRequest
-	15, // 17: admin.v1.AdminService.UnarchiveBooth:input_type -> admin.v1.UnarchiveBoothRequest
-	17, // 18: admin.v1.AdminService.DeleteBooth:input_type -> admin.v1.DeleteBoothRequest
-	19, // 19: admin.v1.AdminService.UpdateBoothPassword:input_type -> admin.v1.UpdateBoothPasswordRequest
-	40, // 20: admin.v1.AdminService.GetRiskExplanation:input_type -> admin.v1.GetRiskExplanationRequest
-	42, // 21: admin.v1.AdminService.UpdateRiskExplanation:input_type -> admin.v1.UpdateRiskExplanationRequest
-	56, // 22: admin.v1.AdminService.ListNotificationTemplates:input_type -> admin.v1.ListNotificationTemplatesRequest
-	58, // 23: admin.v1.AdminService.UpdateNotificationTemplate:input_type -> admin.v1.UpdateNotificationTemplateRequest
-	21, // 24: admin.v1.StaffService.LoginAsStaff:input_type -> admin.v1.LoginAsStaffRequest
-	23, // 25: admin.v1.StaffService.CallTicket:input_type -> admin.v1.CallTicketRequest
-	25, // 26: admin.v1.StaffService.CallNextTickets:input_type -> admin.v1.CallNextTicketsRequest
-	27, // 27: admin.v1.StaffService.AdmitByQR:input_type -> admin.v1.AdmitByQRRequest
-	29, // 28: admin.v1.StaffService.AdmitManually:input_type -> admin.v1.AdmitManuallyRequest
-	31, // 29: admin.v1.StaffService.CancelTicketByStaff:input_type -> admin.v1.CancelTicketByStaffRequest
-	33, // 30: admin.v1.StaffService.GetStaffSession:input_type -> admin.v1.GetStaffSessionRequest
-	36, // 31: admin.v1.StaffService.ListTicketsByBooth:input_type -> admin.v1.ListTicketsByBoothRequest
-	38, // 32: admin.v1.StaffService.RestorePendingTicket:input_type -> admin.v1.RestorePendingTicketRequest
-	44, // 33: admin.v1.StaffService.ForceStartMatch:input_type -> admin.v1.ForceStartMatchRequest
-	46, // 34: admin.v1.StaffService.CallPrivateMatch:input_type -> admin.v1.CallPrivateMatchRequest
-	48, // 35: admin.v1.StaffService.CompleteMatchSession:input_type -> admin.v1.CompleteMatchSessionRequest
-	53, // 36: admin.v1.StaffService.GetMatchQueueStatus:input_type -> admin.v1.GetMatchQueueStatusRequest
-	3,  // 37: admin.v1.AdminService.LoginAsGlobalAdmin:output_type -> admin.v1.LoginAsGlobalAdminResponse
-	5,  // 38: admin.v1.AdminService.GetDashboard:output_type -> admin.v1.GetDashboardResponse
-	7,  // 39: admin.v1.AdminService.UpdateBooth:output_type -> admin.v1.UpdateBoothResponse
-	10, // 40: admin.v1.AdminService.ListAdminBooths:output_type -> admin.v1.ListAdminBoothsResponse
-	12, // 41: admin.v1.AdminService.CreateBooth:output_type -> admin.v1.CreateBoothResponse
-	14, // 42: admin.v1.AdminService.ArchiveBooth:output_type -> admin.v1.ArchiveBoothResponse
-	16, // 43: admin.v1.AdminService.UnarchiveBooth:output_type -> admin.v1.UnarchiveBoothResponse
-	18, // 44: admin.v1.AdminService.DeleteBooth:output_type -> admin.v1.DeleteBoothResponse
-	20, // 45: admin.v1.AdminService.UpdateBoothPassword:output_type -> admin.v1.UpdateBoothPasswordResponse
-	41, // 46: admin.v1.AdminService.GetRiskExplanation:output_type -> admin.v1.GetRiskExplanationResponse
-	43, // 47: admin.v1.AdminService.UpdateRiskExplanation:output_type -> admin.v1.UpdateRiskExplanationResponse
-	57, // 48: admin.v1.AdminService.ListNotificationTemplates:output_type -> admin.v1.ListNotificationTemplatesResponse
-	59, // 49: admin.v1.AdminService.UpdateNotificationTemplate:output_type -> admin.v1.UpdateNotificationTemplateResponse
-	22, // 50: admin.v1.StaffService.LoginAsStaff:output_type -> admin.v1.LoginAsStaffResponse
-	24, // 51: admin.v1.StaffService.CallTicket:output_type -> admin.v1.CallTicketResponse
-	26, // 52: admin.v1.StaffService.CallNextTickets:output_type -> admin.v1.CallNextTicketsResponse
-	28, // 53: admin.v1.StaffService.AdmitByQR:output_type -> admin.v1.AdmitByQRResponse
-	30, // 54: admin.v1.StaffService.AdmitManually:output_type -> admin.v1.AdmitManuallyResponse
-	32, // 55: admin.v1.StaffService.CancelTicketByStaff:output_type -> admin.v1.CancelTicketByStaffResponse
-	34, // 56: admin.v1.StaffService.GetStaffSession:output_type -> admin.v1.GetStaffSessionResponse
-	37, // 57: admin.v1.StaffService.ListTicketsByBooth:output_type -> admin.v1.ListTicketsByBoothResponse
-	39, // 58: admin.v1.StaffService.RestorePendingTicket:output_type -> admin.v1.RestorePendingTicketResponse
-	45, // 59: admin.v1.StaffService.ForceStartMatch:output_type -> admin.v1.ForceStartMatchResponse
-	47, // 60: admin.v1.StaffService.CallPrivateMatch:output_type -> admin.v1.CallPrivateMatchResponse
-	49, // 61: admin.v1.StaffService.CompleteMatchSession:output_type -> admin.v1.CompleteMatchSessionResponse
-	54, // 62: admin.v1.StaffService.GetMatchQueueStatus:output_type -> admin.v1.GetMatchQueueStatusResponse
-	37, // [37:63] is the sub-list for method output_type
-	11, // [11:37] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	36, // 5: admin.v1.ListTicketsByBoothResponse.tickets:type_name -> admin.v1.StaffTicket
+	51, // 6: admin.v1.GetMatchQueueStatusResponse.public_waiting:type_name -> admin.v1.PublicWaitingGroup
+	52, // 7: admin.v1.GetMatchQueueStatusResponse.private_waiting:type_name -> admin.v1.PrivateWaitingGroup
+	53, // 8: admin.v1.GetMatchQueueStatusResponse.active_sessions:type_name -> admin.v1.MatchQueueSession
+	56, // 9: admin.v1.ListNotificationTemplatesResponse.templates:type_name -> admin.v1.NotificationTemplate
+	56, // 10: admin.v1.UpdateNotificationTemplateResponse.template:type_name -> admin.v1.NotificationTemplate
+	1,  // 11: admin.v1.ExportCSVRequest.export_type:type_name -> admin.v1.ExportType
+	65, // 12: admin.v1.CreateTicketManualRequest.participants:type_name -> admin.v1.ManualParticipantInput
+	3,  // 13: admin.v1.AdminService.LoginAsGlobalAdmin:input_type -> admin.v1.LoginAsGlobalAdminRequest
+	5,  // 14: admin.v1.AdminService.GetDashboard:input_type -> admin.v1.GetDashboardRequest
+	7,  // 15: admin.v1.AdminService.UpdateBooth:input_type -> admin.v1.UpdateBoothRequest
+	10, // 16: admin.v1.AdminService.ListAdminBooths:input_type -> admin.v1.ListAdminBoothsRequest
+	12, // 17: admin.v1.AdminService.CreateBooth:input_type -> admin.v1.CreateBoothRequest
+	14, // 18: admin.v1.AdminService.ArchiveBooth:input_type -> admin.v1.ArchiveBoothRequest
+	16, // 19: admin.v1.AdminService.UnarchiveBooth:input_type -> admin.v1.UnarchiveBoothRequest
+	18, // 20: admin.v1.AdminService.DeleteBooth:input_type -> admin.v1.DeleteBoothRequest
+	20, // 21: admin.v1.AdminService.UpdateBoothPassword:input_type -> admin.v1.UpdateBoothPasswordRequest
+	41, // 22: admin.v1.AdminService.GetRiskExplanation:input_type -> admin.v1.GetRiskExplanationRequest
+	43, // 23: admin.v1.AdminService.UpdateRiskExplanation:input_type -> admin.v1.UpdateRiskExplanationRequest
+	57, // 24: admin.v1.AdminService.ListNotificationTemplates:input_type -> admin.v1.ListNotificationTemplatesRequest
+	59, // 25: admin.v1.AdminService.UpdateNotificationTemplate:input_type -> admin.v1.UpdateNotificationTemplateRequest
+	61, // 26: admin.v1.AdminService.ExportCSV:input_type -> admin.v1.ExportCSVRequest
+	63, // 27: admin.v1.AdminService.ResetEventData:input_type -> admin.v1.ResetEventDataRequest
+	22, // 28: admin.v1.StaffService.LoginAsStaff:input_type -> admin.v1.LoginAsStaffRequest
+	24, // 29: admin.v1.StaffService.CallTicket:input_type -> admin.v1.CallTicketRequest
+	26, // 30: admin.v1.StaffService.CallNextTickets:input_type -> admin.v1.CallNextTicketsRequest
+	28, // 31: admin.v1.StaffService.AdmitByQR:input_type -> admin.v1.AdmitByQRRequest
+	30, // 32: admin.v1.StaffService.AdmitManually:input_type -> admin.v1.AdmitManuallyRequest
+	32, // 33: admin.v1.StaffService.CancelTicketByStaff:input_type -> admin.v1.CancelTicketByStaffRequest
+	34, // 34: admin.v1.StaffService.GetStaffSession:input_type -> admin.v1.GetStaffSessionRequest
+	37, // 35: admin.v1.StaffService.ListTicketsByBooth:input_type -> admin.v1.ListTicketsByBoothRequest
+	39, // 36: admin.v1.StaffService.RestorePendingTicket:input_type -> admin.v1.RestorePendingTicketRequest
+	45, // 37: admin.v1.StaffService.ForceStartMatch:input_type -> admin.v1.ForceStartMatchRequest
+	47, // 38: admin.v1.StaffService.CallPrivateMatch:input_type -> admin.v1.CallPrivateMatchRequest
+	49, // 39: admin.v1.StaffService.CompleteMatchSession:input_type -> admin.v1.CompleteMatchSessionRequest
+	54, // 40: admin.v1.StaffService.GetMatchQueueStatus:input_type -> admin.v1.GetMatchQueueStatusRequest
+	66, // 41: admin.v1.StaffService.CreateTicketManual:input_type -> admin.v1.CreateTicketManualRequest
+	4,  // 42: admin.v1.AdminService.LoginAsGlobalAdmin:output_type -> admin.v1.LoginAsGlobalAdminResponse
+	6,  // 43: admin.v1.AdminService.GetDashboard:output_type -> admin.v1.GetDashboardResponse
+	8,  // 44: admin.v1.AdminService.UpdateBooth:output_type -> admin.v1.UpdateBoothResponse
+	11, // 45: admin.v1.AdminService.ListAdminBooths:output_type -> admin.v1.ListAdminBoothsResponse
+	13, // 46: admin.v1.AdminService.CreateBooth:output_type -> admin.v1.CreateBoothResponse
+	15, // 47: admin.v1.AdminService.ArchiveBooth:output_type -> admin.v1.ArchiveBoothResponse
+	17, // 48: admin.v1.AdminService.UnarchiveBooth:output_type -> admin.v1.UnarchiveBoothResponse
+	19, // 49: admin.v1.AdminService.DeleteBooth:output_type -> admin.v1.DeleteBoothResponse
+	21, // 50: admin.v1.AdminService.UpdateBoothPassword:output_type -> admin.v1.UpdateBoothPasswordResponse
+	42, // 51: admin.v1.AdminService.GetRiskExplanation:output_type -> admin.v1.GetRiskExplanationResponse
+	44, // 52: admin.v1.AdminService.UpdateRiskExplanation:output_type -> admin.v1.UpdateRiskExplanationResponse
+	58, // 53: admin.v1.AdminService.ListNotificationTemplates:output_type -> admin.v1.ListNotificationTemplatesResponse
+	60, // 54: admin.v1.AdminService.UpdateNotificationTemplate:output_type -> admin.v1.UpdateNotificationTemplateResponse
+	62, // 55: admin.v1.AdminService.ExportCSV:output_type -> admin.v1.ExportCSVResponse
+	64, // 56: admin.v1.AdminService.ResetEventData:output_type -> admin.v1.ResetEventDataResponse
+	23, // 57: admin.v1.StaffService.LoginAsStaff:output_type -> admin.v1.LoginAsStaffResponse
+	25, // 58: admin.v1.StaffService.CallTicket:output_type -> admin.v1.CallTicketResponse
+	27, // 59: admin.v1.StaffService.CallNextTickets:output_type -> admin.v1.CallNextTicketsResponse
+	29, // 60: admin.v1.StaffService.AdmitByQR:output_type -> admin.v1.AdmitByQRResponse
+	31, // 61: admin.v1.StaffService.AdmitManually:output_type -> admin.v1.AdmitManuallyResponse
+	33, // 62: admin.v1.StaffService.CancelTicketByStaff:output_type -> admin.v1.CancelTicketByStaffResponse
+	35, // 63: admin.v1.StaffService.GetStaffSession:output_type -> admin.v1.GetStaffSessionResponse
+	38, // 64: admin.v1.StaffService.ListTicketsByBooth:output_type -> admin.v1.ListTicketsByBoothResponse
+	40, // 65: admin.v1.StaffService.RestorePendingTicket:output_type -> admin.v1.RestorePendingTicketResponse
+	46, // 66: admin.v1.StaffService.ForceStartMatch:output_type -> admin.v1.ForceStartMatchResponse
+	48, // 67: admin.v1.StaffService.CallPrivateMatch:output_type -> admin.v1.CallPrivateMatchResponse
+	50, // 68: admin.v1.StaffService.CompleteMatchSession:output_type -> admin.v1.CompleteMatchSessionResponse
+	55, // 69: admin.v1.StaffService.GetMatchQueueStatus:output_type -> admin.v1.GetMatchQueueStatusResponse
+	67, // 70: admin.v1.StaffService.CreateTicketManual:output_type -> admin.v1.CreateTicketManualResponse
+	42, // [42:71] is the sub-list for method output_type
+	13, // [13:42] is the sub-list for method input_type
+	13, // [13:13] is the sub-list for extension type_name
+	13, // [13:13] is the sub-list for extension extendee
+	0,  // [0:13] is the sub-list for field type_name
 }
 
 func init() { file_admin_v1_admin_proto_init() }
@@ -3792,8 +4274,8 @@ func file_admin_v1_admin_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_admin_v1_admin_proto_rawDesc), len(file_admin_v1_admin_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   59,
+			NumEnums:      2,
+			NumMessages:   66,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

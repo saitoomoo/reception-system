@@ -1,5 +1,5 @@
 export type ReceptionStatus = 'waiting' | 'called' | 'admitted' | 'cancelled' | 'pending';
-export type PageType = 'reservations' | 'qr-scanner' | 'manual-admit' | 'match-queue';
+export type PageType = 'reservations' | 'qr-scanner' | 'manual-admit' | 'match-queue' | 'manual-issue';
 
 export interface StaffTicketItem {
   ticketId: string;
@@ -34,4 +34,5 @@ export const MENU_ITEMS: { id: PageType; label: string; icon: string }[] = [
   { id: 'qr-scanner', label: 'QRスキャン', icon: '📷' },
   { id: 'manual-admit', label: '手動入場', icon: '✏️' },
   { id: 'match-queue', label: 'マッチキュー', icon: '🎮' },
+  { id: 'manual-issue', label: '特殊フロー発行', icon: '📝' },
 ];

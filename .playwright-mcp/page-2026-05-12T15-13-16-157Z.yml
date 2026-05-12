@@ -1,0 +1,14 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - link "← ダッシュボード" [ref=e6] [cursor=pointer]:
+      - /url: /admin/global/dashboard
+    - heading "リスク説明文編集" [level=1] [ref=e7]
+  - generic [ref=e8]:
+    - generic [ref=e17]: 保存しました。
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]: リスク説明文
+        - paragraph [ref=e12]: 13歳未満の参加者がいる場合に保護者が読む説明文です。保護者がスクロールして末尾まで確認しないと同意ボタンが押せません。
+        - textbox "HMD体験に関するリスク説明文を入力してください..." [ref=e13]: 本体験はVR（付事現実）ヘッドセットを使用します。以下のリスクについてご理解ください： 1. VR酔い（吐き気・めまい）が発生する場合があります 2. 体験中は周囲が見えなくなります 3. 激しい動作は周囲との接触事故の原因になります 4. 目の疲労が生じる場合があります 保護者の方は上記リスクを理解した上で、お子様の参加に同意してください。（E2Eテスト更新）
+      - paragraph [ref=e14]: "最終更新: 2026/5/13 0:13:14"
+      - button "保存する" [ref=e16]

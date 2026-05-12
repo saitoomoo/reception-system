@@ -33,6 +33,8 @@ export default function GlobalDashboardScreen() {
           <a href="/admin/global/booths" className="text-sm bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">ブース管理</a>
           <a href="/admin/global/risk-explanation" className="text-sm bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded">リスク説明文</a>
           <a href="/admin/global/notifications" className="text-sm bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded">通知テンプレート</a>
+          <a href="/admin/global/csv-export" className="text-sm bg-green-700 hover:bg-green-600 text-white px-3 py-1 rounded">CSVエクスポート</a>
+          <a href="/admin/global/reset" className="text-sm bg-red-700 hover:bg-red-600 text-white px-3 py-1 rounded">データリセット</a>
           <a href="/admin" className="text-sm text-gray-300 hover:text-white">スタッフ画面へ</a>
         </div>
       </header>

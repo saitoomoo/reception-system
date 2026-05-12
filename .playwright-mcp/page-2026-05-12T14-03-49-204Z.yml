@@ -1,0 +1,21 @@
+- generic [ref=e91]:
+  - banner [ref=e92]:
+    - heading "マイページ" [level=1] [ref=e93]
+  - main [ref=e94]:
+    - generic [ref=e95]:
+      - paragraph [ref=e96]: あなたの受付番号
+      - paragraph [ref=e97]: A-005
+    - generic [ref=e98]:
+      - paragraph [ref=e99]: QRコード
+      - img [ref=e102]
+      - paragraph [ref=e105]: スタッフにこのQRコードをご提示ください
+    - generic:
+      - paragraph [ref=e106]: 整理券一覧
+      - button "個人VR体験 前に 0人 待機中" [ref=e108]:
+        - generic [ref=e109]:
+          - paragraph [ref=e110]: 個人VR体験
+          - paragraph [ref=e111]: 前に 0人
+        - generic [ref=e112]: 待機中
+    - button "ブース選択へ" [ref=e113]
+    - button "ログアウト（受付情報を削除）" [ref=e114]
+  - contentinfo [ref=e115]: お困りの際は受付スタッフまでお声がけください

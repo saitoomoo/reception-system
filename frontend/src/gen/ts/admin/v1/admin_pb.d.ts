@@ -1419,6 +1419,167 @@ export declare type UpdateNotificationTemplateResponse = Message<"admin.v1.Updat
 export declare const UpdateNotificationTemplateResponseSchema: GenMessage<UpdateNotificationTemplateResponse>;
 
 /**
+ * @generated from message admin.v1.ExportCSVRequest
+ */
+export declare type ExportCSVRequest = Message<"admin.v1.ExportCSVRequest"> & {
+  /**
+   * @generated from field: admin.v1.ExportType export_type = 1;
+   */
+  exportType: ExportType;
+};
+
+/**
+ * Describes the message admin.v1.ExportCSVRequest.
+ * Use `create(ExportCSVRequestSchema)` to create a new message.
+ */
+export declare const ExportCSVRequestSchema: GenMessage<ExportCSVRequest>;
+
+/**
+ * @generated from message admin.v1.ExportCSVResponse
+ */
+export declare type ExportCSVResponse = Message<"admin.v1.ExportCSVResponse"> & {
+  /**
+   * UTF-8 BOM prefixed CSV bytes, ready for direct download.
+   *
+   * @generated from field: bytes csv_data = 1;
+   */
+  csvData: Uint8Array;
+
+  /**
+   * @generated from field: string filename = 2;
+   */
+  filename: string;
+};
+
+/**
+ * Describes the message admin.v1.ExportCSVResponse.
+ * Use `create(ExportCSVResponseSchema)` to create a new message.
+ */
+export declare const ExportCSVResponseSchema: GenMessage<ExportCSVResponse>;
+
+/**
+ * @generated from message admin.v1.ResetEventDataRequest
+ */
+export declare type ResetEventDataRequest = Message<"admin.v1.ResetEventDataRequest"> & {
+  /**
+   * Must equal "RESET" to confirm the destructive operation.
+   *
+   * @generated from field: string confirmation_token = 1;
+   */
+  confirmationToken: string;
+};
+
+/**
+ * Describes the message admin.v1.ResetEventDataRequest.
+ * Use `create(ResetEventDataRequestSchema)` to create a new message.
+ */
+export declare const ResetEventDataRequestSchema: GenMessage<ResetEventDataRequest>;
+
+/**
+ * @generated from message admin.v1.ResetEventDataResponse
+ */
+export declare type ResetEventDataResponse = Message<"admin.v1.ResetEventDataResponse"> & {
+  /**
+   * @generated from field: string message = 1;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message admin.v1.ResetEventDataResponse.
+ * Use `create(ResetEventDataResponseSchema)` to create a new message.
+ */
+export declare const ResetEventDataResponseSchema: GenMessage<ResetEventDataResponse>;
+
+/**
+ * @generated from message admin.v1.ManualParticipantInput
+ */
+export declare type ManualParticipantInput = Message<"admin.v1.ManualParticipantInput"> & {
+  /**
+   * @generated from field: int32 age = 1;
+   */
+  age: number;
+
+  /**
+   * required for participants aged < 13
+   *
+   * @generated from field: string name = 2;
+   */
+  name: string;
+};
+
+/**
+ * Describes the message admin.v1.ManualParticipantInput.
+ * Use `create(ManualParticipantInputSchema)` to create a new message.
+ */
+export declare const ManualParticipantInputSchema: GenMessage<ManualParticipantInput>;
+
+/**
+ * @generated from message admin.v1.CreateTicketManualRequest
+ */
+export declare type CreateTicketManualRequest = Message<"admin.v1.CreateTicketManualRequest"> & {
+  /**
+   * Visitor identified by reception number (staff scans the QR).
+   *
+   * @generated from field: string reception_number = 1;
+   */
+  receptionNumber: string;
+
+  /**
+   * @generated from field: repeated admin.v1.ManualParticipantInput participants = 2;
+   */
+  participants: ManualParticipantInput[];
+
+  /**
+   * Required when any participant is aged 7-12 (paper_and_digital consent, R-005).
+   *
+   * @generated from field: string guardian_name = 3;
+   */
+  guardianName: string;
+
+  /**
+   * Physical paper form reference ID (required for ages 7-9).
+   *
+   * @generated from field: string paper_form_id = 4;
+   */
+  paperFormId: string;
+
+  /**
+   * Full text of risk explanation shown to the guardian at the time of consent.
+   *
+   * @generated from field: string consent_text_snapshot = 5;
+   */
+  consentTextSnapshot: string;
+};
+
+/**
+ * Describes the message admin.v1.CreateTicketManualRequest.
+ * Use `create(CreateTicketManualRequestSchema)` to create a new message.
+ */
+export declare const CreateTicketManualRequestSchema: GenMessage<CreateTicketManualRequest>;
+
+/**
+ * @generated from message admin.v1.CreateTicketManualResponse
+ */
+export declare type CreateTicketManualResponse = Message<"admin.v1.CreateTicketManualResponse"> & {
+  /**
+   * @generated from field: string ticket_id = 1;
+   */
+  ticketId: string;
+
+  /**
+   * @generated from field: int32 sequence_in_booth = 2;
+   */
+  sequenceInBooth: number;
+};
+
+/**
+ * Describes the message admin.v1.CreateTicketManualResponse.
+ * Use `create(CreateTicketManualResponseSchema)` to create a new message.
+ */
+export declare const CreateTicketManualResponseSchema: GenMessage<CreateTicketManualResponse>;
+
+/**
  * AdmitOutcome describes the result of a QR scan or manual admission attempt.
  *
  * @generated from enum admin.v1.AdmitOutcome
@@ -1469,6 +1630,51 @@ export enum AdmitOutcome {
  * Describes the enum admin.v1.AdmitOutcome.
  */
 export declare const AdmitOutcomeSchema: GenEnum<AdmitOutcome>;
+
+/**
+ * @generated from enum admin.v1.ExportType
+ */
+export enum ExportType {
+  /**
+   * @generated from enum value: EXPORT_TYPE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_VISITORS = 1;
+   */
+  VISITORS = 1,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_TICKETS = 2;
+   */
+  TICKETS = 2,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_ADMISSIONS = 3;
+   */
+  ADMISSIONS = 3,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_BOOTH_SUMMARY = 4;
+   */
+  BOOTH_SUMMARY = 4,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_HOURLY_STATS = 5;
+   */
+  HOURLY_STATS = 5,
+
+  /**
+   * @generated from enum value: EXPORT_TYPE_MATCH_SESSIONS = 6;
+   */
+  MATCH_SESSIONS = 6,
+}
+
+/**
+ * Describes the enum admin.v1.ExportType.
+ */
+export declare const ExportTypeSchema: GenEnum<ExportType>;
 
 /**
  * AdminService is for global admins only.
@@ -1605,6 +1811,27 @@ export declare const AdminService: GenService<{
     methodKind: "unary";
     input: typeof UpdateNotificationTemplateRequestSchema;
     output: typeof UpdateNotificationTemplateResponseSchema;
+  },
+  /**
+   * ExportCSV exports event data as a UTF-8 BOM CSV file.
+   *
+   * @generated from rpc admin.v1.AdminService.ExportCSV
+   */
+  exportCSV: {
+    methodKind: "unary";
+    input: typeof ExportCSVRequestSchema;
+    output: typeof ExportCSVResponseSchema;
+  },
+  /**
+   * ResetEventData deletes all event data (visitors, tickets, etc.) while preserving
+   * booth/admin/template configuration. Only available when APP_ENV != "production".
+   *
+   * @generated from rpc admin.v1.AdminService.ResetEventData
+   */
+  resetEventData: {
+    methodKind: "unary";
+    input: typeof ResetEventDataRequestSchema;
+    output: typeof ResetEventDataResponseSchema;
   },
 }>;
 
@@ -1744,6 +1971,17 @@ export declare const StaffService: GenService<{
     methodKind: "unary";
     input: typeof GetMatchQueueStatusRequestSchema;
     output: typeof GetMatchQueueStatusResponseSchema;
+  },
+  /**
+   * CreateTicketManual issues a ticket on behalf of a visitor via the special in-person
+   * staff flow for participants aged 7-9 (paper_and_digital consent, R-005).
+   *
+   * @generated from rpc admin.v1.StaffService.CreateTicketManual
+   */
+  createTicketManual: {
+    methodKind: "unary";
+    input: typeof CreateTicketManualRequestSchema;
+    output: typeof CreateTicketManualResponseSchema;
   },
 }>;
 

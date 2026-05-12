@@ -1,0 +1,75 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "← 戻る" [ref=e190]
+    - 'heading "ブース編集: E2Eテストブース" [level=1] [ref=e191]'
+  - generic [ref=e192]:
+    - generic [ref=e193]:
+      - heading "基本情報" [level=2] [ref=e194]
+      - generic [ref=e195]:
+        - generic [ref=e196]: ブース名 *
+        - textbox [ref=e197]: E2Eテストブース
+      - generic [ref=e198]:
+        - generic [ref=e199]: 説明
+        - textbox [ref=e200]
+      - generic [ref=e201]:
+        - generic [ref=e202]: 開催場所
+        - textbox [ref=e203]: D棟 1F
+      - generic [ref=e204]:
+        - generic [ref=e205]:
+          - generic [ref=e206]: 受付開始
+          - textbox [ref=e207]: 2026-05-13T09:00
+        - generic [ref=e208]:
+          - generic [ref=e209]: 受付終了
+          - textbox [ref=e210]: 2026-05-13T21:00
+      - generic [ref=e211]:
+        - generic [ref=e212]: 体験タイプ
+        - combobox [ref=e213]:
+          - option "順次体験型 (sequential)"
+          - option "同時並行型 (parallel)"
+          - option "個人体験型 (individual)"
+          - option "マッチメイキング型 (matchmaking)" [selected]
+    - generic [ref=e214]:
+      - heading "体験設定" [level=2] [ref=e215]
+      - generic [ref=e216]:
+        - generic [ref=e217]: 1整理券あたりの最大人数
+        - spinbutton [ref=e218]: "1"
+      - generic [ref=e219]:
+        - generic [ref=e220]: 理想の開催人数 (target_party_size)
+        - spinbutton [ref=e221]: "4"
+      - generic [ref=e222]:
+        - generic [ref=e223]: 最低開催人数 (min_party_size)
+        - spinbutton [ref=e224]: "2"
+      - generic [ref=e226] [cursor=pointer]:
+        - checkbox "プライベートマッチを許可する" [ref=e227]
+        - generic [ref=e228]: プライベートマッチを許可する
+      - generic [ref=e229]:
+        - generic [ref=e230]: 1セッションの時間 (分)
+        - spinbutton [ref=e231]: "15"
+    - generic [ref=e232]:
+      - heading "呼び出し・クールダウン設定" [level=2] [ref=e233]
+      - generic [ref=e234]:
+        - generic [ref=e235]: 呼び出しタイミング目安 (call_threshold)
+        - spinbutton [ref=e236]: "3"
+      - generic [ref=e237]:
+        - generic [ref=e238]: 呼び出し後pending遷移まで (分)
+        - spinbutton [ref=e239]: "10"
+      - generic [ref=e240]:
+        - generic [ref=e241]: クールダウン時間 (分, 0=なし)
+        - spinbutton [ref=e242]: "0"
+      - generic [ref=e244] [cursor=pointer]:
+        - checkbox "整理券発行を受け付ける" [checked] [ref=e245]
+        - generic [ref=e246]: 整理券発行を受け付ける
+    - generic [ref=e247]:
+      - heading "メディア・リンク" [level=2] [ref=e248]
+      - generic [ref=e249]:
+        - generic [ref=e250]: カバー画像 URL
+        - textbox "https://..." [ref=e251]
+      - generic [ref=e252]:
+        - generic [ref=e253]: 紹介動画 URL (YouTube)
+        - textbox "https://youtu.be/..." [ref=e254]
+      - generic [ref=e255]:
+        - generic [ref=e256]: アンケート URL
+        - textbox "https://forms.gle/..." [ref=e257]
+    - generic [ref=e258]:
+      - button "キャンセル" [ref=e259]
+      - button "変更を保存" [ref=e260]

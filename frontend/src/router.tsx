@@ -15,6 +15,8 @@ import GlobalDashboardScreen from '@/screens/admin/global-dashboard';
 import GlobalBoothsScreen from '@/screens/admin/global-booths';
 import GlobalRiskExplanationScreen from '@/screens/admin/global-risk-explanation';
 import GlobalNotificationsScreen from '@/screens/admin/global-notifications';
+import GlobalCsvExportScreen from '@/screens/admin/global-csv-export';
+import GlobalResetScreen from '@/screens/admin/global-reset';
 import BoothStatusScreen from '@/screens/booth-status';
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
@@ -47,6 +49,8 @@ const router = createBrowserRouter([
   { path: '/admin/global/booths', element: <GlobalBoothsScreen /> },
   { path: '/admin/global/risk-explanation', element: <GlobalRiskExplanationScreen /> },
   { path: '/admin/global/notifications', element: <GlobalNotificationsScreen /> },
+  { path: '/admin/global/csv-export', element: <GlobalCsvExportScreen /> },
+  { path: '/admin/global/reset', element: <GlobalResetScreen /> },
 ]);
 
 export default function Router() {

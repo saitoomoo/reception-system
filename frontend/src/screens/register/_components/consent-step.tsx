@@ -1,4 +1,5 @@
 interface Props {
+  riskBody: string;
   guardianName: string;
   guardianConsent: boolean;
   hasScrolledConsent: boolean;
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export default function ConsentStep({
-  guardianName, guardianConsent, hasScrolledConsent,
+  riskBody, guardianName, guardianConsent, hasScrolledConsent,
   onGuardianNameChange, onGuardianConsentChange, onScroll, onSubmit, onBack,
 }: Props) {
   return (
@@ -35,18 +36,8 @@ export default function ConsentStep({
           className="bg-[#D4B946] bg-opacity-10 rounded-xl p-4 mb-4 h-[200px] overflow-y-auto"
           onScroll={onScroll}
         >
-          <p className="text-[14px] text-[#5A4A20] leading-relaxed">
-            <span className="block">私は、下記の未成年者の保護者として、本体験プログラムへの参加に同意いたします。</span>
-            <span className="block font-bold mt-4">【同意事項】</span>
-            <span className="block mt-2">1. 体験中の安全管理について、施設の指示に従うことを承諾します。</span>
-            <span className="block mt-2">2. 体験中に発生した事故・怪我について、施設の過失によらない場合は自己責任とすることを理解します。</span>
-            <span className="block mt-2">3. VR機器（HMD）の使用に際し、目の疲労・VR酔い・転倒等のリスクがあることを理解します。</span>
-            <span className="block mt-2">4. 緊急時の連絡先を正確に記入し、必要に応じて対応することを承諾します。</span>
-            <span className="block mt-2">5. 体験の様子を撮影した写真・動画が、施設の広報活動に使用される可能性があることを承諾します。</span>
-            <span className="block font-bold mt-4">【注意事項】</span>
-            <span className="block mt-2">• 体験は7歳以上を対象としています。</span>
-            <span className="block mt-2">• 心臓疾患、高血圧、てんかん等の疾患をお持ちの方はご利用をお控えください。</span>
-            <span className="block mt-2">• 体験中に気分が悪くなった場合は、すぐにスタッフにお知らせください。</span>
+          <p className="text-[14px] text-[#5A4A20] leading-relaxed whitespace-pre-line">
+            {riskBody}
           </p>
         </div>
 

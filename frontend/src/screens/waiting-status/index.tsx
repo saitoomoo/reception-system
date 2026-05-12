@@ -184,6 +184,14 @@ export default function WaitingStatusScreen() {
                   <span className="text-[20px] font-bold text-[#D4B946]">アンケートに回答する</span>
                 </a>
               )}
+              {data?.boothId && (
+                <button
+                  onClick={() => navigate(`/booths/${data.boothId}/reserve/new`)}
+                  className="w-full bg-[#D4B946] bg-opacity-30 py-4 rounded-2xl active:scale-[0.98] transition-all duration-150"
+                >
+                  <span className="text-[16px] font-bold text-[#5A4A20]">もう一度予約する</span>
+                </button>
+              )}
             </div>
           </div>
         )}
@@ -192,6 +200,14 @@ export default function WaitingStatusScreen() {
           <div className="bg-white rounded-2xl p-8 shadow-[0_4px_12px_rgba(0,0,0,0.15)] text-center">
             <p className="text-[20px] font-bold text-gray-500">キャンセル済み</p>
             <p className="text-[14px] text-gray-400 mt-2">この整理券はキャンセルされました</p>
+            {data?.boothId && (
+              <button
+                onClick={() => navigate(`/booths/${data.boothId}/reserve/new`)}
+                className="mt-5 w-full bg-[#D4B946] bg-opacity-30 py-4 rounded-2xl active:scale-[0.98] transition-all duration-150"
+              >
+                <span className="text-[16px] font-bold text-[#5A4A20]">整理券を再取得する</span>
+              </button>
+            )}
           </div>
         )}
 

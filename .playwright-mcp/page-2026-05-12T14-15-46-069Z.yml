@@ -1,0 +1,13 @@
+- generic [ref=e5]:
+  - generic [ref=e6]: "[plugin:vite:esbuild] The service is no longer running"
+  - generic [ref=e7]: /Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/src/screens/register/index.tsx
+  - generic [ref=e9]: at /Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:718:38 at sendRequest (/Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:599:36) at start (/Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:717:9) at Object.transform2 [as transform] (/Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:778:5) at /Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:2043:77 at new Promise (<anonymous>) at Object.transform (/Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:2043:36) at transform (/Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/esbuild/lib/main.js:1878:62) at transformWithEsbuild (file:///Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:9137:26) at async TransformPluginContext.transform (file:///Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:9199:24) at async EnvironmentPluginContainer.transform (file:///Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:42294:18) at async loadAndTransform (file:///Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:35735:27) at async viteTransformMiddleware (file:///Users/saitomo/tomok/codestation/nextjs-projects/reception-system/frontend/node_modules/vite/dist/node/chunks/dep-DBxKXgDP.js:37250:24
+  - generic [ref=e10]:
+    - text: Click outside, press Esc key, or fix the code to dismiss.
+    - text: You can also disable this overlay by setting
+    - code [ref=e11]: server.hmr.overlay
+    - text: to
+    - code [ref=e12]: "false"
+    - text: in
+    - code [ref=e13]: vite.config.ts
+    - text: .

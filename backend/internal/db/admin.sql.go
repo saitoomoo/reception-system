@@ -7,6 +7,9 @@ package db
 
 import (
 	"context"
+	"net/netip"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 const createGlobalAdmin = `-- name: CreateGlobalAdmin :one
@@ -32,6 +35,281 @@ func (q *Queries) CreateGlobalAdmin(ctx context.Context, arg CreateGlobalAdminPa
 	return i, err
 }
 
+const createManualTicket = `-- name: CreateManualTicket :one
+INSERT INTO tickets (visitor_id, booth_id, ticket_group_id, sequence_in_booth, status)
+VALUES ($1, $2, $3, $4, 'waiting')
+RETURNING id, visitor_id, booth_id, ticket_group_id, match_session_id, sequence_in_booth, status, match_mode, is_priority_call, created_at, called_at, pending_at, returned_at, admitted_at, cancelled_at
+`
+
+type CreateManualTicketParams struct {
+	VisitorID       int64
+	BoothID         int64
+	TicketGroupID   int64
+	SequenceInBooth int32
+}
+
+func (q *Queries) CreateManualTicket(ctx context.Context, arg CreateManualTicketParams) (Ticket, error) {
+	row := q.db.QueryRow(ctx, createManualTicket,
+		arg.VisitorID,
+		arg.BoothID,
+		arg.TicketGroupID,
+		arg.SequenceInBooth,
+	)
+	var i Ticket
+	err := row.Scan(
+		&i.ID,
+		&i.VisitorID,
+		&i.BoothID,
+		&i.TicketGroupID,
+		&i.MatchSessionID,
+		&i.SequenceInBooth,
+		&i.Status,
+		&i.MatchMode,
+		&i.IsPriorityCall,
+		&i.CreatedAt,
+		&i.CalledAt,
+		&i.PendingAt,
+		&i.ReturnedAt,
+		&i.AdmittedAt,
+		&i.CancelledAt,
+	)
+	return i, err
+}
+
+const createParentalConsentForManual = `-- name: CreateParentalConsentForManual :exec
+INSERT INTO parental_consents (
+    participant_id,
+    consent_method,
+    consent_text_snapshot,
+    guardian_name,
+    ip_address,
+    user_agent,
+    paper_form_id
+) VALUES ($1, $2, $3, $4, $5, $6, $7)
+`
+
+type CreateParentalConsentForManualParams struct {
+	ParticipantID       int64
+	ConsentMethod       string
+	ConsentTextSnapshot string
+	GuardianName        string
+	IpAddress           netip.Addr
+	UserAgent           string
+	PaperFormID         *string
+}
+
+func (q *Queries) CreateParentalConsentForManual(ctx context.Context, arg CreateParentalConsentForManualParams) error {
+	_, err := q.db.Exec(ctx, createParentalConsentForManual,
+		arg.ParticipantID,
+		arg.ConsentMethod,
+		arg.ConsentTextSnapshot,
+		arg.GuardianName,
+		arg.IpAddress,
+		arg.UserAgent,
+		arg.PaperFormID,
+	)
+	return err
+}
+
+const createParticipantForManual = `-- name: CreateParticipantForManual :one
+INSERT INTO participants (ticket_group_id, name, age)
+VALUES ($1, $2, $3)
+RETURNING id
+`
+
+type CreateParticipantForManualParams struct {
+	TicketGroupID int64
+	Name          *string
+	Age           int32
+}
+
+func (q *Queries) CreateParticipantForManual(ctx context.Context, arg CreateParticipantForManualParams) (int64, error) {
+	row := q.db.QueryRow(ctx, createParticipantForManual, arg.TicketGroupID, arg.Name, arg.Age)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
+const createTicketGroupForManual = `-- name: CreateTicketGroupForManual :one
+INSERT INTO ticket_groups (ticket_id, participant_count)
+VALUES ($1, $2)
+RETURNING id
+`
+
+type CreateTicketGroupForManualParams struct {
+	TicketID         int64
+	ParticipantCount int32
+}
+
+func (q *Queries) CreateTicketGroupForManual(ctx context.Context, arg CreateTicketGroupForManualParams) (int64, error) {
+	row := q.db.QueryRow(ctx, createTicketGroupForManual, arg.TicketID, arg.ParticipantCount)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
+const deleteAllAdmissions = `-- name: DeleteAllAdmissions :exec
+DELETE FROM admissions
+`
+
+func (q *Queries) DeleteAllAdmissions(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllAdmissions)
+	return err
+}
+
+const deleteAllMatchSessions = `-- name: DeleteAllMatchSessions :exec
+DELETE FROM match_sessions
+`
+
+func (q *Queries) DeleteAllMatchSessions(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllMatchSessions)
+	return err
+}
+
+const deleteAllNotificationLogs = `-- name: DeleteAllNotificationLogs :exec
+DELETE FROM notification_logs
+`
+
+func (q *Queries) DeleteAllNotificationLogs(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllNotificationLogs)
+	return err
+}
+
+const deleteAllParentalConsents = `-- name: DeleteAllParentalConsents :exec
+
+DELETE FROM parental_consents
+`
+
+// =============================================================================
+// Reset event data queries
+// =============================================================================
+func (q *Queries) DeleteAllParentalConsents(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllParentalConsents)
+	return err
+}
+
+const deleteAllParticipants = `-- name: DeleteAllParticipants :exec
+DELETE FROM participants
+`
+
+func (q *Queries) DeleteAllParticipants(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllParticipants)
+	return err
+}
+
+const deleteAllPushSubscriptions = `-- name: DeleteAllPushSubscriptions :exec
+DELETE FROM push_subscriptions
+`
+
+func (q *Queries) DeleteAllPushSubscriptions(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllPushSubscriptions)
+	return err
+}
+
+const deleteAllTicketGroups = `-- name: DeleteAllTicketGroups :exec
+DELETE FROM ticket_groups
+`
+
+func (q *Queries) DeleteAllTicketGroups(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllTicketGroups)
+	return err
+}
+
+const deleteAllTickets = `-- name: DeleteAllTickets :exec
+DELETE FROM tickets
+`
+
+func (q *Queries) DeleteAllTickets(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllTickets)
+	return err
+}
+
+const deleteAllVisitors = `-- name: DeleteAllVisitors :exec
+DELETE FROM visitors
+`
+
+func (q *Queries) DeleteAllVisitors(ctx context.Context) error {
+	_, err := q.db.Exec(ctx, deleteAllVisitors)
+	return err
+}
+
+const getActiveTicketForManualCheck = `-- name: GetActiveTicketForManualCheck :one
+SELECT id FROM tickets
+WHERE visitor_id = $1
+  AND booth_id   = $2
+  AND status IN ('waiting', 'called', 'pending')
+LIMIT 1
+`
+
+type GetActiveTicketForManualCheckParams struct {
+	VisitorID int64
+	BoothID   int64
+}
+
+// Check for an existing active ticket (waiting/called/pending) at the booth.
+func (q *Queries) GetActiveTicketForManualCheck(ctx context.Context, arg GetActiveTicketForManualCheckParams) (int64, error) {
+	row := q.db.QueryRow(ctx, getActiveTicketForManualCheck, arg.VisitorID, arg.BoothID)
+	var id int64
+	err := row.Scan(&id)
+	return id, err
+}
+
+const getBoothSummary = `-- name: GetBoothSummary :many
+SELECT
+    b.id AS booth_id,
+    b.name AS booth_name,
+    COUNT(t.id) FILTER (WHERE t.status = 'waiting')  AS waiting_count,
+    COUNT(t.id) FILTER (WHERE t.status = 'called')   AS called_count,
+    COUNT(t.id) FILTER (WHERE t.status = 'pending')  AS pending_count,
+    COUNT(t.id) FILTER (WHERE t.status = 'admitted') AS admitted_count,
+    COUNT(t.id) FILTER (WHERE t.status = 'cancelled') AS cancelled_count,
+    COUNT(t.id) AS total_count
+FROM booths b
+LEFT JOIN tickets t ON t.booth_id = b.id
+GROUP BY b.id, b.name
+ORDER BY b.id
+`
+
+type GetBoothSummaryRow struct {
+	BoothID        int64
+	BoothName      string
+	WaitingCount   int64
+	CalledCount    int64
+	PendingCount   int64
+	AdmittedCount  int64
+	CancelledCount int64
+	TotalCount     int64
+}
+
+func (q *Queries) GetBoothSummary(ctx context.Context) ([]GetBoothSummaryRow, error) {
+	rows, err := q.db.Query(ctx, getBoothSummary)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetBoothSummaryRow{}
+	for rows.Next() {
+		var i GetBoothSummaryRow
+		if err := rows.Scan(
+			&i.BoothID,
+			&i.BoothName,
+			&i.WaitingCount,
+			&i.CalledCount,
+			&i.PendingCount,
+			&i.AdmittedCount,
+			&i.CancelledCount,
+			&i.TotalCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getGlobalAdminByName = `-- name: GetGlobalAdminByName :one
 SELECT id, name, password_hash, created_at FROM global_admins WHERE name = $1
 `
@@ -47,4 +325,321 @@ func (q *Queries) GetGlobalAdminByName(ctx context.Context, name string) (Global
 		&i.CreatedAt,
 	)
 	return i, err
+}
+
+const getHourlyStats = `-- name: GetHourlyStats :many
+SELECT
+    date_trunc('hour', created_at)::timestamptz AS hour,
+    COUNT(*)::int AS ticket_count
+FROM tickets
+WHERE created_at >= now() - INTERVAL '24 hours'
+GROUP BY hour
+ORDER BY hour
+`
+
+type GetHourlyStatsRow struct {
+	Hour        pgtype.Timestamptz
+	TicketCount int32
+}
+
+// Groups ticket creation by hour for the past 24 hours.
+func (q *Queries) GetHourlyStats(ctx context.Context) ([]GetHourlyStatsRow, error) {
+	rows, err := q.db.Query(ctx, getHourlyStats)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetHourlyStatsRow{}
+	for rows.Next() {
+		var i GetHourlyStatsRow
+		if err := rows.Scan(&i.Hour, &i.TicketCount); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getLastAdmittedForCooldownCheck = `-- name: GetLastAdmittedForCooldownCheck :one
+SELECT admitted_at FROM tickets
+WHERE visitor_id = $1
+  AND booth_id   = $2
+  AND status     = 'admitted'
+  AND admitted_at IS NOT NULL
+ORDER BY admitted_at DESC
+LIMIT 1
+`
+
+type GetLastAdmittedForCooldownCheckParams struct {
+	VisitorID int64
+	BoothID   int64
+}
+
+func (q *Queries) GetLastAdmittedForCooldownCheck(ctx context.Context, arg GetLastAdmittedForCooldownCheckParams) (pgtype.Timestamptz, error) {
+	row := q.db.QueryRow(ctx, getLastAdmittedForCooldownCheck, arg.VisitorID, arg.BoothID)
+	var admitted_at pgtype.Timestamptz
+	err := row.Scan(&admitted_at)
+	return admitted_at, err
+}
+
+const getVisitorByReceptionNumberForManual = `-- name: GetVisitorByReceptionNumberForManual :one
+
+SELECT id, reception_number, nickname FROM visitors WHERE reception_number = $1
+`
+
+type GetVisitorByReceptionNumberForManualRow struct {
+	ID              int64
+	ReceptionNumber string
+	Nickname        string
+}
+
+// =============================================================================
+// CreateTicketManual support
+// =============================================================================
+func (q *Queries) GetVisitorByReceptionNumberForManual(ctx context.Context, receptionNumber string) (GetVisitorByReceptionNumberForManualRow, error) {
+	row := q.db.QueryRow(ctx, getVisitorByReceptionNumberForManual, receptionNumber)
+	var i GetVisitorByReceptionNumberForManualRow
+	err := row.Scan(&i.ID, &i.ReceptionNumber, &i.Nickname)
+	return i, err
+}
+
+const listAllAdmissionsForExport = `-- name: ListAllAdmissionsForExport :many
+SELECT
+    a.id,
+    a.method,
+    a.admitted_at,
+    v.reception_number,
+    v.nickname,
+    b.name AS booth_name
+FROM admissions a
+JOIN visitors v ON v.id = a.visitor_id
+JOIN booths b ON b.id = a.booth_id
+ORDER BY a.id
+`
+
+type ListAllAdmissionsForExportRow struct {
+	ID              int64
+	Method          string
+	AdmittedAt      pgtype.Timestamptz
+	ReceptionNumber string
+	Nickname        string
+	BoothName       string
+}
+
+func (q *Queries) ListAllAdmissionsForExport(ctx context.Context) ([]ListAllAdmissionsForExportRow, error) {
+	rows, err := q.db.Query(ctx, listAllAdmissionsForExport)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListAllAdmissionsForExportRow{}
+	for rows.Next() {
+		var i ListAllAdmissionsForExportRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Method,
+			&i.AdmittedAt,
+			&i.ReceptionNumber,
+			&i.Nickname,
+			&i.BoothName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listAllMatchSessionsForExport = `-- name: ListAllMatchSessionsForExport :many
+SELECT
+    ms.id,
+    ms.status,
+    ms.mode,
+    ms.participant_count,
+    ms.created_at,
+    ms.started_at,
+    ms.ended_at,
+    b.name AS booth_name
+FROM match_sessions ms
+JOIN booths b ON b.id = ms.booth_id
+ORDER BY ms.id
+`
+
+type ListAllMatchSessionsForExportRow struct {
+	ID               int64
+	Status           string
+	Mode             string
+	ParticipantCount int32
+	CreatedAt        pgtype.Timestamptz
+	StartedAt        pgtype.Timestamptz
+	EndedAt          pgtype.Timestamptz
+	BoothName        string
+}
+
+func (q *Queries) ListAllMatchSessionsForExport(ctx context.Context) ([]ListAllMatchSessionsForExportRow, error) {
+	rows, err := q.db.Query(ctx, listAllMatchSessionsForExport)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListAllMatchSessionsForExportRow{}
+	for rows.Next() {
+		var i ListAllMatchSessionsForExportRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.Status,
+			&i.Mode,
+			&i.ParticipantCount,
+			&i.CreatedAt,
+			&i.StartedAt,
+			&i.EndedAt,
+			&i.BoothName,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listAllTicketsForExport = `-- name: ListAllTicketsForExport :many
+SELECT
+    t.id,
+    t.sequence_in_booth,
+    t.status,
+    t.match_mode,
+    t.is_priority_call,
+    t.created_at,
+    t.called_at,
+    t.pending_at,
+    t.admitted_at,
+    t.cancelled_at,
+    v.reception_number,
+    v.nickname,
+    b.name AS booth_name,
+    tg.participant_count
+FROM tickets t
+JOIN visitors v ON v.id = t.visitor_id
+JOIN booths b ON b.id = t.booth_id
+JOIN ticket_groups tg ON tg.ticket_id = t.id
+ORDER BY t.id
+`
+
+type ListAllTicketsForExportRow struct {
+	ID               int64
+	SequenceInBooth  int32
+	Status           string
+	MatchMode        *string
+	IsPriorityCall   bool
+	CreatedAt        pgtype.Timestamptz
+	CalledAt         pgtype.Timestamptz
+	PendingAt        pgtype.Timestamptz
+	AdmittedAt       pgtype.Timestamptz
+	CancelledAt      pgtype.Timestamptz
+	ReceptionNumber  string
+	Nickname         string
+	BoothName        string
+	ParticipantCount int32
+}
+
+func (q *Queries) ListAllTicketsForExport(ctx context.Context) ([]ListAllTicketsForExportRow, error) {
+	rows, err := q.db.Query(ctx, listAllTicketsForExport)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListAllTicketsForExportRow{}
+	for rows.Next() {
+		var i ListAllTicketsForExportRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.SequenceInBooth,
+			&i.Status,
+			&i.MatchMode,
+			&i.IsPriorityCall,
+			&i.CreatedAt,
+			&i.CalledAt,
+			&i.PendingAt,
+			&i.AdmittedAt,
+			&i.CancelledAt,
+			&i.ReceptionNumber,
+			&i.Nickname,
+			&i.BoothName,
+			&i.ParticipantCount,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listAllVisitorsForExport = `-- name: ListAllVisitorsForExport :many
+
+SELECT id, reception_number, nickname, created_at, last_seen_at
+FROM visitors
+ORDER BY id
+`
+
+type ListAllVisitorsForExportRow struct {
+	ID              int64
+	ReceptionNumber string
+	Nickname        string
+	CreatedAt       pgtype.Timestamptz
+	LastSeenAt      pgtype.Timestamptz
+}
+
+// =============================================================================
+// CSV export queries
+// =============================================================================
+func (q *Queries) ListAllVisitorsForExport(ctx context.Context) ([]ListAllVisitorsForExportRow, error) {
+	rows, err := q.db.Query(ctx, listAllVisitorsForExport)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []ListAllVisitorsForExportRow{}
+	for rows.Next() {
+		var i ListAllVisitorsForExportRow
+		if err := rows.Scan(
+			&i.ID,
+			&i.ReceptionNumber,
+			&i.Nickname,
+			&i.CreatedAt,
+			&i.LastSeenAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const updateManualTicketGroupID = `-- name: UpdateManualTicketGroupID :exec
+UPDATE tickets SET ticket_group_id = $2 WHERE id = $1
+`
+
+type UpdateManualTicketGroupIDParams struct {
+	ID            int64
+	TicketGroupID int64
+}
+
+func (q *Queries) UpdateManualTicketGroupID(ctx context.Context, arg UpdateManualTicketGroupIDParams) error {
+	_, err := q.db.Exec(ctx, updateManualTicketGroupID, arg.ID, arg.TicketGroupID)
+	return err
 }

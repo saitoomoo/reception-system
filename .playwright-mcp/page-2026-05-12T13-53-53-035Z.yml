@@ -1,0 +1,20 @@
+- generic [ref=e21]:
+  - banner [ref=e22]:
+    - heading "ブースを選択してください" [level=1] [ref=e23]
+  - main [ref=e24]:
+    - button "VR体験ブース A A棟 1F ホール 待ち 3人 / 約30分" [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: VR体験ブース A
+        - generic [ref=e28]: A棟 1F ホール
+        - generic [ref=e29]: 待ち 3人 / 約30分
+    - button "VR対戦ゲーム B棟 2F ゲームルーム 待ち 0人 / 約0分" [ref=e30]:
+      - generic [ref=e31]:
+        - generic [ref=e32]: VR対戦ゲーム
+        - generic [ref=e33]: B棟 2F ゲームルーム
+        - generic [ref=e34]: 待ち 0人 / 約0分
+    - button "個人VR体験 C棟 1F 体験コーナー 待ち 0人 / 約0分" [ref=e35]:
+      - generic [ref=e36]:
+        - generic [ref=e37]: 個人VR体験
+        - generic [ref=e38]: C棟 1F 体験コーナー
+        - generic [ref=e39]: 待ち 0人 / 約0分
+  - contentinfo [ref=e40]: お困りの際は受付スタッフまでお声がけください

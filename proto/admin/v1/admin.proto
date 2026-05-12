@@ -44,6 +44,13 @@ service AdminService {
 
   // UpdateNotificationTemplate updates a notification template by key.
   rpc UpdateNotificationTemplate(UpdateNotificationTemplateRequest) returns (UpdateNotificationTemplateResponse);
+
+  // ExportCSV exports event data as a UTF-8 BOM CSV file.
+  rpc ExportCSV(ExportCSVRequest) returns (ExportCSVResponse);
+
+  // ResetEventData deletes all event data (visitors, tickets, etc.) while preserving
+  // booth/admin/template configuration. Only available when APP_ENV != "production".
+  rpc ResetEventData(ResetEventDataRequest) returns (ResetEventDataResponse);
 }
 
 // StaffService is for booth staff authenticated with a booth-specific shared password.
@@ -87,6 +94,10 @@ service StaffService {
 
   // GetMatchQueueStatus returns the current match queue for the staff's matchmaking booth.
   rpc GetMatchQueueStatus(GetMatchQueueStatusRequest) returns (GetMatchQueueStatusResponse);
+
+  // CreateTicketManual issues a ticket on behalf of a visitor via the special in-person
+  // staff flow for participants aged 7-9 (paper_and_digital consent, R-005).
+  rpc CreateTicketManual(CreateTicketManualRequest) returns (CreateTicketManualResponse);
 }
 
 // -----------------------------------------------------------------------------
@@ -524,4 +535,67 @@ message UpdateNotificationTemplateRequest {
 
 message UpdateNotificationTemplateResponse {
   NotificationTemplate template = 1;
+}
+
+// -----------------------------------------------------------------------------
+// ExportCSV
+// -----------------------------------------------------------------------------
+
+enum ExportType {
+  EXPORT_TYPE_UNSPECIFIED    = 0;
+  EXPORT_TYPE_VISITORS       = 1;
+  EXPORT_TYPE_TICKETS        = 2;
+  EXPORT_TYPE_ADMISSIONS     = 3;
+  EXPORT_TYPE_BOOTH_SUMMARY  = 4;
+  EXPORT_TYPE_HOURLY_STATS   = 5;
+  EXPORT_TYPE_MATCH_SESSIONS = 6;
+}
+
+message ExportCSVRequest {
+  ExportType export_type = 1;
+}
+
+message ExportCSVResponse {
+  // UTF-8 BOM prefixed CSV bytes, ready for direct download.
+  bytes  csv_data = 1;
+  string filename = 2;
+}
+
+// -----------------------------------------------------------------------------
+// ResetEventData
+// -----------------------------------------------------------------------------
+
+message ResetEventDataRequest {
+  // Must equal "RESET" to confirm the destructive operation.
+  string confirmation_token = 1;
+}
+
+message ResetEventDataResponse {
+  string message = 1;
+}
+
+// -----------------------------------------------------------------------------
+// CreateTicketManual (StaffService)
+// -----------------------------------------------------------------------------
+
+message ManualParticipantInput {
+  int32  age  = 1;
+  string name = 2; // required for participants aged < 13
+}
+
+message CreateTicketManualRequest {
+  // Visitor identified by reception number (staff scans the QR).
+  string reception_number = 1;
+  repeated ManualParticipantInput participants = 2;
+  // Required when any participant is aged 7-12 (paper_and_digital consent, R-005).
+  string guardian_name          = 3;
+  // Physical paper form reference ID (required for ages 7-9).
+  string paper_form_id          = 4;
+  // Full text of risk explanation shown to the guardian at the time of consent.
+  string consent_text_snapshot  = 5;
+}
+
+message CreateTicketManualResponse {
+  string ticket_id         = 1;
+  int32  sequence_in_booth = 2;
 }

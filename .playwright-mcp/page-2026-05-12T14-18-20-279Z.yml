@@ -1,0 +1,13 @@
+- generic [ref=e23]:
+  - banner [ref=e24]:
+    - button "戻る" [ref=e25]:
+      - img [ref=e26]
+    - heading "情報入力" [level=1] [ref=e28]
+  - main [ref=e29]:
+    - generic [ref=e30]:
+      - paragraph [ref=e32]: 受付番号 A-005 でログイン中
+      - generic [ref=e33]:
+        - generic [ref=e34]: 体験人数
+        - spinbutton [ref=e35]
+      - button "次へ" [ref=e36]
+  - contentinfo [ref=e37]: お困りの際は受付スタッフまでお声がけください

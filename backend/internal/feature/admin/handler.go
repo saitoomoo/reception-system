@@ -1,11 +1,14 @@
 package admin
 
 import (
+	"bytes"
 	"context"
+	"encoding/csv"
 	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
@@ -236,9 +239,7 @@ func (h *AdminHandler) GetRiskExplanation(
 	ctx context.Context,
 	req *connect.Request[adminv1.GetRiskExplanationRequest],
 ) (*connect.Response[adminv1.GetRiskExplanationResponse], error) {
-	if err := h.requireAdminSession(req.Header()); err != nil {
-		return nil, err
-	}
+	// No auth required: this text is shown to visitors on the consent form.
 	row, err := h.repo.GetRiskExplanation(ctx)
 	if err != nil {
 		return nil, connecterr.Convert(err)
@@ -318,6 +319,218 @@ func (h *AdminHandler) UpdateNotificationTemplate(
 		tmpl.IconUrl = *updated.IconURL
 	}
 	return connect.NewResponse(&adminv1.UpdateNotificationTemplateResponse{Template: tmpl}), nil
+}
+
+func (h *AdminHandler) ExportCSV(
+	ctx context.Context,
+	req *connect.Request[adminv1.ExportCSVRequest],
+) (*connect.Response[adminv1.ExportCSVResponse], error) {
+	if err := h.requireAdminSession(req.Header()); err != nil {
+		return nil, err
+	}
+
+	var buf bytes.Buffer
+	// UTF-8 BOM for Excel compatibility.
+	buf.Write([]byte{0xEF, 0xBB, 0xBF})
+	w := csv.NewWriter(&buf)
+
+	var filename string
+	var writeErr error
+
+	switch req.Msg.ExportType {
+	case adminv1.ExportType_EXPORT_TYPE_VISITORS:
+		filename = "visitors"
+		writeErr = h.writeVisitorsCSV(ctx, w)
+	case adminv1.ExportType_EXPORT_TYPE_TICKETS:
+		filename = "tickets"
+		writeErr = h.writeTicketsCSV(ctx, w)
+	case adminv1.ExportType_EXPORT_TYPE_ADMISSIONS:
+		filename = "admissions"
+		writeErr = h.writeAdmissionsCSV(ctx, w)
+	case adminv1.ExportType_EXPORT_TYPE_BOOTH_SUMMARY:
+		filename = "booth_summary"
+		writeErr = h.writeBoothSummaryCSV(ctx, w)
+	case adminv1.ExportType_EXPORT_TYPE_HOURLY_STATS:
+		filename = "hourly_stats"
+		writeErr = h.writeHourlyStatsCSV(ctx, w)
+	case adminv1.ExportType_EXPORT_TYPE_MATCH_SESSIONS:
+		filename = "match_sessions"
+		writeErr = h.writeMatchSessionsCSV(ctx, w)
+	default:
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unknown export type"))
+	}
+
+	if writeErr != nil {
+		h.logger.Error("export csv", slog.String("type", filename), slog.Any("error", writeErr))
+		return nil, connecterr.Convert(writeErr)
+	}
+	w.Flush()
+	if err := w.Error(); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("csv flush: %w", err))
+	}
+
+	now := time.Now().Format("20060102_150405")
+	return connect.NewResponse(&adminv1.ExportCSVResponse{
+		CsvData:  buf.Bytes(),
+		Filename: fmt.Sprintf("%s_%s.csv", filename, now),
+	}), nil
+}
+
+func (h *AdminHandler) writeVisitorsCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.ListVisitorsForExport(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"ID", "受付番号", "ニックネーム", "登録日時", "最終確認日時"})
+	for _, r := range rows {
+		_ = w.Write([]string{
+			fmt.Sprintf("%d", r.ID),
+			r.ReceptionNumber,
+			r.Nickname,
+			r.CreatedAt.Time.Format(time.RFC3339),
+			r.LastSeenAt.Time.Format(time.RFC3339),
+		})
+	}
+	return nil
+}
+
+func (h *AdminHandler) writeTicketsCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.ListTicketsForExport(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"ID", "受付番号", "ニックネーム", "ブース名", "整理券番号", "ステータス", "マッチモード", "体験人数", "取得日時", "呼び出し日時", "保留日時", "入場日時", "キャンセル日時"})
+	for _, r := range rows {
+		matchMode := ""
+		if r.MatchMode != nil {
+			matchMode = *r.MatchMode
+		}
+		_ = w.Write([]string{
+			fmt.Sprintf("%d", r.ID),
+			r.ReceptionNumber,
+			r.Nickname,
+			r.BoothName,
+			fmt.Sprintf("%d", r.SequenceInBooth),
+			r.Status,
+			matchMode,
+			fmt.Sprintf("%d", r.ParticipantCount),
+			nullableTime(r.CreatedAt),
+			nullableTime(r.CalledAt),
+			nullableTime(r.PendingAt),
+			nullableTime(r.AdmittedAt),
+			nullableTime(r.CancelledAt),
+		})
+	}
+	return nil
+}
+
+func (h *AdminHandler) writeAdmissionsCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.ListAdmissionsForExport(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"ID", "受付番号", "ニックネーム", "ブース名", "入場方法", "入場日時"})
+	for _, r := range rows {
+		_ = w.Write([]string{
+			fmt.Sprintf("%d", r.ID),
+			r.ReceptionNumber,
+			r.Nickname,
+			r.BoothName,
+			r.Method,
+			nullableTime(r.AdmittedAt),
+		})
+	}
+	return nil
+}
+
+func (h *AdminHandler) writeBoothSummaryCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.GetBoothSummary(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"ブースID", "ブース名", "待機", "呼出中", "保留", "入場済", "キャンセル", "合計"})
+	for _, r := range rows {
+		_ = w.Write([]string{
+			fmt.Sprintf("%d", r.BoothID),
+			r.BoothName,
+			fmt.Sprintf("%d", r.WaitingCount),
+			fmt.Sprintf("%d", r.CalledCount),
+			fmt.Sprintf("%d", r.PendingCount),
+			fmt.Sprintf("%d", r.AdmittedCount),
+			fmt.Sprintf("%d", r.CancelledCount),
+			fmt.Sprintf("%d", r.TotalCount),
+		})
+	}
+	return nil
+}
+
+func (h *AdminHandler) writeHourlyStatsCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.GetHourlyStats(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"時間帯", "整理券取得数"})
+	for _, r := range rows {
+		hour := ""
+		if r.Hour.Valid {
+			hour = r.Hour.Time.Format("2006-01-02 15:04")
+		}
+		_ = w.Write([]string{hour, fmt.Sprintf("%d", r.TicketCount)})
+	}
+	return nil
+}
+
+func (h *AdminHandler) writeMatchSessionsCSV(ctx context.Context, w *csv.Writer) error {
+	rows, err := h.repo.ListMatchSessionsForExport(ctx)
+	if err != nil {
+		return err
+	}
+	_ = w.Write([]string{"ID", "ブース名", "ステータス", "モード", "参加人数", "作成日時", "開始日時", "終了日時"})
+	for _, r := range rows {
+		_ = w.Write([]string{
+			fmt.Sprintf("%d", r.ID),
+			r.BoothName,
+			r.Status,
+			r.Mode,
+			fmt.Sprintf("%d", r.ParticipantCount),
+			nullableTime(r.CreatedAt),
+			nullableTime(r.StartedAt),
+			nullableTime(r.EndedAt),
+		})
+	}
+	return nil
+}
+
+func nullableTime(t pgtype.Timestamptz) string {
+	if !t.Valid {
+		return ""
+	}
+	return t.Time.Format(time.RFC3339)
+}
+
+func (h *AdminHandler) ResetEventData(
+	ctx context.Context,
+	req *connect.Request[adminv1.ResetEventDataRequest],
+) (*connect.Response[adminv1.ResetEventDataResponse], error) {
+	if err := h.requireAdminSession(req.Header()); err != nil {
+		return nil, err
+	}
+	if os.Getenv("APP_ENV") == "production" {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("reset is not allowed in production"))
+	}
+	if req.Msg.ConfirmationToken != "RESET" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("confirmation_token must be \"RESET\""))
+	}
+
+	if err := h.repo.ResetEventData(ctx); err != nil {
+		h.logger.Error("reset event data", slog.Any("error", err))
+		return nil, connecterr.Convert(err)
+	}
+
+	h.logger.Info("event data reset by global admin")
+	return connect.NewResponse(&adminv1.ResetEventDataResponse{
+		Message: "全イベントデータを削除しました。",
+	}), nil
 }
 
 func (h *AdminHandler) requireAdminSession(header http.Header) error {

@@ -1,0 +1,25 @@
+- generic [ref=e68]:
+  - banner [ref=e69]:
+    - heading "受付完了" [level=1] [ref=e70]
+  - main [ref=e71]:
+    - generic [ref=e73]:
+      - img [ref=e75]
+      - paragraph [ref=e77]: 受付完了しました
+      - generic [ref=e78]:
+        - paragraph [ref=e79]: あなたの受付番号は
+        - paragraph [ref=e80]: A-005
+    - generic [ref=e81]:
+      - paragraph [ref=e82]: QRコード
+      - img [ref=e85]
+      - paragraph [ref=e88]: スタッフにこのQRコードをご提示ください
+    - generic [ref=e89]:
+      - paragraph [ref=e90]: 必ずスクリーンショットを撮ってください
+      - paragraph [ref=e91]: 受付番号とQRコードをスクショで保存しておくと安心です
+    - generic [ref=e92]:
+      - paragraph [ref=e93]: 呼び出し通知を受け取りますか？
+      - paragraph [ref=e94]: 整理券の順番が来たとき、ブラウザを閉じていても通知でお知らせします
+      - button "通知を有効にする" [ref=e95]
+      - button "スキップ" [ref=e96]
+    - button "待ち状況を確認する" [ref=e97]
+    - button "マイページへ" [ref=e98]
+  - contentinfo [ref=e99]: お困りの際は受付スタッフまでお声がけください

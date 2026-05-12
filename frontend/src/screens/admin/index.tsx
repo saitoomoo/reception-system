@@ -8,6 +8,7 @@ import ReservationsPage from './_components/reservations-page';
 import QrScanner from './_components/qr-scanner';
 import ManualAdmit from './_components/manual-admit';
 import MatchQueue from './_components/match-queue';
+import ManualIssue from './_components/manual-issue';
 
 interface Session {
   boothId: string;
@@ -134,6 +135,9 @@ export default function AdminScreen() {
         )}
         {currentPage === 'match-queue' && (
           <MatchQueue />
+        )}
+        {currentPage === 'manual-issue' && (
+          <ManualIssue />
         )}
       </div>
     </div>

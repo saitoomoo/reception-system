@@ -1,0 +1,45 @@
+- generic [ref=e131]:
+  - generic [ref=e133]:
+    - generic [ref=e134]:
+      - heading "メニュー" [level=2] [ref=e135]
+      - button [ref=e136]:
+        - img [ref=e137]
+    - navigation [ref=e139]:
+      - button "📋 予約一覧" [ref=e140]:
+        - generic [ref=e141]: 📋
+        - generic [ref=e142]: 予約一覧
+      - button "📷 QRスキャン" [ref=e143]:
+        - generic [ref=e144]: 📷
+        - generic [ref=e145]: QRスキャン
+      - button "✏️ 手動入場" [ref=e146]:
+        - generic [ref=e147]: ✏️
+        - generic [ref=e148]: 手動入場
+      - button "🎮 マッチキュー" [ref=e149]:
+        - generic [ref=e150]: 🎮
+        - generic [ref=e151]: マッチキュー
+      - button "📝 特殊フロー発行" [ref=e152]:
+        - generic [ref=e153]: 📝
+        - generic [ref=e154]: 特殊フロー発行
+    - button "🚪 ログアウト" [ref=e156]:
+      - generic [ref=e157]: 🚪
+      - generic [ref=e158]: ログアウト
+  - banner [ref=e159]:
+    - generic [ref=e161]:
+      - generic [ref=e162]:
+        - button [ref=e163]:
+          - img [ref=e164]
+        - generic [ref=e166]:
+          - heading "手動入場" [level=1] [ref=e713]
+          - generic [ref=e168]: VR体験ブース A 担当
+      - generic [ref=e169]:
+        - generic [ref=e170]: 2026/05/12 23:57:44
+        - button "ログアウト" [ref=e171]
+  - generic [ref=e715]:
+    - heading "手動入場処理" [level=2] [ref=e716]
+    - paragraph [ref=e717]: QRコードが読めない場合、受付番号を手入力して入場処理を行います
+    - generic [ref=e718]:
+      - generic [ref=e719]:
+        - generic [ref=e720]: 受付番号
+        - textbox "A-105" [ref=e721]
+      - generic [ref=e724]: 入場処理が完了しました
+      - button "入場処理する" [disabled] [ref=e722]

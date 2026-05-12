@@ -1,0 +1,58 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e261]:
+      - link "← ダッシュボード" [ref=e262] [cursor=pointer]:
+        - /url: /admin/global/dashboard
+      - heading "ブース管理" [level=1] [ref=e263]
+    - button "+ 新規ブース作成" [ref=e264]
+  - generic [ref=e265]:
+    - heading "アクティブなブース (4)" [level=2] [ref=e266]
+    - generic [ref=e267]:
+      - generic [ref=e269]:
+        - generic [ref=e270]:
+          - generic [ref=e271]:
+            - heading "VR体験ブース A" [level=3] [ref=e272]
+            - generic [ref=e273]: 順次体験型
+          - paragraph [ref=e274]: A棟 1F ホール
+          - paragraph [ref=e275]: 2026/5/12 16:15:00 〜 2026/5/13 21:17:00
+        - generic [ref=e276]:
+          - button "編集" [ref=e277]
+          - button "PW変更" [ref=e278]
+          - button "アーカイブ" [ref=e279]
+          - button "削除" [ref=e280]
+      - generic [ref=e282]:
+        - generic [ref=e283]:
+          - generic [ref=e284]:
+            - heading "VR対戦ゲーム" [level=3] [ref=e285]
+            - generic [ref=e286]: マッチメイキング型
+          - paragraph [ref=e287]: B棟 2F ゲームルーム
+          - paragraph [ref=e288]: 2026/5/12 16:50:53 〜 2026/5/13 1:50:53
+        - generic [ref=e289]:
+          - button "編集" [ref=e290]
+          - button "PW変更" [ref=e291]
+          - button "アーカイブ" [ref=e292]
+          - button "削除" [ref=e293]
+      - generic [ref=e295]:
+        - generic [ref=e296]:
+          - generic [ref=e297]:
+            - heading "個人VR体験" [level=3] [ref=e298]
+            - generic [ref=e299]: 個人体験型
+          - paragraph [ref=e300]: C棟 1F 体験コーナー
+          - paragraph [ref=e301]: 2026/5/12 20:58:56 〜 2026/5/13 10:58:56
+        - generic [ref=e302]:
+          - button "編集" [ref=e303]
+          - button "PW変更" [ref=e304]
+          - button "アーカイブ" [ref=e305]
+          - button "削除" [ref=e306]
+      - generic [ref=e308]:
+        - generic [ref=e309]:
+          - generic [ref=e310]:
+            - heading "E2Eテストブース" [level=3] [ref=e311]
+            - generic [ref=e312]: マッチメイキング型
+          - paragraph [ref=e313]: D棟 1F
+          - paragraph [ref=e314]: 2026/5/13 9:00:00 〜 2026/5/13 21:00:00
+        - generic [ref=e315]:
+          - button "編集" [ref=e316]
+          - button "PW変更" [ref=e317]
+          - button "アーカイブ" [ref=e318]
+          - button "削除" [ref=e319]

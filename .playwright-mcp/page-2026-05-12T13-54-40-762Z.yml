@@ -1,0 +1,23 @@
+- generic [ref=e21]:
+  - banner [ref=e22]:
+    - button "戻る" [ref=e23]:
+      - img [ref=e24]
+    - heading "情報入力" [level=1] [ref=e26]
+  - main [ref=e27]:
+    - generic [ref=e28]:
+      - generic [ref=e29]:
+        - generic [ref=e30]: 代表者ニックネーム
+        - textbox "例：山田" [ref=e31]
+      - generic [ref=e32]:
+        - generic [ref=e33]: 体験人数
+        - spinbutton [ref=e34]
+      - generic [ref=e35]:
+        - generic [ref=e36]: 4桁のPIN
+        - textbox "0000" [ref=e37]
+        - paragraph [ref=e38]: ※ 再ログイン時に使用します。忘れないようにしてください
+      - generic [ref=e39]:
+        - generic [ref=e40]: 4桁のPIN（確認）
+        - textbox "0000" [ref=e41]
+        - paragraph [ref=e42]: ※ もう一度同じPINを入力してください
+      - button "次へ" [ref=e43]
+  - contentinfo [ref=e44]: お困りの際は受付スタッフまでお声がけください

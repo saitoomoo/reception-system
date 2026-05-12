@@ -1,0 +1,14 @@
+- generic [ref=e3]:
+  - banner [ref=e5]:
+    - button "戻る" [ref=e6]:
+      - img [ref=e7]
+    - heading "待ち状況" [level=1] [ref=e9]
+  - main [ref=e10]:
+    - generic [ref=e28]:
+      - paragraph [ref=e29]: キャンセル済み
+      - paragraph [ref=e30]: この整理券はキャンセルされました
+    - generic [ref=e22]:
+      - paragraph [ref=e23]: 個人VR体験
+      - paragraph [ref=e24]: C棟 1F 体験コーナー
+    - button "マイページへ" [ref=e26]
+  - contentinfo [ref=e27]: お困りの際は受付スタッフまでお声がけください

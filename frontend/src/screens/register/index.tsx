@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/hooks/use-auth';
 import { generatePinHash } from '@/lib/pin-hash';
-import { visitorClient, ticketClient, boothClient } from '@/lib/connect/client';
+import { visitorClient, ticketClient, boothClient, adminClient } from '@/lib/connect/client';
 import ScreenFooter from '@/components/screen-footer';
 import InputStep from './_components/input-step';
 import AgeInputStep from './_components/age-input-step';
@@ -21,25 +21,11 @@ const STEP_TITLES: Record<Step, string> = {
   'staff-redirect': 'スタッフへご相談ください',
 };
 
-// Hardcoded consent text snapshot (R-005-2); matches the text shown in ConsentStep.
-const CONSENT_TEXT_SNAPSHOT = `私は、下記の未成年者の保護者として、本体験プログラムへの参加に同意いたします。
-
-【同意事項】
-1. 体験中の安全管理について、施設の指示に従うことを承諾します。
-2. 体験中に発生した事故・怪我について、施設の過失によらない場合は自己責任とすることを理解します。
-3. VR機器（HMD）の使用に際し、目の疲労・VR酔い・転倒等のリスクがあることを理解します。
-4. 緊急時の連絡先を正確に記入し、必要に応じて対応することを承諾します。
-5. 体験の様子を撮影した写真・動画が、施設の広報活動に使用される可能性があることを承諾します。
-
-【注意事項】
-• 体験は7歳以上を対象としています。
-• 心臓疾患、高血圧、てんかん等の疾患をお持ちの方はご利用をお控えください。
-• 体験中に気分が悪くなった場合は、すぐにスタッフにお知らせください。`;
 
 export default function RegisterScreen() {
   const navigate = useNavigate();
   const { boothId } = useParams();
-  const { login } = useAuth();
+  const { login, isAuthenticated, visitorId: existingVisitorId, receptionNumber: existingReceptionNumber } = useAuth();
 
   const { data: boothData } = useQuery({
     queryKey: ['booth', boothId],
@@ -50,6 +36,12 @@ export default function RegisterScreen() {
   const booth = boothData?.booth;
   const isMatchmaking = booth?.experienceType === 'matchmaking';
   const maxPartySize = booth?.maxParticipantsPerTicket ?? undefined;
+
+  const { data: riskData } = useQuery({
+    queryKey: ['riskExplanation'],
+    queryFn: () => adminClient.getRiskExplanation({}),
+  });
+  const riskBody = riskData?.body ?? '';
 
   const createVisitor = useMutation({
     mutationFn: ({ nickname, pin }: { nickname: string; pin: string }) =>
@@ -92,7 +84,7 @@ export default function RegisterScreen() {
 
   const handleInputSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (pin !== pinConfirm) {
+    if (!isAuthenticated && pin !== pinConfirm) {
       setPinError('PINが一致しません。もう一度確認してください。');
       return;
     }
@@ -135,12 +127,20 @@ export default function RegisterScreen() {
   const completeRegistration = async () => {
     setRegisterError(null);
     try {
-      // Step 1: Register the visitor
-      const resp = await createVisitor.mutateAsync({ nickname, pin });
-      const hash = await generatePinHash(pin, resp.receptionNumber);
-      login(resp.receptionNumber, hash, resp.visitorId);
+      let visitorIdToUse: string;
+      let receptionNumberToUse: string;
 
-      // Step 2: Issue a ticket for the selected booth
+      if (isAuthenticated && existingVisitorId) {
+        visitorIdToUse = existingVisitorId;
+        receptionNumberToUse = existingReceptionNumber ?? '';
+      } else {
+        const resp = await createVisitor.mutateAsync({ nickname, pin });
+        const hash = await generatePinHash(pin, resp.receptionNumber);
+        login(resp.receptionNumber, hash, resp.visitorId);
+        visitorIdToUse = resp.visitorId;
+        receptionNumberToUse = resp.receptionNumber;
+      }
+
       const parsedAges = ages.map(a => parseInt(a));
       const participants = parsedAges.map(age => ({ age, name: '' }));
 
@@ -148,26 +148,33 @@ export default function RegisterScreen() {
       const parentalConsent = needsConsent
         ? {
             guardianName,
-            consentTextSnapshot: CONSENT_TEXT_SNAPSHOT,
+            consentTextSnapshot: riskBody,
             userAgent: navigator.userAgent,
             ipAddress: '0.0.0.0',
           }
         : undefined;
 
       const ticketResp = await ticketClient.createTicket({
-        visitorId: resp.visitorId,
+        visitorId: visitorIdToUse,
         boothId: boothId!,
-        pin,
+        pin: isAuthenticated ? '' : pin,
         participants,
         matchMode: matchMode,
         parentalConsent,
       });
 
       navigate(`/booths/${boothId}/reserve/new/complete`, {
-        state: { receptionNumber: resp.receptionNumber, ticketId: ticketResp.ticketId },
+        state: { receptionNumber: receptionNumberToUse, ticketId: ticketResp.ticketId },
       });
-    } catch {
-      setRegisterError('登録に失敗しました。もう一度お試しください。');
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      if (msg.toLowerCase().includes('elapsed') || msg.toLowerCase().includes('cooldown')) {
+        setRegisterError('クールダウン中です。前回の体験からしばらく経ってから再度お試しください。');
+      } else if (msg.toLowerCase().includes('already') || msg.toLowerCase().includes('already_exists')) {
+        setRegisterError('このブースの整理券はすでに取得済みです。マイページから確認してください。');
+      } else {
+        setRegisterError('登録に失敗しました。もう一度お試しください。');
+      }
     }
   };
 
@@ -201,7 +208,7 @@ export default function RegisterScreen() {
             <p className="text-[15px] text-red-700 font-bold text-center">{registerError}</p>
           </div>
         )}
-        {step === 'input' && (
+        {step === 'input' && !isAuthenticated && (
           <InputStep
             nickname={nickname}
             partySize={partySize}
@@ -216,6 +223,34 @@ export default function RegisterScreen() {
             onSubmit={handleInputSubmit}
             onBack={handleBack}
           />
+        )}
+        {step === 'input' && isAuthenticated && (
+          <form onSubmit={handleInputSubmit} className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+              <p className="text-[15px] text-[#5A4A20] opacity-70 text-center">
+                受付番号 {existingReceptionNumber} でログイン中
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl p-6 shadow-[0_4px_12px_rgba(0,0,0,0.15)]">
+              <label className="block text-[18px] font-bold text-[#5A4A20] mb-3">体験人数</label>
+              <input
+                type="number"
+                value={partySize}
+                onChange={(e) => setPartySize(e.target.value)}
+                placeholder="人数を入力"
+                min="1"
+                max={maxPartySize ?? 10}
+                required
+                className="w-full px-4 py-4 text-[20px] border-2 border-[#D4B946] rounded-xl focus:outline-none focus:border-[#B89D3A] transition-colors"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full bg-white py-6 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.15)] active:scale-[0.98] transition-all duration-150"
+            >
+              <span className="text-[28px] font-bold text-[#5A4A20]">次へ</span>
+            </button>
+          </form>
         )}
         {step === 'match-mode' && (
           <MatchModeStep
@@ -238,6 +273,7 @@ export default function RegisterScreen() {
         )}
         {step === 'consent' && (
           <ConsentStep
+            riskBody={riskBody}
             guardianName={guardianName}
             guardianConsent={guardianConsent}
             hasScrolledConsent={hasScrolledConsent}

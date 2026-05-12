@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { AdmitByQRRequest, AdmitByQRResponse, AdmitManuallyRequest, AdmitManuallyResponse, ArchiveBoothRequest, ArchiveBoothResponse, CallNextTicketsRequest, CallNextTicketsResponse, CallPrivateMatchRequest, CallPrivateMatchResponse, CallTicketRequest, CallTicketResponse, CancelTicketByStaffRequest, CancelTicketByStaffResponse, CompleteMatchSessionRequest, CompleteMatchSessionResponse, CreateBoothRequest, CreateBoothResponse, DeleteBoothRequest, DeleteBoothResponse, ForceStartMatchRequest, ForceStartMatchResponse, GetDashboardRequest, GetDashboardResponse, GetMatchQueueStatusRequest, GetMatchQueueStatusResponse, GetRiskExplanationRequest, GetRiskExplanationResponse, GetStaffSessionRequest, GetStaffSessionResponse, ListAdminBoothsRequest, ListAdminBoothsResponse, ListNotificationTemplatesRequest, ListNotificationTemplatesResponse, ListTicketsByBoothRequest, ListTicketsByBoothResponse, LoginAsGlobalAdminRequest, LoginAsGlobalAdminResponse, LoginAsStaffRequest, LoginAsStaffResponse, RestorePendingTicketRequest, RestorePendingTicketResponse, UnarchiveBoothRequest, UnarchiveBoothResponse, UpdateBoothPasswordRequest, UpdateBoothPasswordResponse, UpdateBoothRequest, UpdateBoothResponse, UpdateNotificationTemplateRequest, UpdateNotificationTemplateResponse, UpdateRiskExplanationRequest, UpdateRiskExplanationResponse } from "./admin_pb.js";
+import { AdmitByQRRequest, AdmitByQRResponse, AdmitManuallyRequest, AdmitManuallyResponse, ArchiveBoothRequest, ArchiveBoothResponse, CallNextTicketsRequest, CallNextTicketsResponse, CallPrivateMatchRequest, CallPrivateMatchResponse, CallTicketRequest, CallTicketResponse, CancelTicketByStaffRequest, CancelTicketByStaffResponse, CompleteMatchSessionRequest, CompleteMatchSessionResponse, CreateBoothRequest, CreateBoothResponse, CreateTicketManualRequest, CreateTicketManualResponse, DeleteBoothRequest, DeleteBoothResponse, ExportCSVRequest, ExportCSVResponse, ForceStartMatchRequest, ForceStartMatchResponse, GetDashboardRequest, GetDashboardResponse, GetMatchQueueStatusRequest, GetMatchQueueStatusResponse, GetRiskExplanationRequest, GetRiskExplanationResponse, GetStaffSessionRequest, GetStaffSessionResponse, ListAdminBoothsRequest, ListAdminBoothsResponse, ListNotificationTemplatesRequest, ListNotificationTemplatesResponse, ListTicketsByBoothRequest, ListTicketsByBoothResponse, LoginAsGlobalAdminRequest, LoginAsGlobalAdminResponse, LoginAsStaffRequest, LoginAsStaffResponse, ResetEventDataRequest, ResetEventDataResponse, RestorePendingTicketRequest, RestorePendingTicketResponse, UnarchiveBoothRequest, UnarchiveBoothResponse, UpdateBoothPasswordRequest, UpdateBoothPasswordResponse, UpdateBoothRequest, UpdateBoothResponse, UpdateNotificationTemplateRequest, UpdateNotificationTemplateResponse, UpdateRiskExplanationRequest, UpdateRiskExplanationResponse } from "./admin_pb.js";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -155,6 +155,29 @@ export declare const AdminService: {
       readonly name: "UpdateNotificationTemplate",
       readonly I: typeof UpdateNotificationTemplateRequest,
       readonly O: typeof UpdateNotificationTemplateResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ExportCSV exports event data as a UTF-8 BOM CSV file.
+     *
+     * @generated from rpc admin.v1.AdminService.ExportCSV
+     */
+    readonly exportCSV: {
+      readonly name: "ExportCSV",
+      readonly I: typeof ExportCSVRequest,
+      readonly O: typeof ExportCSVResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * ResetEventData deletes all event data (visitors, tickets, etc.) while preserving
+     * booth/admin/template configuration. Only available when APP_ENV != "production".
+     *
+     * @generated from rpc admin.v1.AdminService.ResetEventData
+     */
+    readonly resetEventData: {
+      readonly name: "ResetEventData",
+      readonly I: typeof ResetEventDataRequest,
+      readonly O: typeof ResetEventDataResponse,
       readonly kind: MethodKind.Unary,
     },
   }
@@ -310,6 +333,18 @@ export declare const StaffService: {
       readonly name: "GetMatchQueueStatus",
       readonly I: typeof GetMatchQueueStatusRequest,
       readonly O: typeof GetMatchQueueStatusResponse,
+      readonly kind: MethodKind.Unary,
+    },
+    /**
+     * CreateTicketManual issues a ticket on behalf of a visitor via the special in-person
+     * staff flow for participants aged 7-9 (paper_and_digital consent, R-005).
+     *
+     * @generated from rpc admin.v1.StaffService.CreateTicketManual
+     */
+    readonly createTicketManual: {
+      readonly name: "CreateTicketManual",
+      readonly I: typeof CreateTicketManualRequest,
+      readonly O: typeof CreateTicketManualResponse,
       readonly kind: MethodKind.Unary,
     },
   }
