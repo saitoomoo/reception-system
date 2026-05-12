@@ -1,0 +1,38 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "CSVエクスポート" [level=1] [ref=e5]
+    - link "← ダッシュボードへ" [ref=e6] [cursor=pointer]:
+      - /url: /admin/global/dashboard
+  - generic [ref=e7]:
+    - generic [ref=e8]: CSVファイルには個人情報が含まれる場合があります。取り扱いに注意してください。
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: 来場者一覧
+          - generic [ref=e13]: 受付番号・ニックネーム・登録時刻
+        - button "ダウンロード" [ref=e14]
+      - generic [ref=e15]:
+        - generic [ref=e16]:
+          - generic [ref=e17]: 整理券一覧
+          - generic [ref=e18]: 全整理券の取得・状態・入場時刻
+        - button "ダウンロード" [ref=e19]
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: 入場処理一覧
+          - generic [ref=e23]: 全入場処理レコード
+        - button "ダウンロード" [ref=e24]
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: ブース別集計
+          - generic [ref=e28]: ブースごとの予約数・入場数・キャンセル数
+        - button "ダウンロード" [ref=e29]
+      - generic [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: 時間帯別集計
+          - generic [ref=e33]: 30分ごとの来場者数推移
+        - button "ダウンロード" [ref=e34]
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]: マッチセッション一覧
+          - generic [ref=e38]: マッチメイキングブースのセッション履歴
+        - button "ダウンロード" [ref=e39]
