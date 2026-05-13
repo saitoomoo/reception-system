@@ -183,7 +183,7 @@ func (h *combinedStaffHandler) CreateTicketManual(ctx context.Context, req *conn
 }
 
 func corsMiddleware(next http.Handler) http.Handler {
-	originsEnv := os.Getenv("CORS_ALLOWED_ORIGINS")
+	originsEnv := os.Getenv("ALLOWED_ORIGINS")
 	var allowed []string
 	if originsEnv != "" {
 		for _, o := range strings.Split(originsEnv, ",") {

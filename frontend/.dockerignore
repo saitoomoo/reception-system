@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+
+# Environment files — VITE_* values are baked in at build time via ARG
+.env
+.env.*
+.env.local
+
+# Build output (the builder stage regenerates this)
+dist/
+
+# Dependencies (the builder stage runs npm ci)
+node_modules/
+
+# Documentation
+*.md
+
+# IDE / OS
+.DS_Store
+.vscode
