@@ -1,7 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
+import { ConnectError, Code } from '@connectrpc/connect';
 import { staffClient } from '@/lib/connect/client';
 import { AdmitOutcome } from '@/gen/ts/admin/v1/admin_pb';
+
+function connectErrorMessage(err: unknown): string {
+  if (err instanceof ConnectError) {
+    if (err.code === Code.Unauthenticated) {
+      return 'セッションが切れています。再ログインしてください';
+    }
+    if (err.code === Code.Unavailable) {
+      return '通信エラーです。再度お試しください';
+    }
+    return `エラー [${Code[err.code]}]: ${err.rawMessage}`;
+  }
+  // TypeError はブラウザ・OS によってメッセージが異なるため、種類を問わず通信エラー扱いにする
+  if (err instanceof TypeError) {
+    return '通信エラーです。再度お試しください';
+  }
+  const message = err instanceof Error ? err.message : String(err);
+  return `予期しないエラーが発生しました: ${message}`;
+}
 
 type OutcomeDisplay = {
   type: 'success' | 'warning' | 'info' | 'error';
@@ -61,7 +80,7 @@ export default function QrScanner({ boothId: _boothId }: Props) {
   const handleScan = async (receptionNumber: string) => {
     setProcessing(true);
     try {
-      const res = await staffClient.admitByQr({ receptionNumber });
+      const res = await staffClient.admitByQR({ receptionNumber });
       switch (res.outcome) {
         case AdmitOutcome.ADMITTED:
           setOutcome({ type: 'success', message: '入場処理が完了しました', detail: receptionNumber });
@@ -69,7 +88,7 @@ export default function QrScanner({ boothId: _boothId }: Props) {
         case AdmitOutcome.RESTORED_TO_PRIORITY_CALL:
           setOutcome({
             type: 'warning',
-            message: '優先呼び出しに戻しました',
+            message: '保留中の方が戻ってきました（優先呼び出し）',
             detail: '次の空きができたら再スキャンしてください',
           });
           break;
@@ -85,13 +104,18 @@ export default function QrScanner({ boothId: _boothId }: Props) {
           setOutcome({ type: 'info', message: '既に入場済みです', detail: receptionNumber });
           break;
         case AdmitOutcome.NOT_FOUND:
-          setOutcome({ type: 'error', message: 'このブースの整理券が見つかりません', detail: receptionNumber });
+          setOutcome({
+            type: 'error',
+            message: 'このブースの整理券が見つかりません',
+            detail: `受付番号: ${receptionNumber}（別ブースの整理券の可能性もあります）`,
+          });
           break;
         default:
           setOutcome({ type: 'error', message: '不明な結果です' });
       }
-    } catch {
-      setOutcome({ type: 'error', message: 'エラーが発生しました。もう一度試してください' });
+    } catch (err) {
+      console.error('[QR scan] admitByQr failed:', err);
+      setOutcome({ type: 'error', message: connectErrorMessage(err) });
     } finally {
       setProcessing(false);
     }
@@ -104,8 +128,9 @@ export default function QrScanner({ boothId: _boothId }: Props) {
     try {
       await staffClient.admitManually({ receptionNumber: confirmPending.receptionNumber, force: true });
       setOutcome({ type: 'success', message: '入場処理が完了しました', detail: confirmPending.receptionNumber });
-    } catch {
-      setOutcome({ type: 'error', message: 'エラーが発生しました' });
+    } catch (err) {
+      console.error('[QR scan] admitManually failed:', err);
+      setOutcome({ type: 'error', message: connectErrorMessage(err) });
     } finally {
       setProcessing(false);
     }
