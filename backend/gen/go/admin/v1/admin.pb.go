@@ -413,6 +413,8 @@ type UpdateBoothRequest struct {
 	CoverImageUrl              string                 `protobuf:"bytes,19,opt,name=cover_image_url,json=coverImageUrl,proto3" json:"cover_image_url,omitempty"`
 	IntroVideoUrl              string                 `protobuf:"bytes,20,opt,name=intro_video_url,json=introVideoUrl,proto3" json:"intro_video_url,omitempty"`
 	SurveyUrl                  string                 `protobuf:"bytes,21,opt,name=survey_url,json=surveyUrl,proto3" json:"survey_url,omitempty"`
+	Notes                      string                 `protobuf:"bytes,22,opt,name=notes,proto3" json:"notes,omitempty"`
+	DetailVideoUrl             string                 `protobuf:"bytes,23,opt,name=detail_video_url,json=detailVideoUrl,proto3" json:"detail_video_url,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -594,6 +596,20 @@ func (x *UpdateBoothRequest) GetSurveyUrl() string {
 	return ""
 }
 
+func (x *UpdateBoothRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *UpdateBoothRequest) GetDetailVideoUrl() string {
+	if x != nil {
+		return x.DetailVideoUrl
+	}
+	return ""
+}
+
 type UpdateBoothResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -655,6 +671,8 @@ type AdminBooth struct {
 	SurveyUrl                  string                 `protobuf:"bytes,21,opt,name=survey_url,json=surveyUrl,proto3" json:"survey_url,omitempty"`
 	IsArchived                 bool                   `protobuf:"varint,22,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	StaffPasswordUpdatedAt     string                 `protobuf:"bytes,23,opt,name=staff_password_updated_at,json=staffPasswordUpdatedAt,proto3" json:"staff_password_updated_at,omitempty"`
+	Notes                      string                 `protobuf:"bytes,24,opt,name=notes,proto3" json:"notes,omitempty"`
+	DetailVideoUrl             string                 `protobuf:"bytes,25,opt,name=detail_video_url,json=detailVideoUrl,proto3" json:"detail_video_url,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -850,6 +868,20 @@ func (x *AdminBooth) GetStaffPasswordUpdatedAt() string {
 	return ""
 }
 
+func (x *AdminBooth) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *AdminBooth) GetDetailVideoUrl() string {
+	if x != nil {
+		return x.DetailVideoUrl
+	}
+	return ""
+}
+
 type ListAdminBoothsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -953,6 +985,8 @@ type CreateBoothRequest struct {
 	IntroVideoUrl              string                 `protobuf:"bytes,19,opt,name=intro_video_url,json=introVideoUrl,proto3" json:"intro_video_url,omitempty"`
 	SurveyUrl                  string                 `protobuf:"bytes,20,opt,name=survey_url,json=surveyUrl,proto3" json:"survey_url,omitempty"`
 	StaffPassword              string                 `protobuf:"bytes,21,opt,name=staff_password,json=staffPassword,proto3" json:"staff_password,omitempty"`
+	Notes                      string                 `protobuf:"bytes,22,opt,name=notes,proto3" json:"notes,omitempty"`
+	DetailVideoUrl             string                 `protobuf:"bytes,23,opt,name=detail_video_url,json=detailVideoUrl,proto3" json:"detail_video_url,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -1130,6 +1164,20 @@ func (x *CreateBoothRequest) GetSurveyUrl() string {
 func (x *CreateBoothRequest) GetStaffPassword() string {
 	if x != nil {
 		return x.StaffPassword
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *CreateBoothRequest) GetDetailVideoUrl() string {
+	if x != nil {
+		return x.DetailVideoUrl
 	}
 	return ""
 }
@@ -3819,7 +3867,7 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x1aLoginAsGlobalAdminResponse\"\x15\n" +
 	"\x13GetDashboardRequest\"D\n" +
 	"\x14GetDashboardResponse\x12,\n" +
-	"\x06booths\x18\x01 \x03(\v2\x14.admin.v1.BoothStatsR\x06booths\"\xe8\x06\n" +
+	"\x06booths\x18\x01 \x03(\v2\x14.admin.v1.BoothStatsR\x06booths\"\xa8\a\n" +
 	"\x12UpdateBoothRequest\x12\x19\n" +
 	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -3843,8 +3891,10 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x0fcover_image_url\x18\x13 \x01(\tR\rcoverImageUrl\x12&\n" +
 	"\x0fintro_video_url\x18\x14 \x01(\tR\rintroVideoUrl\x12\x1d\n" +
 	"\n" +
-	"survey_url\x18\x15 \x01(\tR\tsurveyUrl\"\x15\n" +
-	"\x13UpdateBoothResponse\"\xbc\a\n" +
+	"survey_url\x18\x15 \x01(\tR\tsurveyUrl\x12\x14\n" +
+	"\x05notes\x18\x16 \x01(\tR\x05notes\x12(\n" +
+	"\x10detail_video_url\x18\x17 \x01(\tR\x0edetailVideoUrl\"\x15\n" +
+	"\x13UpdateBoothResponse\"\xfc\a\n" +
 	"\n" +
 	"AdminBooth\x12\x19\n" +
 	"\bbooth_id\x18\x01 \x01(\tR\aboothId\x12\x12\n" +
@@ -3872,10 +3922,12 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"survey_url\x18\x15 \x01(\tR\tsurveyUrl\x12\x1f\n" +
 	"\vis_archived\x18\x16 \x01(\bR\n" +
 	"isArchived\x129\n" +
-	"\x19staff_password_updated_at\x18\x17 \x01(\tR\x16staffPasswordUpdatedAt\"\x18\n" +
+	"\x19staff_password_updated_at\x18\x17 \x01(\tR\x16staffPasswordUpdatedAt\x12\x14\n" +
+	"\x05notes\x18\x18 \x01(\tR\x05notes\x12(\n" +
+	"\x10detail_video_url\x18\x19 \x01(\tR\x0edetailVideoUrl\"\x18\n" +
 	"\x16ListAdminBoothsRequest\"G\n" +
 	"\x17ListAdminBoothsResponse\x12,\n" +
-	"\x06booths\x18\x01 \x03(\v2\x14.admin.v1.AdminBoothR\x06booths\"\xf4\x06\n" +
+	"\x06booths\x18\x01 \x03(\v2\x14.admin.v1.AdminBoothR\x06booths\"\xb4\a\n" +
 	"\x12CreateBoothRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
@@ -3899,7 +3951,9 @@ const file_admin_v1_admin_proto_rawDesc = "" +
 	"\x0fintro_video_url\x18\x13 \x01(\tR\rintroVideoUrl\x12\x1d\n" +
 	"\n" +
 	"survey_url\x18\x14 \x01(\tR\tsurveyUrl\x12%\n" +
-	"\x0estaff_password\x18\x15 \x01(\tR\rstaffPassword\"A\n" +
+	"\x0estaff_password\x18\x15 \x01(\tR\rstaffPassword\x12\x14\n" +
+	"\x05notes\x18\x16 \x01(\tR\x05notes\x12(\n" +
+	"\x10detail_video_url\x18\x17 \x01(\tR\x0edetailVideoUrl\"A\n" +
 	"\x13CreateBoothResponse\x12*\n" +
 	"\x05booth\x18\x01 \x01(\v2\x14.admin.v1.AdminBoothR\x05booth\"0\n" +
 	"\x13ArchiveBoothRequest\x12\x19\n" +

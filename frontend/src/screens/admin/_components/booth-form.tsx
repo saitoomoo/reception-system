@@ -21,7 +21,9 @@ export type BoothFormData = {
   isAccepting: boolean;
   coverImageUrl: string;
   introVideoUrl: string;
+  detailVideoUrl: string;
   surveyUrl: string;
+  notes: string;
   staffPassword: string;
 };
 
@@ -59,7 +61,9 @@ function initFormData(booth?: AdminBooth): BoothFormData {
       isAccepting: true,
       coverImageUrl: '',
       introVideoUrl: '',
+      detailVideoUrl: '',
       surveyUrl: '',
+      notes: '',
       staffPassword: '',
     };
   }
@@ -83,7 +87,9 @@ function initFormData(booth?: AdminBooth): BoothFormData {
     isAccepting: booth.isAccepting,
     coverImageUrl: booth.coverImageUrl,
     introVideoUrl: booth.introVideoUrl,
+    detailVideoUrl: booth.detailVideoUrl,
     surveyUrl: booth.surveyUrl,
+    notes: booth.notes,
     staffPassword: '',
   };
 }
@@ -228,11 +234,17 @@ export default function BoothForm({ mode, initialData, onSubmit, onCancel }: Pro
         <Field label="カバー画像 URL">
           <input className={inputCls} value={form.coverImageUrl} onChange={e => set('coverImageUrl', e.target.value)} placeholder="https://..." />
         </Field>
-        <Field label="紹介動画 URL (YouTube)">
+        <Field label="紹介動画 URL（ページ上部に表示 / YouTube）">
           <input className={inputCls} value={form.introVideoUrl} onChange={e => set('introVideoUrl', e.target.value)} placeholder="https://youtu.be/..." />
+        </Field>
+        <Field label="詳細説明動画 URL（詳細説明アコーディオン内に表示 / YouTube）">
+          <input className={inputCls} value={form.detailVideoUrl} onChange={e => set('detailVideoUrl', e.target.value)} placeholder="https://youtu.be/..." />
         </Field>
         <Field label="アンケート URL">
           <input className={inputCls} value={form.surveyUrl} onChange={e => set('surveyUrl', e.target.value)} placeholder="https://forms.gle/..." />
+        </Field>
+        <Field label="詳細説明の注意事項（1行1項目、箇条書きで表示されます）">
+          <textarea className={inputCls + ' h-28 resize-none'} value={form.notes} onChange={e => set('notes', e.target.value)} placeholder={"HMD装着時は係員の指示に従ってください\n激しい動きは控えてください\n体験時間は約5分です"} />
         </Field>
       </section>
 

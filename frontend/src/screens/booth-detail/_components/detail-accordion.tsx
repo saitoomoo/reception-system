@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-interface Props {
-  notes: string[];
+function extractYouTubeId(url: string): string | null {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+  return m ? m[1] : null;
 }
 
-export function DetailAccordion({ notes }: Props) {
+interface Props {
+  notes: string[];
+  detailVideoUrl?: string;
+}
+
+export function DetailAccordion({ notes, detailVideoUrl }: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -21,26 +28,40 @@ export function DetailAccordion({ notes }: Props) {
       </button>
       <div className={`transition-all duration-300 overflow-hidden ${isOpen ? 'max-h-[1000px]' : 'max-h-0'}`}>
         <div className="px-6 pb-6 space-y-4">
-          <div>
-            <h3 className="text-[16px] font-bold text-[#5A4A20] mb-3">注意事項</h3>
-            <ul className="space-y-2">
-              {notes.map((note, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-[#D4B946] mt-1">•</span>
-                  <span className="text-[14px] text-[#5A4A20] opacity-90 flex-1">{note}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {notes.length > 0 && (
+            <div>
+              <h3 className="text-[16px] font-bold text-[#5A4A20] mb-3">注意事項</h3>
+              <ul className="space-y-2">
+                {notes.map((note, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <span className="text-[#D4B946] mt-1">•</span>
+                    <span className="text-[14px] text-[#5A4A20] opacity-90 flex-1">{note}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
           <div>
             <h3 className="text-[16px] font-bold text-[#5A4A20] mb-3">説明動画</h3>
-            <div className="bg-[#D4B946] bg-opacity-20 rounded-xl p-8 flex flex-col items-center justify-center min-h-[180px]">
-              <svg className="w-16 h-16 text-[#5A4A20] opacity-40 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p className="text-[14px] text-[#5A4A20] opacity-60">動画は後日追加予定です</p>
-            </div>
+            {extractYouTubeId(detailVideoUrl ?? '') ? (
+              <div className="rounded-xl overflow-hidden aspect-video">
+                <iframe
+                  src={`https://www.youtube.com/embed/${extractYouTubeId(detailVideoUrl ?? '')}`}
+                  className="w-full h-full"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="説明動画"
+                />
+              </div>
+            ) : (
+              <div className="bg-[#D4B946] bg-opacity-20 rounded-xl p-8 flex flex-col items-center justify-center min-h-[180px]">
+                <svg className="w-16 h-16 text-[#5A4A20] opacity-40 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="text-[14px] text-[#5A4A20] opacity-60">動画は後日設定予定です</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

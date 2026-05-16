@@ -52,7 +52,9 @@ export default function GlobalBoothsScreen() {
       isAccepting: data.isAccepting,
       coverImageUrl: data.coverImageUrl,
       introVideoUrl: data.introVideoUrl,
+      detailVideoUrl: data.detailVideoUrl,
       surveyUrl: data.surveyUrl,
+      notes: data.notes,
       staffPassword: data.staffPassword,
     });
     await fetchBooths();
@@ -81,7 +83,9 @@ export default function GlobalBoothsScreen() {
       isAccepting: data.isAccepting,
       coverImageUrl: data.coverImageUrl,
       introVideoUrl: data.introVideoUrl,
+      detailVideoUrl: data.detailVideoUrl,
       surveyUrl: data.surveyUrl,
+      notes: data.notes,
     });
     await fetchBooths();
     setView('list');

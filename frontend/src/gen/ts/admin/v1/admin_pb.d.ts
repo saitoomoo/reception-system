@@ -215,6 +215,16 @@ export declare type UpdateBoothRequest = Message<"admin.v1.UpdateBoothRequest"> 
    * @generated from field: string survey_url = 21;
    */
   surveyUrl: string;
+
+  /**
+   * @generated from field: string notes = 22;
+   */
+  notes: string;
+
+  /**
+   * @generated from field: string detail_video_url = 23;
+   */
+  detailVideoUrl: string;
 };
 
 /**
@@ -353,6 +363,16 @@ export declare type AdminBooth = Message<"admin.v1.AdminBooth"> & {
    * @generated from field: string staff_password_updated_at = 23;
    */
   staffPasswordUpdatedAt: string;
+
+  /**
+   * @generated from field: string notes = 24;
+   */
+  notes: string;
+
+  /**
+   * @generated from field: string detail_video_url = 25;
+   */
+  detailVideoUrl: string;
 };
 
 /**
@@ -497,6 +517,16 @@ export declare type CreateBoothRequest = Message<"admin.v1.CreateBoothRequest"> 
    * @generated from field: string staff_password = 21;
    */
   staffPassword: string;
+
+  /**
+   * @generated from field: string notes = 22;
+   */
+  notes: string;
+
+  /**
+   * @generated from field: string detail_video_url = 23;
+   */
+  detailVideoUrl: string;
 };
 
 /**

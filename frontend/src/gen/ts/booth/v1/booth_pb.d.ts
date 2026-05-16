@@ -171,6 +171,16 @@ export declare type BoothDetail = Message<"booth.v1.BoothDetail"> & {
    * @generated from field: int32 cooldown_minutes = 19;
    */
   cooldownMinutes: number;
+
+  /**
+   * @generated from field: string notes = 20;
+   */
+  notes: string;
+
+  /**
+   * @generated from field: string detail_video_url = 21;
+   */
+  detailVideoUrl: string;
 };
 
 /**

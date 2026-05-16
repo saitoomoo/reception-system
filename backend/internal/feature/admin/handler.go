@@ -601,6 +601,8 @@ func buildUpdateBoothParams(boothID int64, msg *adminv1.UpdateBoothRequest) (db.
 		v := msg.SurveyUrl
 		p.SurveyUrl = &v
 	}
+	p.Notes = msg.Notes
+	p.DetailVideoUrl = msg.DetailVideoUrl
 
 	return p, nil
 }
@@ -671,6 +673,8 @@ func buildCreateBoothParams(msg *adminv1.CreateBoothRequest, passwordHash string
 		v := msg.SurveyUrl
 		p.SurveyUrl = &v
 	}
+	p.Notes = msg.Notes
+	p.DetailVideoUrl = msg.DetailVideoUrl
 
 	return p, nil
 }
@@ -716,6 +720,8 @@ func boothToProto(b db.Booth) *adminv1.AdminBooth {
 	if b.IntroVideoUrl != nil {
 		out.IntroVideoUrl = *b.IntroVideoUrl
 	}
+	out.Notes = b.Notes
+	out.DetailVideoUrl = b.DetailVideoUrl
 	if b.SurveyUrl != nil {
 		out.SurveyUrl = *b.SurveyUrl
 	}

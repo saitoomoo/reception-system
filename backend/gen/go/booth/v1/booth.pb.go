@@ -159,6 +159,8 @@ type BoothDetail struct {
 	EstimatedMinutesPerPerson  int32                  `protobuf:"varint,17,opt,name=estimated_minutes_per_person,json=estimatedMinutesPerPerson,proto3" json:"estimated_minutes_per_person,omitempty"`
 	EstimatedMinutesPerSession int32                  `protobuf:"varint,18,opt,name=estimated_minutes_per_session,json=estimatedMinutesPerSession,proto3" json:"estimated_minutes_per_session,omitempty"`
 	CooldownMinutes            int32                  `protobuf:"varint,19,opt,name=cooldown_minutes,json=cooldownMinutes,proto3" json:"cooldown_minutes,omitempty"`
+	Notes                      string                 `protobuf:"bytes,20,opt,name=notes,proto3" json:"notes,omitempty"`
+	DetailVideoUrl             string                 `protobuf:"bytes,21,opt,name=detail_video_url,json=detailVideoUrl,proto3" json:"detail_video_url,omitempty"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -324,6 +326,20 @@ func (x *BoothDetail) GetCooldownMinutes() int32 {
 		return x.CooldownMinutes
 	}
 	return 0
+}
+
+func (x *BoothDetail) GetNotes() string {
+	if x != nil {
+		return x.Notes
+	}
+	return ""
+}
+
+func (x *BoothDetail) GetDetailVideoUrl() string {
+	if x != nil {
+		return x.DetailVideoUrl
+	}
+	return ""
 }
 
 type ListBoothsRequest struct {
@@ -666,7 +682,7 @@ const file_booth_v1_booth_proto_rawDesc = "" +
 	"\x0fcover_image_url\x18\b \x01(\tR\rcoverImageUrl\x12\x17\n" +
 	"\aopen_at\x18\t \x01(\tR\x06openAt\x12\x19\n" +
 	"\bclose_at\x18\n" +
-	" \x01(\tR\acloseAt\"\x83\x06\n" +
+	" \x01(\tR\acloseAt\"\xc3\x06\n" +
 	"\vBoothDetail\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12 \n" +
@@ -688,7 +704,9 @@ const file_booth_v1_booth_proto_rawDesc = "" +
 	"\x13allow_private_match\x18\x10 \x01(\bR\x11allowPrivateMatch\x12?\n" +
 	"\x1cestimated_minutes_per_person\x18\x11 \x01(\x05R\x19estimatedMinutesPerPerson\x12A\n" +
 	"\x1destimated_minutes_per_session\x18\x12 \x01(\x05R\x1aestimatedMinutesPerSession\x12)\n" +
-	"\x10cooldown_minutes\x18\x13 \x01(\x05R\x0fcooldownMinutes\"\x13\n" +
+	"\x10cooldown_minutes\x18\x13 \x01(\x05R\x0fcooldownMinutes\x12\x14\n" +
+	"\x05notes\x18\x14 \x01(\tR\x05notes\x12(\n" +
+	"\x10detail_video_url\x18\x15 \x01(\tR\x0edetailVideoUrl\"\x13\n" +
 	"\x11ListBoothsRequest\"D\n" +
 	"\x12ListBoothsResponse\x12.\n" +
 	"\x06booths\x18\x01 \x03(\v2\x16.booth.v1.BoothSummaryR\x06booths\",\n" +

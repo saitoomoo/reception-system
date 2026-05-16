@@ -82,7 +82,10 @@ export default function BoothDetailScreen() {
             </div>
           </div>
 
-          <DetailAccordion notes={[]} />
+          <DetailAccordion
+            notes={booth.notes ? booth.notes.split('\n').filter(l => l.trim() !== '') : []}
+            detailVideoUrl={booth.detailVideoUrl}
+          />
 
           {booth.id === '1' && <CheerAccordion />}
 

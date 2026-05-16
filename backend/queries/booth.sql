@@ -43,7 +43,9 @@ UPDATE booths SET
     is_accepting                  = $18,
     cover_image_url               = $19,
     intro_video_url               = $20,
-    survey_url                    = $21
+    survey_url                    = $21,
+    notes                         = $22,
+    detail_video_url              = $23
 WHERE id = $1;
 
 -- name: UpdateBoothPassword :exec
@@ -63,7 +65,7 @@ INSERT INTO booths (
     estimated_minutes_per_person, estimated_minutes_per_session,
     call_threshold, call_resend_minutes, cooldown_minutes,
     is_accepting, cover_image_url, intro_video_url, survey_url,
-    staff_password_hash, staff_password_updated_at
+    notes, detail_video_url, staff_password_hash, staff_password_updated_at
 ) VALUES (
     $1, $2, $3, $4, $5,
     $6, $7, $8,
@@ -71,7 +73,7 @@ INSERT INTO booths (
     $12, $13,
     $14, $15, $16,
     $17, $18, $19, $20,
-    $21, now()
+    $21, $22, $23, now()
 )
 RETURNING *;
 

@@ -289,6 +289,8 @@ func toBoothDetail(b BoothWithCount) *boothv1.BoothDetail {
 		MaxParticipantsPerTicket: b.Booth.MaxParticipantsPerTicket,
 		AllowPrivateMatch:    b.Booth.AllowPrivateMatch,
 		CooldownMinutes:      b.Booth.CooldownMinutes,
+		Notes:           b.Booth.Notes,
+		DetailVideoUrl:  b.Booth.DetailVideoUrl,
 	}
 	if b.Booth.CoverImageUrl != nil {
 		d.CoverImageUrl = *b.Booth.CoverImageUrl

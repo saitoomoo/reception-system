@@ -44,6 +44,8 @@ type Booth struct {
 	StaffPasswordHash          string
 	StaffPasswordUpdatedAt     pgtype.Timestamptz
 	IsArchived                 bool
+	Notes                      string
+	DetailVideoUrl             string
 }
 
 type GlobalAdmin struct {

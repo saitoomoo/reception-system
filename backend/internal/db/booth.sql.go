@@ -21,7 +21,7 @@ func (q *Queries) ArchiveBooth(ctx context.Context, id int64) error {
 }
 
 const authenticateStaff = `-- name: AuthenticateStaff :one
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths WHERE id = $1
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived, notes, detail_video_url FROM booths WHERE id = $1
 `
 
 // Returns the full booth row so the caller can compare staff_password_hash
@@ -54,6 +54,8 @@ func (q *Queries) AuthenticateStaff(ctx context.Context, id int64) (Booth, error
 		&i.StaffPasswordHash,
 		&i.StaffPasswordUpdatedAt,
 		&i.IsArchived,
+		&i.Notes,
+		&i.DetailVideoUrl,
 	)
 	return i, err
 }
@@ -66,7 +68,7 @@ INSERT INTO booths (
     estimated_minutes_per_person, estimated_minutes_per_session,
     call_threshold, call_resend_minutes, cooldown_minutes,
     is_accepting, cover_image_url, intro_video_url, survey_url,
-    staff_password_hash, staff_password_updated_at
+    notes, detail_video_url, staff_password_hash, staff_password_updated_at
 ) VALUES (
     $1, $2, $3, $4, $5,
     $6, $7, $8,
@@ -74,9 +76,9 @@ INSERT INTO booths (
     $12, $13,
     $14, $15, $16,
     $17, $18, $19, $20,
-    $21, now()
+    $21, $22, $23, now()
 )
-RETURNING id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived
+RETURNING id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived, notes, detail_video_url
 `
 
 type CreateBoothParams struct {
@@ -100,6 +102,8 @@ type CreateBoothParams struct {
 	CoverImageUrl              *string
 	IntroVideoUrl              *string
 	SurveyUrl                  *string
+	Notes                      string
+	DetailVideoUrl             string
 	StaffPasswordHash          string
 }
 
@@ -125,6 +129,8 @@ func (q *Queries) CreateBooth(ctx context.Context, arg CreateBoothParams) (Booth
 		arg.CoverImageUrl,
 		arg.IntroVideoUrl,
 		arg.SurveyUrl,
+		arg.Notes,
+		arg.DetailVideoUrl,
 		arg.StaffPasswordHash,
 	)
 	var i Booth
@@ -153,6 +159,8 @@ func (q *Queries) CreateBooth(ctx context.Context, arg CreateBoothParams) (Booth
 		&i.StaffPasswordHash,
 		&i.StaffPasswordUpdatedAt,
 		&i.IsArchived,
+		&i.Notes,
+		&i.DetailVideoUrl,
 	)
 	return i, err
 }
@@ -181,7 +189,7 @@ func (q *Queries) GetBoothActiveTicketCount(ctx context.Context, boothID int64) 
 }
 
 const getBoothByID = `-- name: GetBoothByID :one
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived, notes, detail_video_url FROM booths
 WHERE id = $1
 `
 
@@ -213,6 +221,8 @@ func (q *Queries) GetBoothByID(ctx context.Context, id int64) (Booth, error) {
 		&i.StaffPasswordHash,
 		&i.StaffPasswordUpdatedAt,
 		&i.IsArchived,
+		&i.Notes,
+		&i.DetailVideoUrl,
 	)
 	return i, err
 }
@@ -259,7 +269,7 @@ func (q *Queries) GetBoothWaitingCount(ctx context.Context, boothID int64) (int3
 }
 
 const listAllBooths = `-- name: ListAllBooths :many
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived, notes, detail_video_url FROM booths
 ORDER BY id
 `
 
@@ -297,6 +307,8 @@ func (q *Queries) ListAllBooths(ctx context.Context) ([]Booth, error) {
 			&i.StaffPasswordHash,
 			&i.StaffPasswordUpdatedAt,
 			&i.IsArchived,
+			&i.Notes,
+			&i.DetailVideoUrl,
 		); err != nil {
 			return nil, err
 		}
@@ -309,7 +321,7 @@ func (q *Queries) ListAllBooths(ctx context.Context) ([]Booth, error) {
 }
 
 const listBooths = `-- name: ListBooths :many
-SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived FROM booths
+SELECT id, name, description, location, open_at, close_at, experience_type, max_participants_per_ticket, concurrent_capacity, target_party_size, min_party_size, allow_private_match, estimated_minutes_per_person, estimated_minutes_per_session, call_threshold, call_resend_minutes, cooldown_minutes, is_accepting, cover_image_url, intro_video_url, survey_url, staff_password_hash, staff_password_updated_at, is_archived, notes, detail_video_url FROM booths
 WHERE is_archived = false
 ORDER BY id
 `
@@ -348,6 +360,8 @@ func (q *Queries) ListBooths(ctx context.Context) ([]Booth, error) {
 			&i.StaffPasswordHash,
 			&i.StaffPasswordUpdatedAt,
 			&i.IsArchived,
+			&i.Notes,
+			&i.DetailVideoUrl,
 		); err != nil {
 			return nil, err
 		}
@@ -389,7 +403,9 @@ UPDATE booths SET
     is_accepting                  = $18,
     cover_image_url               = $19,
     intro_video_url               = $20,
-    survey_url                    = $21
+    survey_url                    = $21,
+    notes                         = $22,
+    detail_video_url              = $23
 WHERE id = $1
 `
 
@@ -415,6 +431,8 @@ type UpdateBoothParams struct {
 	CoverImageUrl              *string
 	IntroVideoUrl              *string
 	SurveyUrl                  *string
+	Notes                      string
+	DetailVideoUrl             string
 }
 
 func (q *Queries) UpdateBooth(ctx context.Context, arg UpdateBoothParams) error {
@@ -440,6 +458,8 @@ func (q *Queries) UpdateBooth(ctx context.Context, arg UpdateBoothParams) error 
 		arg.CoverImageUrl,
 		arg.IntroVideoUrl,
 		arg.SurveyUrl,
+		arg.Notes,
+		arg.DetailVideoUrl,
 	)
 	return err
 }

@@ -1,0 +1,1 @@
+ALTER TABLE booths DROP COLUMN notes;
